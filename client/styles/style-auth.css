@@ -12,6 +12,10 @@ body {
   display: flex;
 }
 
+.body-container {
+  display: flex;
+}
+
 .aside {
   background-color: #75d8a6;
   width: 50%;

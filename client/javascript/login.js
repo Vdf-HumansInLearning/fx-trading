@@ -15,7 +15,6 @@ function createAsideImage() {
 
   return aside;
 }
-createAsideImage();
 
 function createMainLoginForm() {
   let main = document.createElement("main");
@@ -88,4 +87,5 @@ function createMainLoginForm() {
   return main;
 }
 
+createAsideImage();
 createMainLoginForm();

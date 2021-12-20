@@ -50,7 +50,7 @@ h6 {
 .vertical-line {
   width: 1px;
   background-color: var(--color-grey-border);
-  height: 32px;
+  height: 38px;
   float: left;
   margin: 0 10px;
 }

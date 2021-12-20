@@ -1,5 +1,5 @@
 const body = document.getElementsByClassName("body")[0];
-
+const a = "";
 // function createAsideImage() {
 //   let aside = document.createElement("aside");
 //   aside.classList.add("aside");

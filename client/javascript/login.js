@@ -1,4 +1,4 @@
-// const body = document.getElementsByClassName("body")[0];
+const body = document.getElementsByClassName("body")[0];
 
 // function createAsideImage() {
 //   let aside = document.createElement("aside");

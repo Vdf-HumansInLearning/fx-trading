@@ -48,11 +48,12 @@ h6 {
 }
 
 .vertical-line {
-  width: 1px;
+  width: 2px;
   background-color: var(--color-grey-border);
-  height: 38px;
-  float: left;
+  height: 30px;
   margin: 0 10px;
+  align-self: center;
+  margin-bottom: 1rem;
 }
 
 hr {

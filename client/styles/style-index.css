@@ -13,6 +13,12 @@
   color: var(--color-yellow);
 }
 
+.icon-up,
+.icon-down {
+  margin-left: 5px;
+  margin-top: 6px;
+}
+
 .subtitle {
   font-size: 20px;
   font-weight: bold;
@@ -23,28 +29,6 @@
 .text-large {
   font-size: 24px;
   color: var(--color-grey-body);
-}
-
-.card-currency--border {
-  border-bottom: 1px solid var(--color-grey-border);
-}
-
-.card-input--center {
-  padding-top: 20px;
-}
-.btn-add {
-  width: 100%;
-  height: 100%;
-  font-size: 52px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-color: var(--color-grey-border);
-  color: var(--color-grey-titles);
-}
-
-.btn-add:hover {
-  border-color: var(--color-grey-border);
 }
 
 .navbar {
@@ -69,10 +53,14 @@
 .card-currency p {
   margin: 0;
 }
-.icon-up,
-.icon-down {
-  margin-left: 5px;
-  margin-top: 6px;
+.card-currency--border {
+  border-bottom: 1px solid var(--color-grey-border);
+}
+
+.btn-close {
+  font-size: 9px;
+  font-weight: bold;
+  -webkit-text-stroke: 2px var(--color-grey-titles);
 }
 
 .card-rates .rate {
@@ -86,11 +74,6 @@
   margin-bottom: 0;
 }
 
-.btn-close {
-  font-size: 9px;
-  font-weight: bold;
-  -webkit-text-stroke: 2px var(--color-grey-titles);
-}
 .icon-exchange {
   margin-left: 5px;
   font-size: 12px;
@@ -107,11 +90,29 @@
   justify-content: center;
   align-items: center;
 }
+.card-input--center {
+  padding-top: 20px;
+}
 
 .input-group-text {
   background-color: transparent;
   border: none;
   min-width: 101px;
+}
+
+.btn-add {
+  width: 100%;
+  height: 100%;
+  font-size: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: var(--color-grey-border);
+  color: var(--color-grey-titles);
+}
+
+.btn-add:hover {
+  border-color: var(--color-grey-border);
 }
 
 .blotter-buttons {

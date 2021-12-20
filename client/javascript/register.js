@@ -121,7 +121,7 @@ function createMain() {
 
   let aRegister = document.createElement("a");
   pRegister.appendChild(aRegister);
-  aRegister.setAttribute("href", "./register.html");
+  aRegister.setAttribute("href", "./login.html");
   aRegister.textContent = "Login";
 }
 createMain();

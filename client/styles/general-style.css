@@ -1,5 +1,5 @@
 :root {
-    --color-grey-background: #f2f2f2;
+  --color-grey-background: #f2f2f2;
   --color-grey-border: #dddddd;
   --color-grey-titles: #7c7c7c;
   --color-grey-body: #373a3c;
@@ -8,49 +8,56 @@
   --color-green: #75d8a6;
   --color-red: #d9534f;
   --color-white: #ffffff;
-    --font-openSans: "Open Sans";
-  }
+  --font-openSans: "Open Sans";
+}
 
-  body {
-    color: var(--dark-gray);
-    font-family: var(--font-openSans), sans-serif;
-  }
+body {
+  color: var(--dark-gray);
+  font-family: var(--font-openSans), sans-serif;
+}
 
-  p {
-      font-size: 16px;
-  }
+p {
+  font-size: 16px;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-      color: var(--gray-color);
-      font-weight: 700;
-      font-size: 24px;
-  }
- 
-  .btn-primary {
-    background-color: var(--color-blue);
-    border: none;
-  }
-  
-  .btn-success {
-    background-color: var(--color-green);
-    border: none;
-  }
-  
-  .color-titles {
-    color: var(--color-grey-titles);
-    font-weight: 700;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--gray-color);
+  font-weight: 700;
+  font-size: 24px;
+}
 
-  .vertical-line {
-    width: 1px;
-    background-color: var(--color-grey-border); 
-    height: 32px;
-    float: left; 
-    margin: 0 10px;
-  }
+.btn-primary {
+  background-color: var(--color-blue);
+  border: none;
+}
 
-  hr {
-    background-color: var(--color-grey-titles);
-    margin: 20px 0;
-    width: 100%;
-  }
+.btn-success {
+  background-color: var(--color-green);
+  border: none;
+}
+
+.color-titles {
+  color: var(--color-grey-titles);
+  font-weight: 700;
+  margin: 25px 0;
+}
+
+.vertical-line {
+  width: 2px;
+  background-color: var(--color-grey-border);
+  height: 30px;
+  margin: 0 10px;
+  align-self: center;
+  margin-bottom: 1rem;
+}
+
+hr {
+  background-color: var(--color-grey-titles);
+  margin: 20px 0;
+  width: 100%;
+}

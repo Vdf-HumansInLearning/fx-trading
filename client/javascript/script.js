@@ -19,6 +19,7 @@ class MyHashRouter {
     switch (contentUri) {
       case "":
         window.location.hash = "#dashboard";
+
         break;
       case "dashboard":
         console.log("dashboard route");

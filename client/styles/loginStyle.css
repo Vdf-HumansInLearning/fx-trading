@@ -1,0 +1,10 @@
+@import url("./style-auth.css");
+
+.fas {
+  color: #ddd;
+  padding-right: 10px;
+  font-size: 27px;
+  display: flex;
+  align-items: center;
+}
+

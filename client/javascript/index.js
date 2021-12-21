@@ -26,5 +26,6 @@ function createNavigationBar(){
 
     return navElem;
 }
-console.log("AAAAA" + createNavigationBar)
-mainContainer.appendChild(createNavigationBar());
+
+const navBar = createNavigationBar();
+mainContainer.appendChild(navBar);

@@ -1,16 +1,9 @@
+@import url('./general-style.css');
+
 body {
   box-sizing: border-box;
 }
 
-:root {
-  --teal-color: #75d8a6;
-  --blue-color: #3496f0;
-  --gray-color: #7c7c7c;
-}
-
-.body {
-  display: flex;
-}
 
 .body-container {
   display: flex;

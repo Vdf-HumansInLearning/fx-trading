@@ -27,5 +27,24 @@ function createNavigationBar(){
     return navElem;
 }
 
-const navBar = createNavigationBar();
-mainContainer.appendChild(navBar);
+function createBlotterView(){
+}
+
+function createMainWidget(){
+}
+
+function createPickWidget(){
+}
+
+function createAddWidget(){
+}
+
+function createRatesView(){
+}
+
+function createIndexPage(){
+    const navBar = createNavigationBar();
+    mainContainer.appendChild(navBar);
+}
+
+createIndexPage();

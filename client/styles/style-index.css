@@ -1,4 +1,5 @@
 @import url("./general-style.css");
+@import url("./toastStyle.css");
 .card-rates {
   background-color: var(--color-grey-background);
 }

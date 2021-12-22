@@ -30,6 +30,373 @@ function createNavigationBar() {
   return navElem;
 }
 
+function createMainWidget(item) {
+  let cardDivCol = document.createElement("div");
+  cardDivCol.className = "col";
+
+  let cardDiv = document.createElement("div");
+  cardDivCol.appendChild(cardDiv);
+  cardDiv.className = "card";
+
+  let cardDivCurrency = document.createElement("div");
+  cardDiv.appendChild(cardDivCurrency);
+  cardDivCurrency.className =
+    "card-currency px-3 d-flex justify-content-between";
+  let cardDivItems = document.createElement("div");
+  cardDivCurrency.appendChild(cardDivItems);
+  cardDivItems.className = "d-flex align-items-center";
+
+  let pSubtitle = document.createElement("p");
+  cardDivItems.appendChild(pSubtitle);
+  pSubtitle.className = "subtitle";
+
+  let spanMainCurrency = document.createElement("span");
+  pSubtitle.appendChild(spanMainCurrency);
+  spanMainCurrency.className = "text-large ";
+  spanMainCurrency.textContent = `${item.mainCurrency}`;
+
+  let spanSecondCurrency = document.createElement("span");
+  pSubtitle.appendChild(spanSecondCurrency);
+  spanSecondCurrency.className = "secondCurrency";
+  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
+
+  let divIcon = document.createElement("div");
+  cardDivItems.appendChild(divIcon);
+  divIcon.className = "icon-exchange";
+
+  let iconExchange = document.createElement("i");
+  divIcon.appendChild(iconExchange);
+  iconExchange.className = "fas fa-exchange-alt";
+
+  let closeBtn = document.createElement("button");
+  cardDivCurrency.appendChild(closeBtn);
+  closeBtn.className = "btn-close";
+  closeBtn.setAttribute("type", "button");
+  closeBtn.setAttribute("aria-label", "Close");
+
+  let cardRatesDiv = document.createElement("div");
+  cardDiv.appendChild(cardRatesDiv);
+  cardRatesDiv.className = "card-rates px-3 d-flex justify-content-between";
+
+  let pRatesSell = document.createElement("p");
+  cardRatesDiv.appendChild(pRatesSell);
+  pRatesSell.className = "subtitle mb-0";
+  pRatesSell.textContent = "SELL: ";
+
+  let spanRate = document.createElement("span");
+  pRatesSell.appendChild(spanRate);
+  spanRate.className = "text-large";
+  spanRate.textContent = `${item.sellRate}`;
+
+  let spanSellIcon = document.createElement("span");
+  pRatesSell.appendChild(spanSellIcon);
+  spanSellIcon.className = "icon-down";
+
+  let sellIcon = document.createElement("i");
+  spanSellIcon.appendChild(sellIcon);
+  sellIcon.className = "fas fa-caret-down";
+
+  let pRatesBuy = document.createElement("p");
+  cardRatesDiv.appendChild(pRatesBuy);
+  pRatesBuy.className = "subtitle mb-0";
+  pRatesBuy.textContent = "BUY: ";
+
+  let spanBuyRate = document.createElement("span");
+  pRatesBuy.appendChild(spanBuyRate);
+  spanBuyRate.className = "text-large";
+  spanBuyRate.textContent = `${item.buyRate}`;
+
+  let spanIconBuy = document.createElement("span");
+  pRatesBuy.appendChild(spanIconBuy);
+  spanIconBuy.className = "icon-up";
+
+  let iconBuy = document.createElement("i");
+  spanIconBuy.appendChild(iconBuy);
+  iconBuy.className = "fas fa-caret-up";
+
+  let cardMainArea = document.createElement("div");
+  cardDiv.appendChild(cardMainArea);
+  cardMainArea.className = "card-input mt-3 px-3";
+
+  let mainArea = document.createElement("div");
+  cardMainArea.appendChild(mainArea);
+  mainArea.className = "input-group mb-3";
+
+  let spanNotional = document.createElement("span");
+  mainArea.appendChild(spanNotional);
+  spanNotional.className = "input-group-text";
+  spanNotional.setAttribute("id", '"inputNotional"');
+  spanNotional.textContent = "Notional";
+
+  let inputNational = document.createElement("input");
+  mainArea.appendChild(inputNational);
+  inputNational.className = "form-control";
+  inputNational.setAttribute("type", "number");
+  inputNational.setAttribute("id", "inputDate");
+  inputNational.setAttribute("placeholder", "Amount");
+
+  let tenantDiv = document.createElement("div");
+  cardMainArea.appendChild(tenantDiv);
+  tenantDiv.className = "input-group mb-3";
+
+  let labelTenant = document.createElement("label");
+  tenantDiv.appendChild(labelTenant);
+  labelTenant.className = "input-group-text";
+  labelTenant.setAttribute("for", "inputCcy");
+  labelTenant.textContent = "Tenant";
+
+  let select = document.createElement("select");
+  tenantDiv.appendChild(select);
+  select.className = "form-select";
+  select.setAttribute("id", "inputCcy");
+
+  let optionEmpty = document.createElement("option");
+  select.appendChild(optionEmpty);
+  optionEmpty.setAttribute("selected", "true");
+  optionEmpty.textContent = "Choose...";
+
+  let option1M = document.createElement("option");
+  select.appendChild(option1M);
+  option1M.setAttribute("value", "1M");
+  option1M.textContent = "1 Month";
+
+  let option2M = document.createElement("option");
+  select.appendChild(option2M);
+  option2M.setAttribute("value", "2M");
+  option2M.textContent = "2 Month";
+
+  let option3M = document.createElement("option");
+  select.appendChild(option3M);
+  option3M.setAttribute("value", "3M");
+  option3M.textContent = "3 Month";
+
+  let divButtons = document.createElement("div");
+  cardDiv.appendChild(divButtons);
+  divButtons.className = "card-actions px-3 d-flex justify-content-between";
+
+  let sellBtn = document.createElement("button");
+  divButtons.appendChild(sellBtn);
+  sellBtn.className = "btn btn-success";
+  sellBtn.setAttribute("type", "button");
+  sellBtn.textContent = "Sell";
+
+  let buyBtn = document.createElement("button");
+  divButtons.appendChild(buyBtn);
+  buyBtn.className = "btn btn-primary";
+  buyBtn.setAttribute("type", "button");
+  buyBtn.textContent = "Buy";
+
+  return cardDivCol;
+}
+
+function createPickWidget() {
+  //input group list
+  const cardInputsList = [
+    {
+      label_for: "inputMainCurrency",
+      label_text: "Primary",
+      select_id: "inputMainCurrency",
+      select_options: [
+        { value: "opt_usd", text: "USD" },
+        { value: "opt_eur", text: "EUR" },
+        { value: "opt_gbr", text: "GBR" },
+        { value: "opt_ron", text: "RON" },
+        { value: "opt_chf", text: "CHF" },
+      ],
+    },
+    {
+      label_for: "inputSecondCurrency",
+      label_text: "Secondary",
+      select_id: "inputSecondCurrency",
+      select_options: [
+        { value: "opt_usd", text: "USD" },
+        { value: "opt_eur", text: "EUR" },
+        { value: "opt_gbr", text: "GBR" },
+        { value: "opt_ron", text: "RON" },
+        { value: "opt_chf", text: "CHF" },
+      ],
+    },
+  ];
+
+  //create column
+  let cardContainer = document.createElement("div");
+  cardContainer.classList.add("col");
+  cardContainer.id = "card0";
+
+  //create card container
+  let card = document.createElement("div");
+  card.className = "card";
+
+  //create card currency
+  let cardCurrency = document.createElement("div");
+  cardCurrency.className =
+    "card-currency--border px-3 d-flex justify-content-between";
+
+  //create title of the card
+  let cardCurrencyDiv = document.createElement("div");
+  cardCurrencyDiv.className = "d-flex align-items-center";
+  let currencyTitle = document.createElement("p");
+  currencyTitle.classList.add("subtitle");
+  let currencyTitleText = document.createTextNode("Pick a currency");
+
+  //create close/delete button for card
+  let closeBtn = document.createElement("button");
+  closeBtn.classList.add("btn-close");
+  closeBtn.setAttribute("type", "button");
+  closeBtn.setAttribute("aria-label", "Close");
+  closeBtn.addEventListener("click", () => closeWidget(cardContainer.id));
+
+  //append elements to card rates div
+  currencyTitle.append(currencyTitleText);
+  cardCurrencyDiv.append(currencyTitle);
+
+  cardCurrency.append(cardCurrencyDiv);
+  cardCurrency.append(closeBtn);
+
+  //create inputs for base and quote currency
+  let cardInputs = document.createElement("div");
+  cardInputs.className = "card-input--center mt-3 px-3";
+
+  //create inputs for currencies
+  cardInputsList.forEach((cardInput) => {
+    let inputGroup = document.createElement("div");
+    inputGroup.className = "input-group mb-3";
+    let label = document.createElement("label");
+    label.classList.add("input-group-text");
+    label.setAttribute("for", cardInput.label_for);
+    let labelText = document.createTextNode(cardInput.label_text);
+    label.append(labelText);
+
+    //append each input group to parent div
+    cardInputs.append(inputGroup);
+    inputGroup.append(label);
+
+    //create select element for each currency
+    let select = document.createElement("select");
+    select.classList.add("form-select");
+    select.setAttribute("id", cardInput.select_id);
+
+    //add one disabled option
+    let defaultOption = document.createElement("option");
+    defaultOption.setAttribute("value", "opt_none");
+    let defaultOptionText = document.createTextNode("Choose...");
+    defaultOption.append(defaultOptionText);
+
+    select.append(defaultOption);
+
+    //iterate through options to append to select
+    cardInput.select_options.forEach((selectOption) => {
+      let option = document.createElement("option");
+      option.setAttribute("value", selectOption.value);
+      let optionText = document.createTextNode(selectOption.text);
+      option.append(optionText);
+      //append each option to select element
+      select.append(option);
+    });
+
+    inputGroup.append(select);
+  });
+
+  //create action buttons div
+  let cardActions = document.createElement("div");
+  cardActions.className = "card-actions px-3 d-flex justify-content-end";
+  let confirmBtn = document.createElement("button");
+  confirmBtn.className = "btn btn-primary";
+  confirmBtn.setAttribute("type", "button");
+  confirmBtnText = document.createTextNode("Ok");
+  confirmBtn.append(confirmBtnText);
+  confirmBtn.addEventListener("click", createMainWidget);
+  cardActions.append(confirmBtn);
+
+  //add card to cardContainer
+  cardContainer.append(card);
+  card.append(cardCurrency);
+
+  //add card rates, card inputs, card actions to card container
+  card.append(cardCurrency);
+  card.append(cardInputs);
+  card.append(cardActions);
+
+  return cardContainer;
+}
+
+function createAddWidget() {
+  //create column
+  let cardContainer = document.createElement("div");
+  cardContainer.classList.add("col");
+
+  //create card div
+  let card = document.createElement("div");
+  card.className = "card--add p-0 border-0";
+
+  //create add button
+  let button = document.createElement("button");
+  button.className = "btn btn-light btn-add";
+
+  //create plus icon
+  let icon = document.createElement("i");
+  icon.className = "fas fa-plus";
+
+  button.append(icon);
+  card.append(button);
+  cardContainer.append(card);
+
+  cardContainer.addEventListener("click", addNewWidget);
+
+  return cardContainer;
+}
+//keep track of how many widgets are on the page
+let widgetsNr = 0;
+function addNewWidget() {
+  //no more that 5 cards
+  if (widgetsNr <= 1) {
+    const newWidget = createPickWidget();
+    cardsRow.append(newWidget);
+    widgetsNr++;
+  } else {
+    generateMessage("You cannot have more than 5 widgets on the page");
+  }
+}
+
+function closeWidget(cardId) {
+  document.getElementById(cardId).remove();
+  widgetsNr--;
+}
+
+function generateMessage(message) {
+  //   let toast = document.createElement("div");
+  //   toast.className = "toast-custom success";
+  //   let outerContainer = document.createElement("div");
+  //   outerContainer.className = "outer-container";
+  //   let icon = document.createElement("i");
+  //   outerContainer.className = "fas fa-check-circle";
+  //   outerContainer.append(icon);
+
+  //   let innerContainer = document.createElement("div");
+  //   innerContainer.className = "inner-container";
+  //   let innerContainerTitle = document.createElement("p");
+  //   innerContainerTitle.innerText = "Success";
+  //   let innerContainerMessage = document.createElement("p");
+  //   innerContainerMessage.innerText = message;
+
+  //   innerContainer.append(innerContainerTitle);
+  //   innerContainer.append(innerContainerMessage);
+
+  //   toast.append(outerContainer);
+  //   toast.append(innerContainer);
+
+  let toast = document.createElement("div");
+  toast.className = "tn-box tn-box-color-1";
+  let toastTitle = document.createElement("p");
+  toastTitle.innerText = message;
+
+  toast.append(toastTitle);
+
+  toast.classList.add("tn-box-active");
+
+  mainContainer.append(toast);
+}
+
 function createBlotterView() {
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -198,169 +565,49 @@ function createBlotterView() {
 
   return blotterSection;
 }
+//initialize container for cards
+let cardsRow = null;
+function createRatesView() {
+  //create main section in which the cards will be
+  let ratesSection = document.createElement("div");
+  ratesSection.className = "col-sm-12 col-md-12 col-lg-6";
 
-function createMainWidget(item) {
-  let cardDivCol = document.createElement("div");
-  cardDivCol.className = "col";
+  //create title
+  let ratesTitle = document.createElement("h5");
+  ratesTitle.classList.add("color-titles");
 
-  let cardDiv = document.createElement("div");
-  cardDivCol.appendChild(cardDiv);
-  cardDiv.className = "card";
+  //create cards container
+  let cardsContainer = document.createElement("div");
+  cardsContainer.classList.add("cards-container");
 
-  let cardDivCurrency = document.createElement("div");
-  cardDiv.appendChild(cardDivCurrency);
-  cardDivCurrency.className =
-    "card-currency px-3 d-flex justify-content-between";
-  let cardDivItems = document.createElement("div");
-  cardDivCurrency.appendChild(cardDivItems);
-  cardDivItems.className = "d-flex align-items-center";
+  //create row which will hold cards
+  cardsRow = document.createElement("div");
+  cardsRow.className = "row row-cols-1 row-cols-sm-2 g-4";
 
-  let pSubtitle = document.createElement("p");
-  cardDivItems.appendChild(pSubtitle);
-  pSubtitle.className = "subtitle";
+  //at first, there will be visible only add button
+  let addWidget = createAddWidget();
+  cardsRow.append(addWidget);
 
-  let spanMainCurrency = document.createElement("span");
-  pSubtitle.appendChild(spanMainCurrency);
-  spanMainCurrency.className = "text-large ";
-  spanMainCurrency.textContent = `${item.mainCurrency}`;
+  ratesSection.append(ratesTitle);
+  ratesSection.append(cardsContainer);
+  cardsContainer.append(cardsRow);
 
-  let spanSecondCurrency = document.createElement("span");
-  pSubtitle.appendChild(spanSecondCurrency);
-  spanSecondCurrency.className = "secondCurrency";
-  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
-
-  let divIcon = document.createElement("div");
-  cardDivItems.appendChild(divIcon);
-  divIcon.className = "icon-exchange";
-
-  let iconExchange = document.createElement("i");
-  divIcon.appendChild(iconExchange);
-  iconExchange.className = "fas fa-exchange-alt";
-
-  let closeBtn = document.createElement("button");
-  cardDivCurrency.appendChild(closeBtn);
-  closeBtn.className = "btn-close";
-  closeBtn.setAttribute("type", "button");
-  closeBtn.setAttribute("aria-label", "Close");
-
-  let cardRatesDiv = document.createElement("div");
-  cardDiv.appendChild(cardRatesDiv);
-  cardRatesDiv.className = "card-rates px-3 d-flex justify-content-between";
-
-  let pRatesSell = document.createElement("p");
-  cardRatesDiv.appendChild(pRatesSell);
-  pRatesSell.className = "subtitle mb-0";
-  pRatesSell.textContent = "SELL: ";
-
-  let spanRate = document.createElement("span");
-  pRatesSell.appendChild(spanRate);
-  spanRate.className = "text-large";
-  spanRate.textContent = `${item.sellRate}`;
-
-  let spanSellIcon = document.createElement("span");
-  pRatesSell.appendChild(spanSellIcon);
-  spanSellIcon.className = "icon-down";
-
-  let sellIcon = document.createElement("i");
-  spanSellIcon.appendChild(sellIcon);
-  sellIcon.className = "fas fa-caret-down";
-
-  let pRatesBuy = document.createElement("p");
-  cardRatesDiv.appendChild(pRatesBuy);
-  pRatesBuy.className = "subtitle mb-0";
-  pRatesBuy.textContent = "BUY: ";
-
-  let spanBuyRate = document.createElement("span");
-  pRatesBuy.appendChild(spanBuyRate);
-  spanBuyRate.className = "text-large";
-  spanBuyRate.textContent = `${item.buyRate}`;
-
-  let spanIconBuy = document.createElement("span");
-  pRatesBuy.appendChild(spanIconBuy);
-  spanIconBuy.className = "icon-up";
-
-  let iconBuy = document.createElement("i");
-  spanIconBuy.appendChild(iconBuy);
-  iconBuy.className = "fas fa-caret-up";
-
-  let cardMainArea = document.createElement("div");
-  cardDiv.appendChild(cardMainArea);
-  cardMainArea.className = "card-input mt-3 px-3";
-
-  let mainArea = document.createElement("div");
-  cardMainArea.appendChild(mainArea);
-  mainArea.className = "input-group mb-3";
-
-  let spanNotional = document.createElement("span");
-  mainArea.appendChild(spanNotional);
-  spanNotional.className = "input-group-text";
-  spanNotional.setAttribute("id", '"inputNotional"');
-  spanNotional.textContent = "Notional";
-
-  let inputNational = document.createElement("input");
-  mainArea.appendChild(inputNational);
-  inputNational.className = "form-control";
-  inputNational.setAttribute("type", "number");
-  inputNational.setAttribute("id", "inputDate");
-  inputNational.setAttribute("placeholder", "Amount");
-
-  let tenantDiv = document.createElement("div");
-  cardMainArea.appendChild(tenantDiv);
-  tenantDiv.className = "input-group mb-3";
-
-  let labelTenant = document.createElement("label");
-  tenantDiv.appendChild(labelTenant);
-  labelTenant.className = "input-group-text";
-  labelTenant.setAttribute("for", "inputCcy");
-  labelTenant.textContent = "Tenant";
-
-  let select = document.createElement("select");
-  tenantDiv.appendChild(select);
-  select.className = "form-select";
-  select.setAttribute("id", "inputCcy");
-
-  let optionEmpty = document.createElement("option");
-  select.appendChild(optionEmpty);
-  optionEmpty.setAttribute("selected", "true");
-  optionEmpty.textContent = "Choose...";
-
-  let option1M = document.createElement("option");
-  select.appendChild(option1M);
-  option1M.setAttribute("value", "1M");
-  option1M.textContent = "1 Month";
-
-  let option2M = document.createElement("option");
-  select.appendChild(option2M);
-  option2M.setAttribute("value", "2M");
-  option2M.textContent = "2 Month";
-
-  let option3M = document.createElement("option");
-  select.appendChild(option3M);
-  option3M.setAttribute("value", "3M");
-  option3M.textContent = "3 Month";
-
-  let divButtons = document.createElement("div");
-  cardDiv.appendChild(divButtons);
-  divButtons.className = "card-actions px-3 d-flex justify-content-between";
-
-  let sellBtn = document.createElement("button");
-  divButtons.appendChild(sellBtn);
-  sellBtn.className = "btn btn-success";
-  sellBtn.setAttribute("type", "button");
-  sellBtn.textContent = "Sell";
-
-  let buyBtn = document.createElement("button");
-  divButtons.appendChild(buyBtn);
-  buyBtn.className = "btn btn-primary";
-  buyBtn.setAttribute("type", "button");
-  buyBtn.textContent = "Buy";
-
-  return cardDivCol;
+  return ratesSection;
 }
 
 function createIndexPage() {
+  //create navbar
   const navBar = createNavigationBar();
   mainContainer.appendChild(navBar);
+
+  //create main div
+  let main = document.createElement("main");
+  main.className = "container-fluid row mb-5";
+  mainContainer.append(main);
+
+  let ratesSection = createRatesView();
+  main.append(ratesSection);
+
   let item = {
     mainCurrency: "EUR",
     secondCurrency: "USD",

@@ -369,6 +369,7 @@ function addPickWidget() {
     generateMessage("You cannot have more than 5 widgets on the page");
   }
 }
+
 function addNewWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {

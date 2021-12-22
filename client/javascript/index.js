@@ -244,7 +244,6 @@ function generateMessage(message) {
 //initialize container for cards
 let cardsRow = null;
 function createRatesView() {
-  console.log("hhhhhhhhhhh");
   //create main section in which the cards will be
   let ratesSection = document.createElement("div");
   ratesSection.className = "col-sm-12 col-md-12 col-lg-6";

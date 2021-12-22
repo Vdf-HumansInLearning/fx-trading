@@ -1,4 +1,17 @@
 const bodyContainer = document.getElementById("body-container");
+//keep track of how many widgets are on the page
+let widgetsNr = 0;
+let pickWidget = null;
+
+//initialize container for cards
+let cardsRow = null;
+
+let item = {
+  mainCurrency: "EUR",
+  secondCurrency: "USD",
+  sellRate: 4.5,
+  buyRate: 5,
+};
 
 function createNavigationBar() {
   const navElem = document.createElement("nav");
@@ -135,18 +148,18 @@ function createMainWidget(item) {
   inputNational.setAttribute("id", "inputDate");
   inputNational.setAttribute("placeholder", "Amount");
 
-  let tenantDiv = document.createElement("div");
-  cardMainArea.appendChild(tenantDiv);
-  tenantDiv.className = "input-group mb-3";
+  let tenorDiv = document.createElement("div");
+  cardMainArea.appendChild(tenorDiv);
+  tenorDiv.className = "input-group mb-3";
 
-  let labelTenant = document.createElement("label");
-  tenantDiv.appendChild(labelTenant);
-  labelTenant.className = "input-group-text";
-  labelTenant.setAttribute("for", "inputCcy");
-  labelTenant.textContent = "Tenant";
+  let labelTenor = document.createElement("label");
+  tenorDiv.appendChild(labelTenor);
+  labelTenor.className = "input-group-text";
+  labelTenor.setAttribute("for", "inputCcy");
+  labelTenor.textContent = "Tenor";
 
   let select = document.createElement("select");
-  tenantDiv.appendChild(select);
+  tenorDiv.appendChild(select);
   select.className = "form-select";
   select.setAttribute("id", "inputCcy");
 
@@ -155,15 +168,15 @@ function createMainWidget(item) {
   optionEmpty.setAttribute("selected", "true");
   optionEmpty.textContent = "Choose...";
 
+  let optionSpot = document.createElement("option");
+  select.appendChild(optionSpot);
+  optionSpot.setAttribute("value", "SP");
+  optionSpot.textContent = "Spot";
+
   let option1M = document.createElement("option");
   select.appendChild(option1M);
   option1M.setAttribute("value", "1M");
   option1M.textContent = "1 Month";
-
-  let option2M = document.createElement("option");
-  select.appendChild(option2M);
-  option2M.setAttribute("value", "2M");
-  option2M.textContent = "2 Month";
 
   let option3M = document.createElement("option");
   select.appendChild(option3M);
@@ -345,9 +358,7 @@ function createAddWidget() {
 
   return cardContainer;
 }
-//keep track of how many widgets are on the page
-let widgetsNr = 0;
-let pickWidget = null;
+
 function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
@@ -578,8 +589,7 @@ function createBlotterView() {
 
   return blotterSection;
 }
-//initialize container for cards
-let cardsRow = null;
+
 function createRatesView() {
   //create main section in which the cards will be
   let ratesSection = document.createElement("section");
@@ -608,12 +618,7 @@ function createRatesView() {
 
   return ratesSection;
 }
-let item = {
-  mainCurrency: "EUR",
-  secondCurrency: "USD",
-  sellRate: 4.5,
-  buyRate: 5,
-};
+
 function createIndexPage() {
   //create navbar
   const navBar = createNavigationBar();

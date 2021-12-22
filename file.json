@@ -51,7 +51,10 @@
     {
         "base_currenry":"RON",
         "quotes": {
-            "EUR": 0.82,
+            "EUR":{
+                "sell": 4.8,
+                "buy": 4.9
+            },
             "GBP": 1.1,
             "USD": 4.5,
             "CHF": 0.9        
@@ -70,4 +73,3 @@
 ]
 
 }
-

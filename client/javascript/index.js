@@ -1,4 +1,4 @@
-const mainContainer = document.getElementById("body-container");
+const bodyContainer = document.getElementById("body-container");
 
 function createNavigationBar() {
   const navElem = document.createElement("nav");
@@ -305,7 +305,7 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", createMainWidget);
+  confirmBtn.addEventListener("click", addNewWidget);
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -341,17 +341,30 @@ function createAddWidget() {
   card.append(button);
   cardContainer.append(card);
 
-  cardContainer.addEventListener("click", addNewWidget);
+  cardContainer.addEventListener("click", addPickWidget);
 
   return cardContainer;
 }
 //keep track of how many widgets are on the page
 let widgetsNr = 0;
+let pickWidget = null;
+function addPickWidget() {
+  //no more that 5 cards
+  if (widgetsNr <= 4) {
+    pickWidget = createPickWidget();
+    cardsRow.prepend(pickWidget);
+    widgetsNr++;
+  } else {
+    generateMessage("You cannot have more than 5 widgets on the page");
+  }
+}
 function addNewWidget() {
   //no more that 5 cards
-  if (widgetsNr <= 1) {
-    const newWidget = createPickWidget();
-    cardsRow.append(newWidget);
+  if (widgetsNr <= 4) {
+    //fetch item from api
+    const newWidget = createMainWidget(item);
+    cardsRow.prepend(newWidget);
+    pickWidget.remove();
     widgetsNr++;
   } else {
     generateMessage("You cannot have more than 5 widgets on the page");
@@ -394,7 +407,7 @@ function generateMessage(message) {
 
   toast.classList.add("tn-box-active");
 
-  mainContainer.append(toast);
+  bodyContainer.append(toast);
 }
 
 function createBlotterView() {
@@ -569,12 +582,13 @@ function createBlotterView() {
 let cardsRow = null;
 function createRatesView() {
   //create main section in which the cards will be
-  let ratesSection = document.createElement("div");
+  let ratesSection = document.createElement("section");
   ratesSection.className = "col-sm-12 col-md-12 col-lg-6";
 
   //create title
   let ratesTitle = document.createElement("h5");
   ratesTitle.classList.add("color-titles");
+  ratesTitle.textContent = "Fx Rates View";
 
   //create cards container
   let cardsContainer = document.createElement("div");
@@ -594,29 +608,24 @@ function createRatesView() {
 
   return ratesSection;
 }
-
+let item = {
+  mainCurrency: "EUR",
+  secondCurrency: "USD",
+  sellRate: 4.5,
+  buyRate: 5,
+};
 function createIndexPage() {
   //create navbar
   const navBar = createNavigationBar();
-  mainContainer.appendChild(navBar);
+  bodyContainer.appendChild(navBar);
 
   //create main div
-  let main = document.createElement("main");
-  main.className = "container-fluid row mb-5";
-  mainContainer.append(main);
+  let mainContainer = document.createElement("main");
+  mainContainer.className = "container-fluid row mb-5";
+  bodyContainer.append(mainContainer);
 
   let ratesSection = createRatesView();
-  main.append(ratesSection);
-
-  let item = {
-    mainCurrency: "EUR",
-    secondCurrency: "USD",
-    sellRate: 4.5,
-    buyRate: 5,
-  };
-
-  const mainWidget = createMainWidget(item);
-  mainContainer.appendChild(mainWidget);
+  mainContainer.append(ratesSection);
 
   const blotter = createBlotterView();
   mainContainer.appendChild(blotter);

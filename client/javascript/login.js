@@ -1,3 +1,8 @@
+////const methods = require("methods");
+//onst { response } = require("../../api/app");
+
+//const { response } = require("express");
+
 const body = document.getElementsByClassName("body")[0];
 
 function createAsideImage() {
@@ -30,6 +35,7 @@ function createMainLoginForm() {
   mainContainer.appendChild(h1);
 
   let form = document.createElement("form");
+  form.setAttribute("id", "form");
   form.setAttribute("method", "POST");
   mainContainer.appendChild(form);
 
@@ -62,7 +68,7 @@ function createMainLoginForm() {
   passwordInput.setAttribute("type", "password");
   passwordInput.setAttribute("name", "password");
   passwordInput.className = "form-control";
-  passwordInput.setAttribute("is", "inputPassword");
+  passwordInput.setAttribute("id", "inputPassword");
   passwordInput.setAttribute("placeholder", "Password");
 
   let loginBtn = document.createElement("button");
@@ -71,6 +77,7 @@ function createMainLoginForm() {
   loginBtn.setAttribute("type", "submit");
   loginBtn.className = "main__btn";
   loginBtn.textContent = "Login";
+  loginBtn.addEventListener("click", login);
 
   let divRegister = document.createElement("div");
   form.appendChild(divRegister);
@@ -89,3 +96,36 @@ function createMainLoginForm() {
 
 createAsideImage();
 createMainLoginForm();
+
+function login() {
+  const form = document.getElementById("form");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let userEmail = document.getElementById("inputEmail").value;
+      let password = document.getElementById("inputPassword").value;
+
+      let url = "http://localhost:8080/api/auth/login";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail, password: password }),
+      })
+        .then((response) => {
+          // console.log(res.status);
+          if (response.status == 200) {
+            //save cookie
+            //show toaster
+            window.location.href = "http://127.0.0.1:5500/client/index.html";
+            //window.location.hash = "#dashboard";
+          }
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+}

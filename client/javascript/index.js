@@ -13,6 +13,29 @@ let item = {
   buyRate: 5,
 };
 
+let tableHeadArray = [
+  { name: "ID", icon: false },
+  { name: "Username", icon: true },
+  { name: "CYY Pair", icon: true },
+  { name: "Rate", icon: false },
+  { name: "Action", icon: true },
+  { name: "Notional", icon: true },
+  { name: "Tenor", icon: false },
+  { name: "Transaction Date", icon: true },
+];
+
+let tableRegistrations = [
+  {
+    id: 1,
+    username: "Mark Otto",
+    ccy_pair: "USD/EUR",
+    rate: "0.86",
+    action: "sell",
+    notional: "100",
+    tenor: "1M",
+    trans_date: "12/02/2018 12:22",
+  },
+];
 //card ids
 let cardIdCounter = 0;
 
@@ -311,7 +334,6 @@ function createPickWidget() {
       //append each option to select element
       select.append(option);
     });
-
     inputGroup.append(select);
   });
 
@@ -427,21 +449,21 @@ function generateMessage(message) {
   bodyContainer.append(toast);
 }
 
-function createBlotterView() {
-  const blotterSection = document.createElement("section");
-  blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
+function createTableHeader(tr) {
+  for (let i = 0; i < tableHeadArray.length; i++) {
+    const th = document.createElement("th");
+    th.setAttribute("scope", "col");
+    th.textContent = tableHeadArray[i].name;
+    if (tableHeadArray[i].icon) {
+      const icon = document.createElement("i");
+      icon.className = "fas fa-sort";
+      th.appendChild(icon);
+    }
+    tr.appendChild(th);
+  }
+}
 
-  const blotterTitle = document.createElement("h5");
-  blotterTitle.className = "color-titles";
-  blotterTitle.textContent = "Blotter View";
-  const hr = document.createElement("hr");
-
-  blotterSection.appendChild(blotterTitle);
-  blotterSection.appendChild(hr);
-
-  const blotterButtons = document.createElement("div");
-  blotterButtons.className = "blotter-buttons";
-
+function createFiltersSection(blotterButtons) {
   const filterSubtitle = document.createElement("p");
   filterSubtitle.className = "subtitle";
   filterSubtitle.textContent = "FILTERS";
@@ -497,6 +519,61 @@ function createBlotterView() {
 
   inputFilters.appendChild(inputFiltersGroupSt);
   inputFilters.appendChild(inputFiltersGroupNd);
+
+  return inputFilters;
+}
+
+function createOneTableRegistration(transaction, trUsers) {
+  const rowId = document.createElement("th");
+  rowId.setAttribute("scope", "row");
+  rowId.textContent = transaction.id;
+  trUsers.appendChild(rowId);
+
+  const tdName = document.createElement("td");
+  tdName.textContent = transaction.username;
+  trUsers.appendChild(tdName);
+
+  const tdCcyPair = document.createElement("td");
+  tdCcyPair.textContent = transaction.ccy_pair;
+  trUsers.appendChild(tdCcyPair);
+
+  const tdRate = document.createElement("td");
+  tdRate.textContent = transaction.rate;
+  trUsers.appendChild(tdRate);
+
+  const tdAction = document.createElement("td");
+  tdAction.textContent = transaction.action;
+  trUsers.appendChild(tdAction);
+
+  const tdNotional = document.createElement("td");
+  tdNotional.textContent = transaction.notional;
+  trUsers.appendChild(tdNotional);
+
+  const tdTenor = document.createElement("td");
+  tdTenor.textContent = transaction.tenor;
+  trUsers.appendChild(tdTenor);
+
+  const tdDate = document.createElement("td");
+  tdDate.textContent = transaction.trans_date;
+  trUsers.appendChild(tdDate);
+}
+
+function createBlotterView() {
+  const blotterSection = document.createElement("section");
+  blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
+
+  const blotterTitle = document.createElement("h5");
+  blotterTitle.className = "color-titles";
+  blotterTitle.textContent = "Blotter View";
+  const hr = document.createElement("hr");
+
+  blotterSection.appendChild(blotterTitle);
+  blotterSection.appendChild(hr);
+
+  const blotterButtons = document.createElement("div");
+  blotterButtons.className = "blotter-buttons";
+
+  let inputFilters = createFiltersSection(blotterButtons);
   blotterButtons.appendChild(inputFilters);
 
   const blotterTableResponsive = document.createElement("div");
@@ -511,78 +588,13 @@ function createBlotterView() {
   const tr = document.createElement("tr");
   headTable.appendChild(tr);
 
-  let tableHeadArray = [
-    { name: "ID", icon: false },
-    { name: "Username", icon: true },
-    { name: "CYY Pair", icon: true },
-    { name: "Rate", icon: false },
-    { name: "Action", icon: true },
-    { name: "Notional", icon: true },
-    { name: "Tenor", icon: false },
-    { name: "Transaction Date", icon: true },
-  ];
-
-  for (let i = 0; i < tableHeadArray.length; i++) {
-    const th = document.createElement("th");
-    th.setAttribute("scope", "col");
-    th.textContent = tableHeadArray[i].name;
-    if (tableHeadArray[i].icon) {
-      const icon = document.createElement("i");
-      icon.className = "fas fa-sort";
-      th.appendChild(icon);
-    }
-    tr.appendChild(th);
-  }
+  createTableHeader(tr);
 
   const bodyTable = document.createElement("tbody");
   const trUsers = document.createElement("tr");
 
-  let tableRegistrations = [
-    {
-      id: 1,
-      username: "Mark Otto",
-      ccy_pair: "USD/EUR",
-      rate: "0.86",
-      action: "sell",
-      notional: "100",
-      tenor: "1M",
-      trans_date: "12/02/2018 12:22",
-    },
-  ];
-
   for (let i = 0; i < tableRegistrations.length; i++) {
-    const rowId = document.createElement("th");
-    rowId.setAttribute("scope", "row");
-    rowId.textContent = tableRegistrations[i].id;
-    trUsers.appendChild(rowId);
-
-    const tdName = document.createElement("td");
-    tdName.textContent = tableRegistrations[i].username;
-    trUsers.appendChild(tdName);
-
-    const tdCcyPair = document.createElement("td");
-    tdCcyPair.textContent = tableRegistrations[i].ccy_pair;
-    trUsers.appendChild(tdCcyPair);
-
-    const tdRate = document.createElement("td");
-    tdRate.textContent = tableRegistrations[i].rate;
-    trUsers.appendChild(tdRate);
-
-    const tdAction = document.createElement("td");
-    tdAction.textContent = tableRegistrations[i].action;
-    trUsers.appendChild(tdAction);
-
-    const tdNotional = document.createElement("td");
-    tdNotional.textContent = tableRegistrations[i].notional;
-    trUsers.appendChild(tdNotional);
-
-    const tdTenor = document.createElement("td");
-    tdTenor.textContent = tableRegistrations[i].tenor;
-    trUsers.appendChild(tdTenor);
-
-    const tdDate = document.createElement("td");
-    tdDate.textContent = tableRegistrations[i].trans_date;
-    trUsers.appendChild(tdDate);
+    createOneTableRegistration(tableRegistrations[i], trUsers);
   }
 
   bodyTable.appendChild(trUsers);

@@ -13,6 +13,37 @@ let item = {
   buyRate: 5,
 };
 
+//card ids
+let cardIdCounter = 0;
+
+//input group list
+const cardInputsList = [
+  {
+    label_for: "inputMainCurrency",
+    label_text: "Primary",
+    select_id: "inputMainCurrency",
+    select_options: [
+      { value: "opt_usd", text: "USD" },
+      { value: "opt_eur", text: "EUR" },
+      { value: "opt_gbr", text: "GBR" },
+      { value: "opt_ron", text: "RON" },
+      { value: "opt_chf", text: "CHF" },
+    ],
+  },
+  {
+    label_for: "inputSecondCurrency",
+    label_text: "Secondary",
+    select_id: "inputSecondCurrency",
+    select_options: [
+      { value: "opt_usd", text: "USD" },
+      { value: "opt_eur", text: "EUR" },
+      { value: "opt_gbr", text: "GBR" },
+      { value: "opt_ron", text: "RON" },
+      { value: "opt_chf", text: "CHF" },
+    ],
+  },
+];
+
 function createNavigationBar() {
   const navElem = document.createElement("nav");
   navElem.className = "navbar navbar-light bg-light mb-3";
@@ -46,6 +77,7 @@ function createNavigationBar() {
 function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
+  cardDivCol.id = `card${cardIdCounter}`;
 
   let cardDiv = document.createElement("div");
   cardDivCol.appendChild(cardDiv);
@@ -86,6 +118,7 @@ function createMainWidget(item) {
   closeBtn.className = "btn-close";
   closeBtn.setAttribute("type", "button");
   closeBtn.setAttribute("aria-label", "Close");
+  closeBtn.addEventListener("click", () => closeWidget(cardDivCol.id));
 
   let cardRatesDiv = document.createElement("div");
   cardDiv.appendChild(cardRatesDiv);
@@ -203,38 +236,10 @@ function createMainWidget(item) {
 }
 
 function createPickWidget() {
-  //input group list
-  const cardInputsList = [
-    {
-      label_for: "inputMainCurrency",
-      label_text: "Primary",
-      select_id: "inputMainCurrency",
-      select_options: [
-        { value: "opt_usd", text: "USD" },
-        { value: "opt_eur", text: "EUR" },
-        { value: "opt_gbr", text: "GBR" },
-        { value: "opt_ron", text: "RON" },
-        { value: "opt_chf", text: "CHF" },
-      ],
-    },
-    {
-      label_for: "inputSecondCurrency",
-      label_text: "Secondary",
-      select_id: "inputSecondCurrency",
-      select_options: [
-        { value: "opt_usd", text: "USD" },
-        { value: "opt_eur", text: "EUR" },
-        { value: "opt_gbr", text: "GBR" },
-        { value: "opt_ron", text: "RON" },
-        { value: "opt_chf", text: "CHF" },
-      ],
-    },
-  ];
-
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
-  cardContainer.id = "card0";
+  cardContainer.id = `cardPick${cardIdCounter}`;
 
   //create card container
   let card = document.createElement("div");

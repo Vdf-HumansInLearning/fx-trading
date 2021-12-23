@@ -1,0 +1,91 @@
+var express = require("express");
+const fs = require("fs");
+const { url } = require("inspector");
+const path = require("path");
+
+var router = express.Router();
+
+//user: id, username, email, password
+
+let emailRegExp = /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/;
+let passRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+//check if a string matches a regEx
+function checkRegExp(regExp, myStr) {
+  return regExp.test(myStr);
+}
+
+function validateUser(user) {
+  let errArray = [];
+
+  if (user.username < 3) {
+    errArray.push("Firstname should have between 3 and 100 characters.");
+  }
+  if (!user.email) {
+    errArray.push("Email is required!");
+  }
+  if (checkRegExp(emailRegExp, user.email) === false) {
+    errArray.push("Invalid! Email should contain '@' and a domain!")
+  }
+  if (checkRegExp(passRegExp, user.password) === false) {
+    errArray.push("Invalid! Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!")
+  }
+  if (user.password !== user.repassword) {
+    errArray.push("Password do not match!");
+  }
+  return errArray;
+}
+// Get method for login 
+router.get('/login', function (req, res) {
+  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
+  let users = JSON.parse(rawdata);
+  console.log(users);
+  res.json(users);
+})
+
+// Post method for login 
+router.post('/login', function (req, res) {
+  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
+  let users = JSON.parse(rawdata);
+  console.log(users); 
+  let user = users.find(i => i.email == req.body.email &&
+    i.password == req.body.password);
+
+  if (user.length === 0) {
+    res.status(404).send("Invalid username or password.");
+  }
+  res.json(user);
+})
+
+// POST NEW REGISTERED USER
+router.post('/register', function (req, res) {
+  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
+  let users = JSON.parse(rawdata);
+  console.log(users); 
+
+  let user = {
+    "id": users.length + 1,
+    "username": req.body.username,
+    "email": req.body.email,
+    "password": req.body.password,
+    "repassword": req.body.repassword
+  }
+  let errors = validateUser(user);
+  if (errors.length > 0) {
+    res.status(400).send(errors);
+    return;
+  }
+  delete user.repassword;
+  users.push(user);
+  fs.writeFile(path.resolve(__dirname, "../db/users.json"), JSON.stringify(users), function (err) {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      console.log('User inserted in db');
+      res.send("Successfully registered");
+    }
+  })
+});
+
+module.exports = router;

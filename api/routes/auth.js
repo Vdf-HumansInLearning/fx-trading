@@ -35,19 +35,36 @@ function validateUser(user) {
   }
   return errArray;
 }
+
+// return the data from a json file
+function readFromFile(relPath) {
+  let rawdata = fs.readFileSync(path.resolve(__dirname, relPath));
+  let data = JSON.parse(rawdata);
+  return data;
+}
+
+// write data to a json file
+function writeToFile(content, relPath) {
+  fs.writeFile(path.resolve(__dirname, relPath), JSON.stringify(content), function (err) {
+    if (err) {
+      return err;
+    } else {
+      res.send("Successfully registered");
+      return 'User inserted in db';
+    }
+  })
+}
 // Get method for login 
 router.get('/login', function (req, res) {
-  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
-  let users = JSON.parse(rawdata);
+  let users = readFromFile("../db/users.json");
   console.log(users);
   res.json(users);
 })
 
 // Post method for login 
 router.post('/login', function (req, res) {
-  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
-  let users = JSON.parse(rawdata);
-  console.log(users); 
+  let users = readFromFile("../db/users.json");
+  console.log(users);
   let user = users.find(i => i.email == req.body.email &&
     i.password == req.body.password);
 
@@ -59,9 +76,8 @@ router.post('/login', function (req, res) {
 
 // POST NEW REGISTERED USER
 router.post('/register', function (req, res) {
-  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
-  let users = JSON.parse(rawdata);
-  console.log(users); 
+  let users = readFromFile("../db/users.json");
+  console.log(users);
 
   let user = {
     "id": users.length + 1,
@@ -77,15 +93,7 @@ router.post('/register', function (req, res) {
   }
   delete user.repassword;
   users.push(user);
-  fs.writeFile(path.resolve(__dirname, "../db/users.json"), JSON.stringify(users), function (err) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-    } else {
-      console.log('User inserted in db');
-      res.send("Successfully registered");
-    }
-  })
+  writeToFile(users, "../db/users.json");
 });
 
 module.exports = router;

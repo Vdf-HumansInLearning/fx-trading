@@ -47,11 +47,10 @@ function readFromFile(relPath) {
 function writeToFile(content, relPath) {
   fs.writeFile(path.resolve(__dirname, relPath), JSON.stringify(content), function (err) {
     if (err) {
-      console.log(err);
-      res.send(err);
+      return err;
     } else {
-      console.log('User inserted in db');
       res.send("Successfully registered");
+      return 'User inserted in db';
     }
   })
 }
@@ -77,8 +76,7 @@ router.post('/login', function (req, res) {
 
 // POST NEW REGISTERED USER
 router.post('/register', function (req, res) {
-  let rawdata = fs.readFileSync(path.resolve(__dirname, "../db/users.json"));
-  let users = JSON.parse(rawdata);
+  let users = readFromFile("../db/users.json");
   console.log(users);
 
   let user = {

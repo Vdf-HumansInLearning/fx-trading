@@ -35,6 +35,16 @@ let tableRegistrations = [
     tenor: "1M",
     trans_date: "12/02/2018 12:22",
   },
+  {
+    id: 2,
+    username: "Test Test",
+    ccy_pair: "USD/RON",
+    rate: "0.86",
+    action: "buy",
+    notional: "20000",
+    tenor: "Spot",
+    trans_date: "12/02/2018 15:28",
+  }
 ];
 //card ids
 let cardIdCounter = 0;
@@ -88,6 +98,7 @@ function createNavigationBar() {
     logoutBtn.className = "btn btn-outline-secondary";
     logoutBtn.setAttribute("href", "./login.html");
     logoutBtn.setAttribute("role", "button");
+    logoutBtn.setAttribute("id","logoutBtn")
     logoutBtn.textContent = "Logout";
 
     navBrand.appendChild(navImage);
@@ -503,7 +514,8 @@ function createFiltersSection(blotterButtons) {
     return inputFilters;
 }
 
-function createOneTableRegistration(transaction, trUsers) {
+function createOneTableRegistration(transaction) {
+    const trUsers = document.createElement('tr');
     const rowId = document.createElement("th");
     rowId.setAttribute("scope", "row");
     rowId.textContent = transaction.id;
@@ -536,6 +548,8 @@ function createOneTableRegistration(transaction, trUsers) {
     const tdDate = document.createElement("td");
     tdDate.textContent = transaction.trans_date;
     trUsers.appendChild(tdDate);
+
+    return trUsers;
 }
 
 function createBlotterView() {
@@ -571,13 +585,12 @@ function createBlotterView() {
     createTableHeader(tr);
 
     const bodyTable = document.createElement("tbody");
-    const trUsers = document.createElement("tr");
 
     for (let i = 0; i < tableRegistrations.length; i++) {
-        createOneTableRegistration(tableRegistrations[i], trUsers);
+        const registration = createOneTableRegistration(tableRegistrations[i]);
+        bodyTable.appendChild(registration);
     }
 
-    bodyTable.appendChild(trUsers);
     blotterTable.appendChild(headTable);
     blotterTable.appendChild(bodyTable);
 
@@ -638,4 +651,18 @@ createIndexPage();
 
 function ccyFilters() {
     const spot = document.getElementById('SpotCcy');
+    
+}
+ccyFilters();
+
+// clear cookie using its name
+function clearCookie(name){
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+function clearCookiesOnLogout(){
+    const logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', function(){
+       clearCookie('username'); 
+    });
 }

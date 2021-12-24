@@ -34,7 +34,7 @@ let tableRegistrations = [
         notional: "100",
         tenor: "1M",
         trans_date: "12/02/2018 12:22",
-    },
+    }
 ];
 
 function createNavigationBar() {
@@ -413,27 +413,6 @@ function closeWidget(cardId) {
 }
 
 function generateMessage(message) {
-    //   let toast = document.createElement("div");
-    //   toast.className = "toast-custom success";
-    //   let outerContainer = document.createElement("div");
-    //   outerContainer.className = "outer-container";
-    //   let icon = document.createElement("i");
-    //   outerContainer.className = "fas fa-check-circle";
-    //   outerContainer.append(icon);
-
-    //   let innerContainer = document.createElement("div");
-    //   innerContainer.className = "inner-container";
-    //   let innerContainerTitle = document.createElement("p");
-    //   innerContainerTitle.innerText = "Success";
-    //   let innerContainerMessage = document.createElement("p");
-    //   innerContainerMessage.innerText = message;
-
-    //   innerContainer.append(innerContainerTitle);
-    //   innerContainer.append(innerContainerMessage);
-
-    //   toast.append(outerContainer);
-    //   toast.append(innerContainer);
-
     let toast = document.createElement("div");
     toast.className = "tn-box tn-box-color-1";
     let toastTitle = document.createElement("p");
@@ -491,6 +470,7 @@ function createFiltersSection(blotterButtons) {
     for (let i = 0; i < tenantOptions.length; i++) {
         const option = document.createElement("option");
         option.setAttribute("value", tenantOptions[i]);
+        option.setAttribute("id", tenantOptions[i] + 'Ccy')
         option.textContent = tenantOptions[i];
         inputCyy.appendChild(option);
     }
@@ -652,3 +632,7 @@ function createIndexPage() {
 }
 
 createIndexPage();
+
+function ccyFilters(){
+    const spot = document.getElementById('SpotCcy');
+}

@@ -25,16 +25,46 @@ let tableHeadArray = [
 ];
 
 let tableRegistrations = [
-    {
-        id: 1,
-        username: "Mark Otto",
-        ccy_pair: "USD/EUR",
-        rate: "0.86",
-        action: "sell",
-        notional: "100",
-        tenor: "1M",
-        trans_date: "12/02/2018 12:22",
-    }
+  {
+    id: 1,
+    username: "Mark Otto",
+    ccy_pair: "USD/EUR",
+    rate: "0.86",
+    action: "sell",
+    notional: "100",
+    tenor: "1M",
+    trans_date: "12/02/2018 12:22",
+  },
+];
+//card ids
+let cardIdCounter = 0;
+
+//input group list
+const cardInputsList = [
+  {
+    label_for: "inputMainCurrency",
+    label_text: "Primary",
+    select_id: "inputMainCurrency",
+    select_options: [
+      { value: "opt_usd", text: "USD" },
+      { value: "opt_eur", text: "EUR" },
+      { value: "opt_gbr", text: "GBR" },
+      { value: "opt_ron", text: "RON" },
+      { value: "opt_chf", text: "CHF" },
+    ],
+  },
+  {
+    label_for: "inputSecondCurrency",
+    label_text: "Secondary",
+    select_id: "inputSecondCurrency",
+    select_options: [
+      { value: "opt_usd", text: "USD" },
+      { value: "opt_eur", text: "EUR" },
+      { value: "opt_gbr", text: "GBR" },
+      { value: "opt_ron", text: "RON" },
+      { value: "opt_chf", text: "CHF" },
+    ],
+  },
 ];
 
 function createNavigationBar() {
@@ -70,6 +100,7 @@ function createNavigationBar() {
 function createMainWidget(item) {
     let cardDivCol = document.createElement("div");
     cardDivCol.className = "col";
+    cardDivCol.id = `card${cardIdCounter}`;
 
     let cardDiv = document.createElement("div");
     cardDivCol.appendChild(cardDiv);
@@ -110,6 +141,7 @@ function createMainWidget(item) {
     closeBtn.className = "btn-close";
     closeBtn.setAttribute("type", "button");
     closeBtn.setAttribute("aria-label", "Close");
+    closeBtn.addEventListener("click", () => closeWidget(cardDivCol.id));
 
     let cardRatesDiv = document.createElement("div");
     cardDiv.appendChild(cardRatesDiv);
@@ -227,38 +259,10 @@ function createMainWidget(item) {
 }
 
 function createPickWidget() {
-    //input group list
-    const cardInputsList = [
-        {
-            label_for: "inputMainCurrency",
-            label_text: "Primary",
-            select_id: "inputMainCurrency",
-            select_options: [
-                { value: "opt_usd", text: "USD" },
-                { value: "opt_eur", text: "EUR" },
-                { value: "opt_gbr", text: "GBR" },
-                { value: "opt_ron", text: "RON" },
-                { value: "opt_chf", text: "CHF" },
-            ],
-        },
-        {
-            label_for: "inputSecondCurrency",
-            label_text: "Secondary",
-            select_id: "inputSecondCurrency",
-            select_options: [
-                { value: "opt_usd", text: "USD" },
-                { value: "opt_eur", text: "EUR" },
-                { value: "opt_gbr", text: "GBR" },
-                { value: "opt_ron", text: "RON" },
-                { value: "opt_chf", text: "CHF" },
-            ],
-        },
-    ];
-
     //create column
     let cardContainer = document.createElement("div");
     cardContainer.classList.add("col");
-    cardContainer.id = "card0";
+    cardContainer.id = `cardPick${cardIdCounter}`;
 
     //create card container
     let card = document.createElement("div");
@@ -330,7 +334,6 @@ function createPickWidget() {
             //append each option to select element
             select.append(option);
         });
-
         inputGroup.append(select);
     });
 
@@ -633,6 +636,6 @@ function createIndexPage() {
 
 createIndexPage();
 
-function ccyFilters(){
+function ccyFilters() {
     const spot = document.getElementById('SpotCcy');
 }

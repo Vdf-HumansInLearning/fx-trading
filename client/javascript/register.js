@@ -139,10 +139,15 @@ function submitRegisterData() {
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      e.stopPropagation();
 
       const isValid = validateRegisterForm(); // front-end validation
 
       if (isValid) {
+        setTimeout(() => {
+          console.log("you're in set timeout");
+          showToast("Success", "You have registered with success.");
+        }, 5000);
         // submit form
         const form = document.getElementById("form");
         let username = document.getElementById("inputUsername").value;
@@ -169,15 +174,15 @@ function submitRegisterData() {
             if (data.status === 400) {
               console.log("eroare");
             }
-            if (reponse.status == 200) {
-              showToast("Success", "You have registered with success.");
+            if (data.status == 200) {
               console.log("afiseaza modala");
               //save cookie
               //show toaster
-              setTimeout(() => {
-                window.location.href =
-                  "http://127.0.0.1:5500/client/index.html";
-              }, 5000);
+              window.location.href = "http://127.0.0.1:5500/client/index.html";
+              // setTimeout(() => {
+              //   console.log("you're in set timeout");
+
+              // }, 5000);
 
               //window.location.hash = "#dashboard";
             }

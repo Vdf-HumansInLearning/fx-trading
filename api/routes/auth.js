@@ -48,16 +48,16 @@ function readFromFile(relPath) {
 }
 
 // write data to a json file
-function writeToFile(res,content, relPath) {
+function writeToFile(res, content, relPath) {
   fs.writeFile(
     path.resolve(__dirname, relPath),
-    JSON.stringify(content),
+    JSON.stringify(content, null, 2),
     function (err) {
       if (err) {
         return err;
       } else {
         res.status(200);
-        res.send("Succesfully registered")
+        res.send("Succesfully registered");
       }
     }
   );
@@ -104,7 +104,7 @@ router.post("/register", function (req, res) {
   }
   delete user.repassword;
   users.push(user);
-  writeToFile(res, users, "../db/users.json");  
+  writeToFile(res, users, "../db/users.json");
 });
 
 module.exports = router;

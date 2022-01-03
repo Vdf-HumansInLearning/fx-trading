@@ -29,7 +29,12 @@
     "email": "oana@email",
     "password": "Oana123*"
   },
-  { "id": 6, "username": "aaa", "email": "aaa@aa.com", "password": "aaa" },
+  {
+    "id": 6,
+    "username": "aaa",
+    "email": "aaa@aa.com",
+    "password": "aaa"
+  },
   {
     "id": 7,
     "username": "alex",

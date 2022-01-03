@@ -131,6 +131,7 @@ createMain();
 
 function submitRegisterData() {
   const form = document.getElementById("form");
+
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -167,10 +168,15 @@ function submitRegisterData() {
               console.log("eroare");
             }
             if (reponse.status == 200) {
+              showToast("Success", "You have registered with success.");
               console.log("afiseaza modala");
               //save cookie
               //show toaster
-              window.location.href = "http://127.0.0.1:5500/client/index.html";
+              setTimeout(() => {
+                window.location.href =
+                  "http://127.0.0.1:5500/client/index.html";
+              }, 5000);
+
               //window.location.hash = "#dashboard";
             }
           })
@@ -253,4 +259,17 @@ function removePreviousError(parent) {
       parent.removeChild(errChild);
     }
   }
+}
+
+function showToast(titleMessage, bodyMessage) {
+  let liveToast = document.getElementById("liveToast");
+  console.log(liveToast);
+  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  toastHeaderText = document.createTextNode(titleMessage);
+  toastHeader.appendChild(toastHeaderText);
+  let toastBody = liveToast.querySelector(".toast-body");
+  let toastBodyText = document.createTextNode(bodyMessage);
+  toastBody.appendChild(toastBodyText);
+  let toast = new bootstrap.Toast(liveToast);
+  toast.show();
 }

@@ -79,6 +79,10 @@ p a {
   align-items: center;
 }
 
+.error {
+  color: red;
+}
+
 @media (max-width: 990px) {
   .aside {
     display: none;

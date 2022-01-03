@@ -1,5 +1,5 @@
 const bodyContainer = document.getElementById("body-container");
-const baseUrl = "http://localhost:8080/";
+const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
 let widgetsNr = 0;
 let pickWidget = null;
@@ -101,6 +101,10 @@ const ccyPairs = [
   "GBP/RON",
   "GBP/CHF",
 ];
+
+//select for PickWidget
+let inputMainCurrency = null;
+let inputSecondaryCurrency = null;
 
 function createNavigationBar() {
   const navElem = document.createElement("nav");
@@ -353,6 +357,7 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
+    select.addEventListener("change", selectCurrency);
 
     //add one default option
     let defaultOption = document.createElement("option");
@@ -382,7 +387,7 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", addNewWidget);
+  confirmBtn.addEventListener("click", confirmSelectionCurrency);
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -450,6 +455,89 @@ function addNewWidget() {
 function closeWidget(cardId) {
   document.getElementById(cardId).remove();
   widgetsNr--;
+}
+
+function selectCurrency() {
+  inputMainCurrency = document.getElementById("inputMainCurrency");
+  inputSecondCurrency = document.getElementById("inputSecondCurrency");
+
+  if (inputMainCurrency && inputSecondCurrency) {
+    //user must choose two different currencies
+    if (inputMainCurrency.value == inputSecondCurrency.value) {
+      showToast("Error", "You must choose two different currencies");
+    }
+  }
+
+  let mainCurrencyOptions = inputMainCurrency.getElementsByTagName("option");
+  let secondaryCurrencyOptions =
+    inputSecondCurrency.getElementsByTagName("option");
+
+  let selectedMainCurrency = document.getElementById("inputMainCurrency").value;
+  let selectedSecondaryCurrency = document.getElementById(
+    "inputSecondCurrency"
+  ).value;
+  if (selectedMainCurrency) {
+    for (var i = 0; i < secondaryCurrencyOptions.length; i++) {
+      secondaryCurrencyOptions[i].value.toLowerCase() == selectedMainCurrency
+        ? secondaryCurrencyOptions[i].setAttribute("disabled", "disabled")
+        : (secondaryCurrencyOptions[i].disabled = false);
+    }
+  } else if (selectedSecondaryCurrency) {
+    for (var i = 0; i < mainCurrencyOptions.length; i++) {
+      mainCurrencyOptions[i].value.toLowerCase() == selectedSecondaryCurrency
+        ? (mainCurrencyOptions[i].disabled = true)
+        : (mainCurrencyOptions[i].disabled = false);
+    }
+  }
+}
+function confirmSelectionCurrency() {
+  inputMainCurrency = document.getElementById("inputMainCurrency");
+  inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
+  console.log("inside confirm selection");
+  console.log(inputMainCurrency);
+
+  console.log(inputSecondaryCurrency);
+
+  if (inputMainCurrency && inputSecondaryCurrency) {
+    if (inputMainCurrency.value === inputSecondCurrency.value) {
+      showToast("Error", "You must choose two different currencies");
+    } else {
+      let currencyObj = {
+        base_currency: inputMainCurrency.value,
+        quote_currency: inputSecondaryCurrency.value,
+      };
+      fetch(baseUrl + "currencies/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(currencyObj),
+      })
+        .then((res) =>
+          res.json().then((data) => ({ status: res.status, body: data }))
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response.body);
+            //populate the item
+            item.mainCurrency = currencyObj.base_currency;
+            item.secondCurrency = currencyObj.quote_currency;
+            item.sellRate = response.body.sell;
+            item.buyRate = response.body.buy;
+
+            //create the page
+            addNewWidget();
+          } else {
+            showToast("Error", response.body);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  } else {
+    showToast("Error", "Currency fields cannot be empty");
+  }
 }
 
 function createTableHeader(tr) {
@@ -679,15 +767,22 @@ function showToast(titleMessage, bodyMessage) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
   let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
   let toastBodyText = document.createTextNode(bodyMessage);
   toastBody.appendChild(toastBodyText);
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
 }
-
+function cleanup(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
 window.onload = () => {
   //load list of currencies available
   console.log("data");
@@ -696,17 +791,15 @@ window.onload = () => {
   cardInputsList[0].select_options = [];
   //secondary currency
   cardInputsList[1].select_options = [];
-  fetch(baseUrl + "api/currencies", {
+  fetch(baseUrl + "currencies", {
     method: "GET",
   })
     .then((response) => {
-      console.log("data");
       return response.json();
     })
     .then((data) => {
-      console.log("data");
       let optionsList = data.map((item) => ({
-        value: item.toLowerCase(),
+        value: item,
         text: item,
       }));
       //populate the lists

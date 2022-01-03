@@ -57,6 +57,7 @@ function createMain() {
   inputUsername.setAttribute("name", "user");
   inputUsername.setAttribute("aria-describedby", "emailHelp");
   inputUsername.setAttribute("placeholder", "Username");
+  inputUsername.setAttribute("value", "oana");
 
   let divEmail = document.createElement("div");
   form.appendChild(divEmail);
@@ -73,6 +74,7 @@ function createMain() {
   inputEmail.setAttribute("type", "email");
   inputEmail.setAttribute("name", "email");
   inputEmail.setAttribute("placeholder", "Email");
+  inputEmail.setAttribute("value", "oana@oana2.com");
 
   let divPassword = document.createElement("div");
   form.appendChild(divPassword);
@@ -89,6 +91,7 @@ function createMain() {
   inputPassword.setAttribute("type", "password");
   inputPassword.setAttribute("name", "password");
   inputPassword.setAttribute("placeholder", "Password");
+  inputPassword.setAttribute("value", "Test123!");
 
   let divPasswordConfirm = document.createElement("div");
   form.appendChild(divPasswordConfirm);
@@ -105,6 +108,7 @@ function createMain() {
   inputPasswordConfirm.setAttribute("type", "password");
   inputPasswordConfirm.setAttribute("name", "co-password");
   inputPasswordConfirm.setAttribute("placeholder", "Confirm Password");
+  inputPasswordConfirm.setAttribute("value", "Test123!");
 
   let submitBtn = document.createElement("button");
   form.appendChild(submitBtn);
@@ -136,7 +140,6 @@ function submitRegisterData() {
       e.preventDefault();
 
       const isValid = validateRegisterForm(); // front-end validation
-      console.log(isValid);
 
       if (isValid) {
         // submit form
@@ -160,13 +163,12 @@ function submitRegisterData() {
             repassword: repassword,
           }),
         })
-          .then((response) => response.json())
-          .then((reponse) => {
-            console.log(reponse);
-            if (reponse.status === 400) {
+          .then((data) => {
+            console.log(data);
+            if (data.status === 400) {
               console.log("eroare");
             }
-            if (reponse.status == 200) {
+            if (data.status == 200) {
               console.log("afiseaza modala");
               //save cookie
               //show toaster

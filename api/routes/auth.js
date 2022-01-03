@@ -8,7 +8,7 @@ var router = express.Router();
 //user: id, username, email, password
 
 let emailRegExp =
-  /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/;
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 let passRegExp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -26,9 +26,9 @@ function validateUser(user) {
   if (!user.email) {
     errArray.push("Email is required!");
   }
-  // if (checkRegExp(emailRegExp, user.email) === false) {
-  //   errArray.push("Invalid! Email should contain '@' and a domain!");
-  // }
+  if (checkRegExp(emailRegExp, user.email) === false) {
+    errArray.push("Invalid! Email should contain '@' and a domain!");
+  }
   if (checkRegExp(passRegExp, user.password) === false) {
     errArray.push(
       "Invalid! Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"
@@ -48,7 +48,7 @@ function readFromFile(relPath) {
 }
 
 // write data to a json file
-function writeToFile(content, relPath) {
+function writeToFile(res,content, relPath) {
   fs.writeFile(
     path.resolve(__dirname, relPath),
     JSON.stringify(content),
@@ -56,8 +56,8 @@ function writeToFile(content, relPath) {
       if (err) {
         return err;
       } else {
-        res.send("Successfully registered");
-        return "User inserted in db";
+        res.status(200);
+        res.send("Succesfully registered")
       }
     }
   );
@@ -104,7 +104,7 @@ router.post("/register", function (req, res) {
   }
   delete user.repassword;
   users.push(user);
-  writeToFile(users, "../db/users.json");
+  writeToFile(res, users, "../db/users.json");  
 });
 
 module.exports = router;

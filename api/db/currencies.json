@@ -1,0 +1,110 @@
+{
+  "currencies_available": ["USD", "EUR", "GBP", "RON", "CHF"],
+  "currency_rates": [
+    {
+      "base_currency": "USD",
+      "quotes": {
+        "EUR": {
+          "sell": 99,
+          "buy": 11
+        },
+        "GBP": {
+          "sell": 99,
+          "buy": 11
+        },
+        "RON": {
+          "sell": 99,
+          "buy": 11
+        },
+        "CHF": {
+          "sell": 99,
+          "buy": 11
+        }
+      }
+    },
+    {
+      "base_currency": "EUR",
+      "quotes": {
+        "USD": {
+          "sell": 99,
+          "buy": 11
+        },
+        "GBP": {
+          "sell": 99,
+          "buy": 11
+        },
+        "RON": {
+          "sell": 99,
+          "buy": 11
+        },
+        "CHF": {
+          "sell": 99,
+          "buy": 11
+        }
+      }
+    },
+    {
+      "base_currency": "GBP",
+      "quotes": {
+        "EUR": {
+          "sell": 99,
+          "buy": 11
+        },
+        "USD": {
+          "sell": 99,
+          "buy": 11
+        },
+        "RON": {
+          "sell": 99,
+          "buy": 11
+        },
+        "CHF": {
+          "sell": 99,
+          "buy": 11
+        }
+      }
+    },
+    {
+      "base_currency": "RON",
+      "quotes": {
+        "EUR": {
+          "sell": 4.8,
+          "buy": 4.9
+        },
+        "GBP": {
+          "sell": 99,
+          "buy": 11
+        },
+        "USD": {
+          "sell": 99,
+          "buy": 11
+        },
+        "CHF": {
+          "sell": 99,
+          "buy": 11
+        }
+      }
+    },
+    {
+      "base_currency": "CHF",
+      "quotes": {
+        "EUR": {
+          "sell": 99,
+          "buy": 11
+        },
+        "GBP": {
+          "sell": 99,
+          "buy": 11
+        },
+        "RON": {
+          "sell": 99,
+          "buy": 11
+        },
+        "USD": {
+          "sell": 99,
+          "buy": 11
+        }
+      }
+    }
+  ]
+}

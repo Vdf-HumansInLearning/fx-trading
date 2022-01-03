@@ -1,3 +1,8 @@
+////const methods = require("methods");
+//onst { response } = require("../../api/app");
+
+//const { response } = require("express");
+
 const body = document.getElementsByClassName("body")[0];
 
 function createAsideImage() {
@@ -30,6 +35,7 @@ function createMainLoginForm() {
   mainContainer.appendChild(h1);
 
   let form = document.createElement("form");
+  form.setAttribute("id", "form");
   form.setAttribute("method", "POST");
   mainContainer.appendChild(form);
 
@@ -51,18 +57,23 @@ function createMainLoginForm() {
   emailInput.setAttribute("placeholder", "Email");
 
   let secondDiv = document.createElement("div");
-  secondDiv.className = "mb-3 d-flex align-content-center";
+  secondDiv.className = "mb-3 d-flex align-content-center ";
   form.appendChild(secondDiv);
+
   let passwordIcon = document.createElement("i");
   passwordIcon.className = "fas fa-unlock";
   secondDiv.appendChild(passwordIcon);
+
+  let divIconAndPassword = document.createElement("div");
+  secondDiv.appendChild(divIconAndPassword);
+  divIconAndPassword.className = "mb-3 d-flex align-content-center flex-column";
 
   let passwordInput = document.createElement("input");
   secondDiv.appendChild(passwordInput);
   passwordInput.setAttribute("type", "password");
   passwordInput.setAttribute("name", "password");
   passwordInput.className = "form-control";
-  passwordInput.setAttribute("is", "inputPassword");
+  passwordInput.setAttribute("id", "inputPassword");
   passwordInput.setAttribute("placeholder", "Password");
 
   let loginBtn = document.createElement("button");
@@ -71,6 +82,7 @@ function createMainLoginForm() {
   loginBtn.setAttribute("type", "submit");
   loginBtn.className = "main__btn";
   loginBtn.textContent = "Login";
+  loginBtn.addEventListener("click", login);
 
   let divRegister = document.createElement("div");
   form.appendChild(divRegister);
@@ -89,3 +101,105 @@ function createMainLoginForm() {
 
 createAsideImage();
 createMainLoginForm();
+
+function login() {
+  const form = document.getElementById("form");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let userEmail = document.getElementById("inputEmail").value;
+      let password = document.getElementById("inputPassword").value;
+
+      const isValid = validateRegisterForm();
+
+      if (isValid) {
+        let url = "http://localhost:8080/api/auth/login";
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: userEmail, password: password }),
+        })
+          .then((response) => {
+            // console.log(res.status);
+            if (response.status == 200) {
+              //save cookie
+              //show toaster
+              generateMessageess("login succesfull");
+              // let anotherModal = document.getElementById("register-success");
+              // var myModal = new bootstrap.Modal(anotherModal);
+
+              // myModal.show();
+              // window.location.href = "http://127.0.0.1:5500/client/index.html";
+              //window.location.hash = "#dashboard";
+            }
+          })
+
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  }
+}
+
+function validateRegisterForm() {
+  let isValid = true;
+  const passRegExp =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const email = document.getElementById("inputEmail");
+  removePreviousError(email.parentElement);
+  const pattern = /^\S+@\S+\.\S+$/;
+  if (!pattern.test(email.value)) {
+    email.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Email is not valid</p>'
+    );
+  }
+
+  const password = document.getElementById("inputPassword");
+  removePreviousError(password.parentElement);
+  if (password.value.length < 7 || password.value.length >= 20) {
+    isValid = false;
+    password.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Password must be between 8 and 20 characters</p>'
+    );
+  } else if (checkRegExp(passRegExp, password.value) === false) {
+    isValid = false;
+    password.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">"Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"</p>'
+    );
+  }
+  function checkRegExp(regExp, myStr) {
+    return regExp.test(myStr);
+  }
+
+  return isValid;
+}
+
+function removePreviousError(parent) {
+  const errors = parent.getElementsByClassName("error");
+
+  if (errors.length > 0) {
+    for (let errChild of errors) {
+      parent.removeChild(errChild);
+    }
+  }
+}
+
+function generateMessage(message) {
+  let toast = document.createElement("div");
+  toast.className = "tn-box tn-box-color-1";
+  let toastTitle = document.createElement("p");
+  toastTitle.innerText = message;
+
+  toast.append(toastTitle);
+
+  toast.classList.add("tn-box-active");
+
+  bodyContainer.append(toast);
+}

@@ -34,6 +34,10 @@ function createMainLoginForm() {
   h1.textContent = "Log in to your account";
   mainContainer.appendChild(h1);
 
+  let hr = document.createElement("hr");
+  mainContainer.appendChild(hr);
+  hr.className = "solid";
+
   let form = document.createElement("form");
   form.setAttribute("id", "form");
   form.setAttribute("method", "POST");
@@ -121,18 +125,21 @@ function login() {
           },
           body: JSON.stringify({ email: userEmail, password: password }),
         })
+          .then((res) =>
+            res.json().then((data) => ({ status: res.status, body: data }))
+          )
           .then((response) => {
-            // console.log(res.status);
-            if (response.status == 200) {
+            console.log(response);
+            if (response.status === 200) {
               //save cookie
               //show toaster
-              generateMessageess("login succesfull");
               // let anotherModal = document.getElementById("register-success");
               // var myModal = new bootstrap.Modal(anotherModal);
-
               // myModal.show();
-              // window.location.href = "http://127.0.0.1:5500/client/index.html";
+              window.location.href = "http://127.0.0.1:5500/client/index.html";
               //window.location.hash = "#dashboard";
+            } else {
+              generateMessage(response.body.message);
             }
           })
 
@@ -201,5 +208,5 @@ function generateMessage(message) {
 
   toast.classList.add("tn-box-active");
 
-  bodyContainer.append(toast);
+  body.append(toast);
 }

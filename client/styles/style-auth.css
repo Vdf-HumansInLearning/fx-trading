@@ -55,7 +55,7 @@ body {
 
 .main__title {
   font-weight: 700;
-  color: var(--gray-color);
+  color: var(--color-grey-titles);
   font-family: "Open Sans";
 }
 

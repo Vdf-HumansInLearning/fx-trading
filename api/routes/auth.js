@@ -77,10 +77,11 @@ router.post("/login", function (req, res) {
     (i) => i.email == req.body.email && i.password == req.body.password
   );
   console.log(user);
-  if (user.length === 0) {
-    res.status(404).send("Invalid username or password.");
+  if (!user) {
+    res.status(404).send({ message: "Invalid username or password." });
+  } else {
+    res.status(200).send(user);
   }
-  res.send(user);
 });
 
 // POST NEW REGISTERED USER

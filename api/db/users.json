@@ -52,5 +52,11 @@
     "username": "oana",
     "email": "oana@oana2.com",
     "password": "Test123!"
+  },
+  {
+    "id": 10,
+    "username": "oana",
+    "email": "oana@oana2.com",
+    "password": "Test123!"
   }
 ]

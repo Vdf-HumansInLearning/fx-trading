@@ -25,56 +25,65 @@ let tableHeadArray = [
 ];
 
 let tableRegistrations = [
-  {
-    id: 1,
-    username: "Mark Otto",
-    ccy_pair: "USD/EUR",
-    rate: "0.86",
-    action: "sell",
-    notional: "100",
-    tenor: "1M",
-    trans_date: "12/02/2018 12:22",
-  },
-  {
-    id: 2,
-    username: "Test Test",
-    ccy_pair: "USD/RON",
-    rate: "0.86",
-    action: "buy",
-    notional: "20000",
-    tenor: "Spot",
-    trans_date: "12/02/2018 15:28",
-  }
+    {
+        id: 1,
+        username: "Mark Otto",
+        ccy_pair: "USD/EUR",
+        rate: "0.86",
+        action: "sell",
+        notional: "100",
+        tenor: "1M",
+        trans_date: "12/02/2018 12:22",
+    },
+    {
+        id: 2,
+        username: "Test Test",
+        ccy_pair: "USD/RON",
+        rate: "0.86",
+        action: "buy",
+        notional: "20000",
+        tenor: "Spot",
+        trans_date: "12/02/2018 15:28",
+    }
 ];
 //card ids
 let cardIdCounter = 0;
 
 //input group list
 const cardInputsList = [
-  {
-    label_for: "inputMainCurrency",
-    label_text: "Primary",
-    select_id: "inputMainCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
-  },
-  {
-    label_for: "inputSecondCurrency",
-    label_text: "Secondary",
-    select_id: "inputSecondCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
-  },
+    {
+        label_for: "inputMainCurrency",
+        label_text: "Primary",
+        select_id: "inputMainCurrency",
+        select_options: [
+            { value: "opt_usd", text: "USD" },
+            { value: "opt_eur", text: "EUR" },
+            { value: "opt_gbr", text: "GBR" },
+            { value: "opt_ron", text: "RON" },
+            { value: "opt_chf", text: "CHF" },
+        ],
+    },
+    {
+        label_for: "inputSecondCurrency",
+        label_text: "Secondary",
+        select_id: "inputSecondCurrency",
+        select_options: [
+            { value: "opt_usd", text: "USD" },
+            { value: "opt_eur", text: "EUR" },
+            { value: "opt_gbr", text: "GBR" },
+            { value: "opt_ron", text: "RON" },
+            { value: "opt_chf", text: "CHF" },
+        ],
+    },
+];
+
+//ccyPairs input 
+const ccyPairs = [
+    "USD/EUR", "USD/RON", "USD/GBP", "USD/CHF",
+    "RON/USD", "RON/EUR", "RON/GBP", "RON/CHF",
+    "EUR/USD", "EUR/RON", "EUR/GBP", "EUR/CHF",
+    "CHF/USD", "CHF/EUR", "CHF/RON", "CHF/GBP",
+    "GBP/USD", "GBP/EUR", "GBP/RON", "GBP/CHF"
 ];
 
 function createNavigationBar() {
@@ -98,7 +107,7 @@ function createNavigationBar() {
     logoutBtn.className = "btn btn-outline-secondary";
     logoutBtn.setAttribute("href", "./login.html");
     logoutBtn.setAttribute("role", "button");
-    logoutBtn.setAttribute("id","logoutBtn")
+    logoutBtn.setAttribute("id", "logoutBtn")
     logoutBtn.textContent = "Logout";
 
     navBrand.appendChild(navImage);
@@ -479,13 +488,11 @@ function createFiltersSection(blotterButtons) {
     inputCyy.className = "form-select";
     inputCyy.setAttribute("id", "inputCcy");
 
-    let tenantOptions = ["Spot", "1M", "3M"];
-
-    for (let i = 0; i < tenantOptions.length; i++) {
+    for (let i = 0; i < ccyPairs.length; i++) {
         const option = document.createElement("option");
-        option.setAttribute("value", tenantOptions[i]);
-        option.setAttribute("id", tenantOptions[i] + 'Ccy')
-        option.textContent = tenantOptions[i];
+        option.setAttribute("value", ccyPairs[i]);
+        option.setAttribute("id", ccyPairs[i] + 'Ccy')
+        option.textContent = ccyPairs[i];
         inputCyy.appendChild(option);
     }
 
@@ -649,20 +656,20 @@ function createIndexPage() {
 
 createIndexPage();
 
-function ccyFilters() {
+function ccyFilters(blotterRegistration, moment) {
     const spot = document.getElementById('SpotCcy');
-    
+
 }
 ccyFilters();
 
 // clear cookie using its name
-function clearCookie(name){
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function clearCookie(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-function clearCookiesOnLogout(){
+function clearCookiesOnLogout() {
     const logoutBtn = document.getElementById('logoutBtn');
-    logoutBtn.addEventListener('click', function(){
-       clearCookie('username'); 
+    logoutBtn.addEventListener('click', function () {
+        clearCookie('username');
     });
 }

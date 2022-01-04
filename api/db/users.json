@@ -71,6 +71,12 @@
       "username": "os",
       "email": "aaaaa@sj.com",
       "password": "Oana123*"
+    },
+    {
+      "id": 13,
+      "username": "oana",
+      "email": "oana@oana2.com",
+      "password": "Test123!"
     }
   ]
 }

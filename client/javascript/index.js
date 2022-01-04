@@ -746,10 +746,6 @@ function createIndexPage() {
   mainContainer.appendChild(blotter);
 }
 
-function ccyFilters(blotterRegistration, moment) {
-  const spot = document.getElementById("SpotCcy");
-}
-ccyFilters();
 
 // clear cookie using its name
 function clearCookie(name) {

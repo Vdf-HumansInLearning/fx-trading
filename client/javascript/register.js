@@ -57,6 +57,7 @@ function createMain() {
   inputUsername.setAttribute("name", "user");
   inputUsername.setAttribute("aria-describedby", "emailHelp");
   inputUsername.setAttribute("placeholder", "Username");
+  inputUsername.setAttribute("value", "oana");
 
   let divEmail = document.createElement("div");
   form.appendChild(divEmail);
@@ -73,6 +74,7 @@ function createMain() {
   inputEmail.setAttribute("type", "email");
   inputEmail.setAttribute("name", "email");
   inputEmail.setAttribute("placeholder", "Email");
+  inputEmail.setAttribute("value", "oana@oana2.com");
 
   let divPassword = document.createElement("div");
   form.appendChild(divPassword);
@@ -89,6 +91,7 @@ function createMain() {
   inputPassword.setAttribute("type", "password");
   inputPassword.setAttribute("name", "password");
   inputPassword.setAttribute("placeholder", "Password");
+  inputPassword.setAttribute("value", "Test123!");
 
   let divPasswordConfirm = document.createElement("div");
   form.appendChild(divPasswordConfirm);
@@ -105,6 +108,7 @@ function createMain() {
   inputPasswordConfirm.setAttribute("type", "password");
   inputPasswordConfirm.setAttribute("name", "co-password");
   inputPasswordConfirm.setAttribute("placeholder", "Confirm Password");
+  inputPasswordConfirm.setAttribute("value", "Test123!");
 
   let submitBtn = document.createElement("button");
   form.appendChild(submitBtn);
@@ -131,14 +135,19 @@ createMain();
 
 function submitRegisterData() {
   const form = document.getElementById("form");
+
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      e.stopPropagation();
 
       const isValid = validateRegisterForm(); // front-end validation
-      console.log(isValid);
 
       if (isValid) {
+        setTimeout(() => {
+          console.log("you're in set timeout");
+          showToast("Success", "You have registered with success.");
+        }, 5000);
         // submit form
         const form = document.getElementById("form");
         let username = document.getElementById("inputUsername").value;
@@ -160,17 +169,21 @@ function submitRegisterData() {
             repassword: repassword,
           }),
         })
-          .then((response) => response.json())
-          .then((reponse) => {
-            console.log(reponse);
-            if (reponse.status === 400) {
+          .then((data) => {
+            console.log(data);
+            if (data.status === 400) {
               console.log("eroare");
             }
-            if (reponse.status == 200) {
+            if (data.status == 200) {
               console.log("afiseaza modala");
               //save cookie
               //show toaster
               window.location.href = "http://127.0.0.1:5500/client/index.html";
+              // setTimeout(() => {
+              //   console.log("you're in set timeout");
+
+              // }, 5000);
+
               //window.location.hash = "#dashboard";
             }
           })
@@ -253,4 +266,17 @@ function removePreviousError(parent) {
       parent.removeChild(errChild);
     }
   }
+}
+
+function showToast(titleMessage, bodyMessage) {
+  let liveToast = document.getElementById("liveToast");
+  console.log(liveToast);
+  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  toastHeaderText = document.createTextNode(titleMessage);
+  toastHeader.appendChild(toastHeaderText);
+  let toastBody = liveToast.querySelector(".toast-body");
+  let toastBodyText = document.createTextNode(bodyMessage);
+  toastBody.appendChild(toastBodyText);
+  let toast = new bootstrap.Toast(liveToast);
+  toast.show();
 }

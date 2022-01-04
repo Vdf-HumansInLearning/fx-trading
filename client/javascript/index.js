@@ -553,6 +553,9 @@ function createTableHeader(tr) {
     if (tableHeadArray[i].icon) {
       const icon = document.createElement("i");
       icon.className = "fas fa-sort";
+      const space = document.createElement("span");
+      space.textContent = " ";
+      th.appendChild(space);
       th.appendChild(icon);
     }
     tr.appendChild(th);
@@ -751,10 +754,6 @@ function createIndexPage() {
   mainContainer.appendChild(blotter);
 }
 
-function ccyFilters(blotterRegistration, moment) {
-  const spot = document.getElementById("SpotCcy");
-}
-ccyFilters();
 
 // clear cookie using its name
 function clearCookie(name) {

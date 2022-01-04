@@ -48,7 +48,7 @@ let tableRegistrations = [
   },
 ];
 //card ids
-let cardIdCounter = 0;
+let widgetIdCounter = 0;
 
 //input group list
 const cardInputsList = [
@@ -140,7 +140,7 @@ function createNavigationBar() {
 function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
-  cardDivCol.id = `card${cardIdCounter}`;
+  cardDivCol.id = `widget${widgetIdCounter}`;
 
   let cardDiv = document.createElement("div");
   cardDivCol.appendChild(cardDiv);
@@ -303,7 +303,7 @@ function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
-  cardContainer.id = `cardPick${cardIdCounter}`;
+  cardContainer.id = `widgetPick${widgetIdCounter}`;
 
   //create card container
   let card = document.createElement("div");
@@ -357,7 +357,7 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
-    select.addEventListener("change", selectCurrency);
+    select.addEventListener("change", () => selectCurrency(cardContainer.id));
 
     //add one default option
     let defaultOption = document.createElement("option");
@@ -387,7 +387,9 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", confirmSelectionCurrency);
+  confirmBtn.addEventListener("click", () =>
+    confirmSelectionCurrency(cardContainer.id)
+  );
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -434,6 +436,7 @@ function addPickWidget() {
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
+    widgetIdCounter++;
   } else {
     showToast("Error", "You cannot have more than 5 widgets on the page");
   }
@@ -447,6 +450,7 @@ function addNewWidget() {
     cardsRow.prepend(newWidget);
     pickWidget.remove();
     widgetsNr++;
+    widgetIdCounter++;
   } else {
     showToast("Error", "You cannot have more than 5 widgets on the page");
   }
@@ -457,9 +461,10 @@ function closeWidget(cardId) {
   widgetsNr--;
 }
 
-function selectCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondCurrency = document.getElementById("inputSecondCurrency");
+function selectCurrency(pickWidgetId) {
+  let pickWidget = document.getElementById(pickWidgetId);
+  inputMainCurrency = pickWidget.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = pickWidget.querySelector("#inputSecondCurrency");
 
   if (inputMainCurrency && inputSecondCurrency)
     if (
@@ -472,9 +477,11 @@ function selectCurrency() {
       }
     }
 }
-function confirmSelectionCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
+function confirmSelectionCurrency(pickWidgetId) {
+  console.log(pickWidgetId);
+  let pickWidget = document.getElementById(pickWidgetId);
+  inputMainCurrency = pickWidget.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = pickWidget.querySelector("#inputSecondCurrency");
   console.log("inside confirm selection");
   console.log(inputMainCurrency);
 
@@ -514,6 +521,7 @@ function confirmSelectionCurrency() {
 
             //create the page
             addNewWidget();
+            closeWidget(pickWidgetId);
           } else {
             showToast("Error", response.body);
           }

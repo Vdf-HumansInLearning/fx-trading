@@ -217,11 +217,19 @@ function showToast(titleMessage, bodyMessage) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
   let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
   let toastBodyText = document.createTextNode(bodyMessage);
   toastBody.appendChild(toastBodyText);
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
+}
+function cleanup(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 }

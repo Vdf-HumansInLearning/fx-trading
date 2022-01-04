@@ -170,30 +170,25 @@ function submitRegisterData() {
         })
           .then((data) => {
             console.log(data);
-            if (data.status === 400) {
-              console.log("eroare");
-            }
-            if (data.status == 200) {
-              console.log("afiseaza modala");
 
+            if (data.status == 200) {
+              e.preventDefault();
+
+              console.log("afiseaza modala");
+              console.log(data.status);
               //save cookie
-              //show toaster
-              // setTimeout(() => {
-              //   console.log("you're in set timeout");
-              //   showToast("Success", "You have registered with success.");
-              // }, 5000);
-              showToast("Login succesfull", "dsdsdsds");
+
+              showToast("Register succesfull", "dsdsdsds");
               setTimeout(() => {
                 window.location.href =
                   "http://127.0.0.1:5500/client/index.html";
               }, 3000);
 
-              // setTimeout(() => {
-              //   console.log("you're in set timeout");
-
-              // }, 5000);
-
               //window.location.hash = "#dashboard";
+            } else {
+              e.preventDefault();
+
+              showToast("Register fail", "dsdsdsds");
             }
           })
           .catch((error) => {
@@ -281,11 +276,19 @@ function showToast(titleMessage, bodyMessage) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
   let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
   let toastBodyText = document.createTextNode(bodyMessage);
   toastBody.appendChild(toastBodyText);
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
+}
+function cleanup(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
 }

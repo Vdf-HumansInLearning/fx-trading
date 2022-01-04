@@ -30,16 +30,7 @@
       "tenor": "1M"
     },
     {
-      "id": "516c9c9b-7e0b-46cd-aa5d-f95203aaa58d",
-      "username": "Mark Bismark",
-      "ccy_pair": "USD/EUR",
-      "rate": "0.86",
-      "action": "sell",
-      "notional": "100",
-      "tenor": "1M"
-    },
-    {
-      "id": "6b86c4fe-ddc4-43cb-ad02-49d1d6cc59bf",
+      "id": "1fb38aff-31f4-4dec-b309-5c9a0c71a786",
       "username": "Mark Bismark",
       "ccy_pair": "USD/EUR",
       "rate": "0.86",

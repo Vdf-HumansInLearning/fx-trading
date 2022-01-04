@@ -92,6 +92,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "all transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "add transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"username\": \"Mark Bismark\",\r\n        \"ccy_pair\": \"USD/EUR\",\r\n        \"rate\": \"0.86\",\r\n        \"action\": \"sell\",\r\n        \"notional\": \"100\",\r\n        \"tenor\": \"1M\",\r\n        \"trans_date\": \"12/02/2018 12:22\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
 		}
 	]
 }

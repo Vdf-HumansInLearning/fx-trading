@@ -41,14 +41,7 @@ router.post("/transactions", (req, res) => {
     let isValid = validateTransaction(transaction);
     if (isValid) {
       transactions.push(transaction);
-      let result = writeToFile(jsonData, filePath);
-      if (result) {
-        res
-          .status(200)
-          .send({ message: "Transaction registered successfully" });
-      } else {
-        res.status(417).send({ result });
-      }
+      writeToFile(jsonData, filePath, res);
     } else {
       res.status(400).send({ message: "Not valid fields" });
     }
@@ -75,7 +68,7 @@ function validateTransaction(transaction) {
   else return true;
 }
 // write data to a json file
-function writeToFile(content, relPath) {
+function writeToFile(content, relPath, res) {
   fs.writeFile(
     path.resolve(__dirname, relPath),
     JSON.stringify(content, null, 2),
@@ -83,7 +76,9 @@ function writeToFile(content, relPath) {
       if (err) {
         return err;
       } else {
-        return true;
+        res
+          .status(200)
+          .send({ message: "Transaction registered successfully" });
       }
     }
   );

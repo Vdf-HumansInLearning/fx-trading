@@ -435,7 +435,11 @@ function addPickWidget() {
     cardsRow.prepend(pickWidget);
     widgetsNr++;
   } else {
-    showToast("Error", "You cannot have more than 5 widgets on the page");
+    showToast(
+      "Error",
+      "You cannot have more than 5 widgets on the page",
+      false
+    );
   }
 }
 
@@ -448,7 +452,11 @@ function addNewWidget() {
     pickWidget.remove();
     widgetsNr++;
   } else {
-    showToast("Error", "You cannot have more than 5 widgets on the page");
+    showToast(
+      "Error",
+      "You cannot have more than 5 widgets on the page",
+      false
+    );
   }
 }
 
@@ -468,7 +476,7 @@ function selectCurrency() {
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
-        showToast("Error", "You must choose two different currencies");
+        showToast("Error", "You must choose two different currencies", false);
       }
     }
 }
@@ -487,7 +495,7 @@ function confirmSelectionCurrency() {
     inputSecondaryCurrency.value !== "opt_none"
   ) {
     if (inputMainCurrency.value == inputSecondCurrency.value) {
-      showToast("Error", "You must choose two different currencies");
+      showToast("Error", "You must choose two different currencies", false);
     } else {
       let currencyObj = {
         base_currency: inputMainCurrency.value,
@@ -515,7 +523,7 @@ function confirmSelectionCurrency() {
             //create the page
             addNewWidget();
           } else {
-            showToast("Error", response.body);
+            showToast("Error", response.body, false);
           }
         })
         .catch((error) => {
@@ -523,7 +531,7 @@ function confirmSelectionCurrency() {
         });
     }
   } else {
-    showToast("Error", "Currency fields cannot be empty");
+    showToast("Error", "Currency fields cannot be empty", false);
   }
 }
 
@@ -748,10 +756,22 @@ function clearCookiesOnLogout() {
   });
 }
 
-function showToast(titleMessage, bodyMessage) {
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);

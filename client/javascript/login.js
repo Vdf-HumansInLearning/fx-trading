@@ -132,15 +132,16 @@ function login() {
             console.log(response);
             if (response.status === 200) {
               //save cookie
-              //show toaster
 
-              // let anotherModal = document.getElementById("register-success");
-              // var myModal = new bootstrap.Modal(anotherModal);
-              // myModal.show();
-              window.location.href = "http://127.0.0.1:5500/client/index.html";
+              showToast("Login succesfull", "You have been logged in");
+              setTimeout(() => {
+                window.location.href =
+                  "http://127.0.0.1:5500/client/index.html";
+              }, 2000);
+
               //window.location.hash = "#dashboard";
             } else {
-              generateMessage(response.body.message);
+              showToast("Login failed", response.body.message);
             }
           })
 

@@ -1,8 +1,9 @@
 const body = document.getElementsByClassName("body")[0];
+const app = document.querySelector(".app");
 
 function createRegisterAside() {
   let aside = document.createElement("aside");
-  body.appendChild(aside);
+  app.appendChild(aside);
   aside.className = "aside";
 
   let imgAside = document.createElement("img");
@@ -19,7 +20,7 @@ createRegisterAside();
 
 function createMain() {
   let main = document.createElement("main");
-  body.appendChild(main);
+  app.appendChild(main);
   main.className = "main";
 
   let divContainer = document.createElement("div");
@@ -115,7 +116,9 @@ function createMain() {
   submitBtn.setAttribute("id", "submitBtn");
   submitBtn.className = "main__btn";
   submitBtn.setAttribute("type", "submit");
-  submitBtn.addEventListener("click", submitRegisterData);
+  submitBtn.addEventListener("click", () => {
+    submitRegisterData();
+  });
   submitBtn.textContent = "Register";
 
   let divRegister = document.createElement("div");
@@ -172,13 +175,19 @@ function submitRegisterData() {
             }
             if (data.status == 200) {
               console.log("afiseaza modala");
+
               //save cookie
               //show toaster
               // setTimeout(() => {
               //   console.log("you're in set timeout");
               //   showToast("Success", "You have registered with success.");
               // }, 5000);
-              window.location.href = "http://127.0.0.1:5500/client/index.html";
+              showToast("Login succesfull", "dsdsdsds");
+              setTimeout(() => {
+                window.location.href =
+                  "http://127.0.0.1:5500/client/index.html";
+              }, 3000);
+
               // setTimeout(() => {
               //   console.log("you're in set timeout");
 

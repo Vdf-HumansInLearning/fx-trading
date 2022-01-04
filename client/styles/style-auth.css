@@ -26,6 +26,11 @@ body {
   height: 350px;
 }
 
+.app {
+  width: 100%;
+  display: flex;
+}
+
 .main__btn {
   width: 100%;
   background-color: #3496f0;

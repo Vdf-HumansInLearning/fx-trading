@@ -1,62 +1,50 @@
 [
-  {
-    "id": 1,
-    "username": "danamun",
-    "email": "danamun@email.com",
-    "password": "danamun"
-  },
-  {
-    "id": 2,
-    "username": "bogdan",
-    "email": "bogdan@email.com",
-    "password": "bogdan"
-  },
-  {
-    "id": 3,
-    "username": "test",
-    "password": "test1234",
-    "email": "test@dasd.com"
-  },
-  {
-    "id": 4,
-    "username": "test",
-    "password": "test1234",
-    "email": "test@dasd.com"
-  },
-  {
-    "id": 5,
-    "username": "oana",
-    "email": "oana@email",
-    "password": "Oana123*"
-  },
-  {
-    "id": 6,
-    "username": "aaa",
-    "email": "aaa@aa.com",
-    "password": "aaa"
-  },
-  {
-    "id": 7,
-    "username": "alex",
-    "email": "alex@alex.com",
-    "password": "Test123!"
-  },
-  {
-    "id": 8,
-    "username": "aaa",
-    "email": "aaa@aaa.com",
-    "password": "Test123!"
-  },
-  {
-    "id": 9,
-    "username": "oana",
-    "email": "oana@oana2.com",
-    "password": "Test123!"
-  },
-  {
-    "id": 10,
-    "username": "oana",
-    "email": "oana@oana2.com",
-    "password": "Test123!"
-  }
+    {
+        "id": 1,
+        "username": "danamun",
+        "email": "danamun@email.com",
+        "password": "danamun"
+    },
+    {
+        "id": 2,
+        "username": "bogdan",
+        "email": "bogdan@email.com",
+        "password": "bogdan"
+    },
+    {
+        "id": 3,
+        "username": "test",
+        "password": "test1234",
+        "email": "test@dasd.com"
+    },
+    {
+        "id": 4,
+        "username": "test",
+        "password": "test1234",
+        "email": "test@dasd.com"
+    },
+    {
+        "id": 5,
+        "username": "oana",
+        "email": "oana@email",
+        "password": "Oana123*"
+    },
+    {
+        "id": 6,
+        "username": "aaa",
+        "email": "aaa@aa.com",
+        "password": "aaa"
+    },
+    {
+        "id": 7,
+        "username": "alex",
+        "email": "alex@alex.com",
+        "password": "Test123!"
+    },
+    {
+        "id": 8,
+        "username": "aaa",
+        "email": "aaa@aaa.com",
+        "password": "Test123!"
+    }
 ]

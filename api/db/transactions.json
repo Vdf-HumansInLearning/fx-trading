@@ -1,3 +1,24 @@
 {
-  "transactions": []
+  "transactions": [
+    {
+      "id": 1,
+      "username": "Mark Otto",
+      "ccy_pair": "USD/EUR",
+      "rate": "0.86",
+      "action": "sell",
+      "notional": "100",
+      "tenor": "1M",
+      "trans_date": "12/02/2018 12:22"
+    },
+    {
+      "id": 2,
+      "username": "Test Test",
+      "ccy_pair": "USD/RON",
+      "rate": "0.86",
+      "action": "buy",
+      "notional": "20000",
+      "tenor": "Spot",
+      "trans_date": "12/02/2018 15:28"
+    }
+  ]
 }

@@ -435,20 +435,20 @@ function addPickWidget() {
     cardsRow.prepend(pickWidget);
     widgetsNr++;
   } else {
-    generateMessage("You cannot have more than 5 widgets on the page");
+    showToast("Error", "You cannot have more than 5 widgets on the page");
   }
 }
 
 function addNewWidget() {
   //no more that 5 cards
-  if (widgetsNr <= 4) {
+  if (widgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
     pickWidget.remove();
     widgetsNr++;
   } else {
-    generateMessage("You cannot have more than 5 widgets on the page");
+    showToast("Error", "You cannot have more than 5 widgets on the page");
   }
 }
 
@@ -461,34 +461,16 @@ function selectCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondCurrency = document.getElementById("inputSecondCurrency");
 
-  if (inputMainCurrency && inputSecondCurrency) {
-    //user must choose two different currencies
-    if (inputMainCurrency.value == inputSecondCurrency.value) {
-      showToast("Error", "You must choose two different currencies");
+  if (inputMainCurrency && inputSecondCurrency)
+    if (
+      inputMainCurrency.value !== "opt_none" ||
+      inputSecondaryCurrency.value !== "opt_none"
+    ) {
+      //user must choose two different currencies
+      if (inputMainCurrency.value == inputSecondCurrency.value) {
+        showToast("Error", "You must choose two different currencies");
+      }
     }
-  }
-
-  let mainCurrencyOptions = inputMainCurrency.getElementsByTagName("option");
-  let secondaryCurrencyOptions =
-    inputSecondCurrency.getElementsByTagName("option");
-
-  let selectedMainCurrency = document.getElementById("inputMainCurrency").value;
-  let selectedSecondaryCurrency = document.getElementById(
-    "inputSecondCurrency"
-  ).value;
-  if (selectedMainCurrency) {
-    for (var i = 0; i < secondaryCurrencyOptions.length; i++) {
-      secondaryCurrencyOptions[i].value.toLowerCase() == selectedMainCurrency
-        ? secondaryCurrencyOptions[i].setAttribute("disabled", "disabled")
-        : (secondaryCurrencyOptions[i].disabled = false);
-    }
-  } else if (selectedSecondaryCurrency) {
-    for (var i = 0; i < mainCurrencyOptions.length; i++) {
-      mainCurrencyOptions[i].value.toLowerCase() == selectedSecondaryCurrency
-        ? (mainCurrencyOptions[i].disabled = true)
-        : (mainCurrencyOptions[i].disabled = false);
-    }
-  }
 }
 function confirmSelectionCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
@@ -753,7 +735,6 @@ function createIndexPage() {
   const blotter = createBlotterView();
   mainContainer.appendChild(blotter);
 }
-
 
 // clear cookie using its name
 function clearCookie(name) {

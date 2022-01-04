@@ -548,6 +548,9 @@ function createTableHeader(tr) {
     if (tableHeadArray[i].icon) {
       const icon = document.createElement("i");
       icon.className = "fas fa-sort";
+      const space = document.createElement("span");
+      space.textContent = " ";
+      th.appendChild(space);
       th.appendChild(icon);
     }
     tr.appendChild(th);

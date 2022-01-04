@@ -12,10 +12,7 @@ router.get("/transactions", (req, res) => {
 
   let transactionList = JSON.parse(rawdata);
   let transactions = transactionList.transactions;
-  filteredTransactions = transactions.filter(tran => tran.date === req.query.date)
-  .filter(tran => tran.ccyPair === req.query.ccyPair);
-
-  res.send(filteredTransactions);
+  console.log(transactions);
 });
 
 module.exports = router;

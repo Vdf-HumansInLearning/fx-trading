@@ -71,9 +71,9 @@ router.get("/login", function (req, res) {
 
 // Post method for login
 router.post("/login", function (req, res) {
-  let users = readFromFile("../db/users.json");
+  let usersList = readFromFile("../db/users.json");
   // console.log(users);
-  let user = users.find(
+  let user = usersList.users.find(
     (i) => i.email == req.body.email && i.password == req.body.password
   );
   console.log(user);
@@ -86,10 +86,10 @@ router.post("/login", function (req, res) {
 
 // POST NEW REGISTERED USER
 router.post("/register", function (req, res) {
-  let users = readFromFile("../db/users.json");
+  let usersList = readFromFile("../db/users.json");
 
   let user = {
-    id: users.length + 1,
+    id: usersList.users.length + 1,
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
@@ -104,8 +104,8 @@ router.post("/register", function (req, res) {
     return;
   }
   delete user.repassword;
-  users.push(user);
-  writeToFile(res, users, "../db/users.json");
+  usersList.users.push(user);
+  writeToFile(res, usersList, "../db/users.json");
 });
 
 module.exports = router;

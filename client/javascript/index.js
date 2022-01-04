@@ -496,10 +496,15 @@ function confirmSelectionCurrency() {
   console.log("inside confirm selection");
   console.log(inputMainCurrency);
 
-  console.log(inputSecondaryCurrency);
+  console.log(inputSecondaryCurrency.value);
 
-  if (inputMainCurrency && inputSecondaryCurrency) {
-    if (inputMainCurrency.value === inputSecondCurrency.value) {
+  if (
+    inputMainCurrency.value &&
+    inputSecondaryCurrency.value &&
+    inputMainCurrency.value !== "opt_none" &&
+    inputSecondaryCurrency.value !== "opt_none"
+  ) {
+    if (inputMainCurrency.value == inputSecondCurrency.value) {
       showToast("Error", "You must choose two different currencies");
     } else {
       let currencyObj = {

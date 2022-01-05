@@ -595,8 +595,9 @@ function createFiltersSection(blotterButtons) {
   const inputDate = document.createElement("input");
   inputDate.setAttribute("type", "date");
   inputDate.className = "form-control";
-  inputDate.setAttribute("id", "inputDate");
+  inputDate.setAttribute("id", "inputDateFilter");
   inputDate.setAttribute("placeholder", "12/02/2018");
+  inputDate.addEventListener("change", () => filterByCYYPair());
 
   inputFiltersGroupNd.appendChild(inputDateLabel);
   inputFiltersGroupNd.appendChild(inputDate);
@@ -649,7 +650,7 @@ function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
   bodyTable.setAttribute('id', "table-body");
   for (let i = 0; i < registrations.length; i++) {
-    const registration = createOneTableRegistration(registrations[i],i+1);
+    const registration = createOneTableRegistration(registrations[i], i + 1);
     bodyTable.appendChild(registration);
   }
   return bodyTable;
@@ -792,56 +793,85 @@ function cleanup(parent) {
 function filterByCYYPair() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
-
-  if(body) {
+  const inputDate = document.getElementById("inputDateFilter").value;
+  console.log(inputDate)
+  if (body) {
     cleanup(body);
   }
+  let selectedDate = document.getElementById('inputDateFilter').value;
+  let dateArray = selectedDate.split("-").reverse();
+  selectedDate = dateArray.join('/');
 
-  if(inputCcy != "opt_none") {
+  console.log(selectedDate)
+  if (inputCcy != "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
-    let selectedPair = document.getElementById('inputCcy');
-    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair.value);
-    if(filteredRegistrations.length === 0){
-      showToast("Not found","There are any registrations for selected filters. Please select another options.",false)
+    const selectedPair = document.getElementById('inputCcy').value;
+    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair).filter(i => i.trans_date.startsWith(selectedDate));
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i+1);
+      
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+      body.appendChild(reg);
+    }
+  }
+  else if (inputCcy != "opt_none" && selectedDate.length === 0) {
+    let filteredRegistrations = tableRegistrations;
+    const selectedPair = document.getElementById('inputCcy').value;
+    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair);
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+    }
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+      body.appendChild(reg);
+    }
+  }
+  else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
+    let filteredRegistrations = tableRegistrations;
+    filteredRegistrations = tableRegistrations.filter(i => i.trans_date.startsWith(selectedDate));
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+    }
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
   }
   else {
-    for (let i = 0; i < tableRegistrations.length; i++) {
-      const reg = createOneTableRegistration(tableRegistrations[i], i+1);
-      body.appendChild(reg);
+      for (let i = 0; i < tableRegistrations.length; i++) {
+        const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+        body.appendChild(reg);
+      }
     }
   }
-}
 
-function getAvailableCurrencies() {
-  fetch(baseUrl + "currencies", {
-    method: "GET",
-  })
-    .then((response) => {
-      return response.json();
+  function getAvailableCurrencies() {
+    fetch(baseUrl + "currencies", {
+      method: "GET",
     })
-    .then((data) => {
-      let optionsList = data.map((item) => ({
-        value: item,
-        text: item,
-      }));
-      //populate the lists
-      cardInputsList[0].select_options = optionsList;
-      cardInputsList[1].select_options = optionsList;
-      console.log("selects now have values");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let optionsList = data.map((item) => ({
+          value: item,
+          text: item,
+        }));
+        //populate the lists
+        cardInputsList[0].select_options = optionsList;
+        cardInputsList[1].select_options = optionsList;
+        console.log("selects now have values");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
-window.onload = () => {
-  //load list of currencies available
-  console.log("data");
-  //create the page
-  createIndexPage();
-};
+  window.onload = () => {
+    //load list of currencies available
+    console.log("data");
+    //create the page
+    createIndexPage();
+  };

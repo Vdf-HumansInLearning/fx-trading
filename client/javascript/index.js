@@ -561,23 +561,27 @@ function createTableHeader(tr) {
 
 function addTableHeadSortEvent(item, icon) {
   if (item.name === "Username") {
-    icon.addEventListener("click", () => sortAlphabetical("username"));
+    icon.addEventListener("click", () =>
+      sortEntries("username", "alphabetical")
+    );
   }
   if (item.name === "CCY Pair") {
-    icon.addEventListener("click", () => sortAlphabetical("ccy_pair"));
+    icon.addEventListener("click", () =>
+      sortEntries("ccy_pair", "alphabetical")
+    );
   }
   if (item.name === "Action") {
-    icon.addEventListener("click", () => sortAlphabetical("action"));
+    icon.addEventListener("click", () => sortEntries("action", "alphabetical"));
   }
   if (item.name === "Notional") {
-    icon.addEventListener("click", () => sortNumerical("notional"));
+    icon.addEventListener("click", () => sortEntries("notional", "numerical"));
   }
   if (item.name === "Transaction Date") {
-    icon.addEventListener("click", () => sortDate("trans_date"));
+    icon.addEventListener("click", () => sortEntries("trans_date", "date"));
   }
 }
 
-function sortAlphabetical(property) {
+function sortEntries(property, sortType) {
   const table = document.getElementById("blotter-table");
   const tableBody = document.getElementById("table-body");
   let filteredRegistrations = [];
@@ -587,64 +591,40 @@ function sortAlphabetical(property) {
   if (tableBody) {
     cleanup(tableBody);
   }
-  if (sortObj.property) {
-    filteredRegistrations = tableRegistrations.sort((a, b) =>
-      a[property].toLowerCase().localeCompare(b[property].toLowerCase())
-    );
-  } else {
-    filteredRegistrations = tableRegistrations.sort((a, b) =>
-      b[property].toLowerCase().localeCompare(a[property].toLowerCase())
-    );
-  }
-
-  console.log(filteredRegistrations);
-  createBodyTable(filteredRegistrations);
-  table.appendChild(tableBody);
-}
-
-function sortNumerical(property) {
-  const table = document.getElementById("blotter-table");
-  const tableBody = document.getElementById("table-body");
-  let filteredRegistrations = [];
-
-  sortObj.property = !sortObj.property;
-
-  if (tableBody) {
-    cleanup(tableBody);
-  }
-  if (sortObj.property) {
-    filteredRegistrations = tableRegistrations.sort(
-      (a, b) => a[property] - b[property]
-    );
-  } else {
-    filteredRegistrations = tableRegistrations.sort(
-      (a, b) => b[property] - a[property]
-    );
-  }
-
-  console.log(filteredRegistrations);
-  createBodyTable(filteredRegistrations);
-  table.appendChild(tableBody);
-}
-
-function sortDate(property) {
-  const table = document.getElementById("blotter-table");
-  const tableBody = document.getElementById("table-body");
-  let filteredRegistrations = [];
-
-  sortObj.property = !sortObj.property;
-
-  if (tableBody) {
-    cleanup(tableBody);
-  }
-  if (sortObj.property) {
-    filteredRegistrations = tableRegistrations.sort(
-      (a, b) => new Date(a[property]) <= new Date(b[property])
-    );
-  } else {
-    filteredRegistrations = tableRegistrations.sort(
-      (a, b) => new Date(b[property]) <= new Date(a[property])
-    );
+  switch (sortType) {
+    case "alphabetical":
+      if (sortObj.property) {
+        filteredRegistrations = tableRegistrations.sort((a, b) =>
+          a[property].toLowerCase().localeCompare(b[property].toLowerCase())
+        );
+      } else {
+        filteredRegistrations = tableRegistrations.sort((a, b) =>
+          b[property].toLowerCase().localeCompare(a[property].toLowerCase())
+        );
+      }
+      break;
+    case "numerical":
+      if (sortObj.property) {
+        filteredRegistrations = tableRegistrations.sort(
+          (a, b) => a[property] - b[property]
+        );
+      } else {
+        filteredRegistrations = tableRegistrations.sort(
+          (a, b) => b[property] - a[property]
+        );
+      }
+      break;
+    case "date":
+      if (sortObj.property) {
+        filteredRegistrations = tableRegistrations.sort(
+          (a, b) => new Date(a[property]) <= new Date(b[property])
+        );
+      } else {
+        filteredRegistrations = tableRegistrations.sort(
+          (a, b) => new Date(b[property]) <= new Date(a[property])
+        );
+      }
+      break;
   }
 
   console.log(filteredRegistrations);

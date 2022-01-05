@@ -568,10 +568,11 @@ function createFiltersSection(blotterButtons) {
   inputCyy.className = "form-select";
   inputCyy.setAttribute("id", "inputCcy");
   inputCyy.addEventListener("change", () => filterByCYYPair());
- 
+
   const defaultOption = document.createElement("option");
-  defaultOption.textContent = "Choose.."
-  inputCyy.appendChild(defaultOption); 
+  defaultOption.textContent = "Choose..";
+  defaultOption.value = "opt_none";
+  inputCyy.appendChild(defaultOption);
 
   for (let i = 0; i < ccyPairs.length; i++) {
     const option = document.createElement("option");
@@ -650,7 +651,7 @@ function createBodyTable(registrations) {
   for (let i = 0; i < registrations.length; i++) {
     const registration = createOneTableRegistration(registrations[i]);
     bodyTable.appendChild(registration);
-  }  
+  }
   return bodyTable;
 }
 
@@ -676,7 +677,7 @@ function createBlotterView() {
   blotterTableResponsive.className = "table-responsive";
 
   const blotterTable = document.createElement("table");
-  blotterTable.setAttribute('id',"blotter-table");
+  blotterTable.setAttribute('id', "blotter-table");
   blotterTable.className = "table table-striped";
 
   const headTable = document.createElement("thead");
@@ -693,7 +694,7 @@ function createBlotterView() {
   blotterTableResponsive.appendChild(blotterTable);
   blotterSection.appendChild(blotterButtons);
   blotterSection.appendChild(blotterTableResponsive);
-  
+
   return blotterSection;
 }
 
@@ -789,15 +790,29 @@ function cleanup(parent) {
 }
 
 function filterByCYYPair() {
-  let x = tableRegistrations;
-  let selectedPair = document.getElementById('inputCcy');
-  x = x.filter(i => i.ccy_pair === selectedPair.value);
   const body = document.getElementById("table-body");
-  if (body) {
+  const inputCcy = document.getElementById("inputCcy").value;
+
+  if(body) {
     cleanup(body);
   }
-  const table = document.getElementById("blotter-table");
-  table.appendChild(createBodyTable(x));
+
+  if(inputCcy != "opt_none") {
+    let filteredRegistrations = tableRegistrations;
+    let selectedPair = document.getElementById('inputCcy');
+    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair.value);
+
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      const reg = createOneTableRegistration(filteredRegistrations[i]);
+      body.appendChild(reg);
+    }
+  }
+  else {
+    for (let i = 0; i < tableRegistrations.length; i++) {
+      const reg = createOneTableRegistration(tableRegistrations[i]);
+      body.appendChild(reg);
+    }
+  }
 }
 
 function getAvailableCurrencies() {

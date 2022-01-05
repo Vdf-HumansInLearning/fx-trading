@@ -24,6 +24,16 @@ router.get("/currencies/rates", (req, res) => {
   res.status(200).json(currenciesRates);
 });
 
+/* GET all currency pairings */
+router.get("/currencies/pairs", (req, res) => {
+  let rawdata = fs.readFileSync(
+    path.resolve(__dirname, "../db/currencies.json")
+  );
+  let fileContents = JSON.parse(rawdata);
+  const currenciesPairings = fileContents.currency_pairings;
+  res.status(200).json(currenciesPairings);
+});
+
 /* POST one base currency */
 router.post("/currencies", (req, res) => {
   let rawdata = fs.readFileSync(

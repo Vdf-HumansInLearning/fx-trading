@@ -35,6 +35,15 @@
 			"response": []
 		},
 		{
+			"name": "all currency pairings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
 			"name": "one currency quotes",
 			"request": {
 				"method": "POST",

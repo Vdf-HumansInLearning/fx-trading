@@ -367,7 +367,7 @@ function sendDataTransactions(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "test",
+        username: "test", //must be changed
         ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
         rate: sellOrBuyRateToSend,
         action: actionSellOrBuy,
@@ -384,18 +384,18 @@ function sendDataTransactions(
         if (response.status === 200) {
           //show toaster succes
         } else {
-          showToast("Failure", "Transaction failed");
+          showToast("Failure", "Transaction failed", false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   } else if (notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose a tenor value");
+    showToast("Empty field", "Please choose a tenor value", false);
   } else if (!notional && tenor !== "Choose...") {
-    showToast("Empty field", "Please choose a National value");
+    showToast("Empty field", "Please choose a National value", false);
   } else if (!notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose a national and tenor values");
+    showToast("Empty field", "Please choose national and tenor values", false);
   }
 }
 

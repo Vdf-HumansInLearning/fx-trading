@@ -577,6 +577,11 @@ function createFiltersSection(blotterButtons) {
   const inputCyy = document.createElement("select");
   inputCyy.className = "form-select";
   inputCyy.setAttribute("id", "inputCcy");
+  inputCyy.addEventListener("change", () => filterByCYYPair());
+ 
+  const defaultOption = document.createElement("option");
+  defaultOption.textContent = "Choose.."
+  inputCyy.appendChild(defaultOption); 
 
   for (let i = 0; i < ccyPairs.length; i++) {
     const option = document.createElement("option");
@@ -649,6 +654,16 @@ function createOneTableRegistration(transaction) {
   return trUsers;
 }
 
+function createBodyTable(registrations) {
+  const bodyTable = document.createElement("tbody");
+  bodyTable.setAttribute('id', "table-body");
+  for (let i = 0; i < registrations.length; i++) {
+    const registration = createOneTableRegistration(registrations[i]);
+    bodyTable.appendChild(registration);
+  }  
+  return bodyTable;
+}
+
 function createBlotterView() {
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -671,6 +686,7 @@ function createBlotterView() {
   blotterTableResponsive.className = "table-responsive";
 
   const blotterTable = document.createElement("table");
+  blotterTable.setAttribute('id',"blotter-table");
   blotterTable.className = "table table-striped";
 
   const headTable = document.createElement("thead");
@@ -680,21 +696,14 @@ function createBlotterView() {
   headTable.appendChild(tr);
 
   createTableHeader(tr);
-
-  const bodyTable = document.createElement("tbody");
-
-  for (let i = 0; i < tableRegistrations.length; i++) {
-    const registration = createOneTableRegistration(tableRegistrations[i]);
-    bodyTable.appendChild(registration);
-  }
-
+  const bodyTable = createBodyTable(tableRegistrations);
   blotterTable.appendChild(headTable);
   blotterTable.appendChild(bodyTable);
 
   blotterTableResponsive.appendChild(blotterTable);
   blotterSection.appendChild(blotterButtons);
   blotterSection.appendChild(blotterTableResponsive);
-
+  
   return blotterSection;
 }
 
@@ -788,6 +797,19 @@ function cleanup(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
+
+function filterByCYYPair() {
+  let x = tableRegistrations;
+  let selectedPair = document.getElementById('inputCcy');
+  x = x.filter(i => i.ccy_pair === selectedPair.value);
+  const body = document.getElementById("table-body");
+  if (body) {
+    cleanup(body);
+  }
+  const table = document.getElementById("blotter-table");
+  table.appendChild(createBodyTable(x));
+}
+
 window.onload = () => {
   //load list of currencies available
   console.log("data");

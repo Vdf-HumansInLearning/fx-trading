@@ -137,23 +137,18 @@ function submitRegisterData() {
   const form = document.getElementById("form");
 
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
-      e.stopPropagation();
 
+      let username = document.getElementById("inputUsername").value;
+      let email = document.getElementById("inputEmail").value;
+      let password = document.getElementById("inputPassword").value;
+      let repassword = document.getElementById("inputPasswordConfirm").value;
+      
       const isValid = validateRegisterForm(); // front-end validation
 
       if (isValid) {
-        setTimeout(() => {
-          console.log("you're in set timeout");
-          showToast("Success", "You have registered with success.");
-        }, 5000);
         // submit form
-        const form = document.getElementById("form");
-        let username = document.getElementById("inputUsername").value;
-        let email = document.getElementById("inputEmail").value;
-        let password = document.getElementById("inputPassword").value;
-        let repassword = document.getElementById("inputPasswordConfirm").value;
         const url = "http://localhost:8080/api/auth/register";
 
         fetch(url, {
@@ -171,20 +166,18 @@ function submitRegisterData() {
         })
           .then((data) => {
             console.log(data);
-            if (data.status === 400) {
-              console.log("eroare");
-            }
             if (data.status == 200) {
               console.log("afiseaza modala");
-              //save cookie
-              //show toaster
-              window.location.href = "http://127.0.0.1:5500/client/index.html";
-              // setTimeout(() => {
-              //   console.log("you're in set timeout");
-
-              // }, 5000);
+              showToast("Register succesfull", "dsdsdsds");
+              setTimeout(function(){
+                e.preventDefault();
+                window.location.href =
+                  "http://127.0.0.1:5500/client/index.html";
+              }, 2000);
 
               //window.location.hash = "#dashboard";
+            } else {
+              showToast("Error", "Registration failed!")
             }
           })
           .catch((error) => {

@@ -448,7 +448,6 @@ function addNewWidget() {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-    pickWidget.remove();
     widgetsNr++;
     widgetIdCounter++;
   } else {
@@ -486,10 +485,6 @@ function confirmSelectionCurrency(pickWidgetId) {
   let pickWidget = document.getElementById(pickWidgetId);
   inputMainCurrency = pickWidget.querySelector("#inputMainCurrency");
   inputSecondaryCurrency = pickWidget.querySelector("#inputSecondCurrency");
-  console.log("inside confirm selection");
-  console.log(inputMainCurrency);
-
-  console.log(inputSecondaryCurrency.value);
 
   if (
     inputMainCurrency.value &&

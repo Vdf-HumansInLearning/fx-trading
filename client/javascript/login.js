@@ -164,7 +164,7 @@ function validateRegisterForm() {
   if (!pattern.test(email.value)) {
     email.parentElement.insertAdjacentHTML(
       "beforeend",
-      '<p class="error">Email is not valid</p>'
+      '<div class="error">Email is not valid</div>'
     );
   }
 
@@ -174,13 +174,13 @@ function validateRegisterForm() {
     isValid = false;
     password.parentElement.insertAdjacentHTML(
       "beforeend",
-      '<p class="error">Password must be between 8 and 20 characters</p>'
+      '<div class="error">Password must be between 8 and 20 characters</div>'
     );
   } else if (checkRegExp(passRegExp, password.value) === false) {
     isValid = false;
     password.parentElement.insertAdjacentHTML(
       "beforeend",
-      '<p class="error">"Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"</p>'
+      '<div class="error">"Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"</div>'
     );
   }
   function checkRegExp(regExp, myStr) {

@@ -56,25 +56,13 @@ const cardInputsList = [
     label_for: "inputMainCurrency",
     label_text: "Primary",
     select_id: "inputMainCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
+    select_options: [],
   },
   {
     label_for: "inputSecondCurrency",
     label_text: "Secondary",
     select_id: "inputSecondCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
+    select_options: [],
   },
 ];
 
@@ -431,6 +419,8 @@ function createAddWidget() {
 function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
+    getAvailableCurrencies();
+    console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
@@ -810,14 +800,7 @@ function filterByCYYPair() {
   table.appendChild(createBodyTable(x));
 }
 
-window.onload = () => {
-  //load list of currencies available
-  console.log("data");
-
-  //base currency
-  cardInputsList[0].select_options = [];
-  //secondary currency
-  cardInputsList[1].select_options = [];
+function getAvailableCurrencies() {
   fetch(baseUrl + "currencies", {
     method: "GET",
   })
@@ -832,10 +815,16 @@ window.onload = () => {
       //populate the lists
       cardInputsList[0].select_options = optionsList;
       cardInputsList[1].select_options = optionsList;
-      //create the page
-      createIndexPage();
+      console.log("selects now have values");
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+
+window.onload = () => {
+  //load list of currencies available
+  console.log("data");
+  //create the page
+  createIndexPage();
 };

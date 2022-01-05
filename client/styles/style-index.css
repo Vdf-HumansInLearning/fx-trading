@@ -47,6 +47,8 @@
 .card {
   padding: 10px 0;
   height: 100%;
+  -webkit-box-shadow: 3px 3px 16px 1px rgb(45 50 72 / 20%);
+  box-shadow: 3px 3px 16px 1px rgb(45 50 72 / 20%);
 }
 .card-currency {
   padding-bottom: 3px;

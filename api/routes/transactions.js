@@ -26,7 +26,8 @@ router.post("/transactions", (req, res) => {
     req.body.action &&
     req.body.notional &&
     req.body.tenor &&
-    req.body.trans_date
+    req.body.trans_date &&
+    req.body.trans_hour
   ) {
     let transaction = {
       id: uuid.v4(),
@@ -36,7 +37,8 @@ router.post("/transactions", (req, res) => {
       action: req.body.action,
       notional: req.body.notional,
       tenor: req.body.tenor,
-      transDate: req.body.transDate,
+      trans_date: req.body.trans_date,
+      trans_hour: req.body.trans_hour,
     };
     let isValid = validateTransaction(transaction);
     if (isValid) {

@@ -56,25 +56,13 @@ const cardInputsList = [
     label_for: "inputMainCurrency",
     label_text: "Primary",
     select_id: "inputMainCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
+    select_options: [],
   },
   {
     label_for: "inputSecondCurrency",
     label_text: "Secondary",
     select_id: "inputSecondCurrency",
-    select_options: [
-      { value: "opt_usd", text: "USD" },
-      { value: "opt_eur", text: "EUR" },
-      { value: "opt_gbr", text: "GBR" },
-      { value: "opt_ron", text: "RON" },
-      { value: "opt_chf", text: "CHF" },
-    ],
+    select_options: [],
   },
 ];
 
@@ -433,12 +421,18 @@ function createAddWidget() {
 function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
+    getAvailableCurrencies();
+    console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
     widgetIdCounter++;
   } else {
-    showToast("Error", "You cannot have more than 5 widgets on the page");
+    showToast(
+      "Error",
+      "You cannot have more than 5 widgets on the page",
+      false
+    );
   }
 }
 
@@ -451,7 +445,11 @@ function addNewWidget() {
     widgetsNr++;
     widgetIdCounter++;
   } else {
-    showToast("Error", "You cannot have more than 5 widgets on the page");
+    showToast(
+      "Error",
+      "You cannot have more than 5 widgets on the page",
+      false
+    );
   }
 }
 
@@ -476,7 +474,7 @@ function selectCurrency(pickWidgetId) {
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
-        showToast("Error", "You must choose two different currencies");
+        showToast("Error", "You must choose two different currencies", false);
       }
     }
 }
@@ -493,7 +491,7 @@ function confirmSelectionCurrency(pickWidgetId) {
     inputSecondaryCurrency.value !== "opt_none"
   ) {
     if (inputMainCurrency.value == inputSecondCurrency.value) {
-      showToast("Error", "You must choose two different currencies");
+      showToast("Error", "You must choose two different currencies", false);
     } else {
       let currencyObj = {
         base_currency: inputMainCurrency.value,
@@ -523,7 +521,7 @@ function confirmSelectionCurrency(pickWidgetId) {
 
             closeWidget(pickWidgetId);
           } else {
-            showToast("Error", response.body);
+            showToast("Error", response.body, false);
           }
         })
         .catch((error) => {
@@ -531,7 +529,7 @@ function confirmSelectionCurrency(pickWidgetId) {
         });
     }
   } else {
-    showToast("Error", "Currency fields cannot be empty");
+    showToast("Error", "Currency fields cannot be empty", false);
   }
 }
 
@@ -577,6 +575,12 @@ function createFiltersSection(blotterButtons) {
   const inputCyy = document.createElement("select");
   inputCyy.className = "form-select";
   inputCyy.setAttribute("id", "inputCcy");
+  inputCyy.addEventListener("change", () => filterByCYYPair());
+
+  const defaultOption = document.createElement("option");
+  defaultOption.textContent = "Choose..";
+  defaultOption.value = "opt_none";
+  inputCyy.appendChild(defaultOption);
 
   for (let i = 0; i < ccyPairs.length; i++) {
     const option = document.createElement("option");
@@ -599,8 +603,9 @@ function createFiltersSection(blotterButtons) {
   const inputDate = document.createElement("input");
   inputDate.setAttribute("type", "date");
   inputDate.className = "form-control";
-  inputDate.setAttribute("id", "inputDate");
+  inputDate.setAttribute("id", "inputDateFilter");
   inputDate.setAttribute("placeholder", "12/02/2018");
+  inputDate.addEventListener("change", () => filterByCYYPair());
 
   inputFiltersGroupNd.appendChild(inputDateLabel);
   inputFiltersGroupNd.appendChild(inputDate);
@@ -611,11 +616,11 @@ function createFiltersSection(blotterButtons) {
   return inputFilters;
 }
 
-function createOneTableRegistration(transaction) {
+function createOneTableRegistration(transaction, counter) {
   const trUsers = document.createElement("tr");
   const rowId = document.createElement("th");
   rowId.setAttribute("scope", "row");
-  rowId.textContent = transaction.id;
+  rowId.textContent = counter;
   trUsers.appendChild(rowId);
 
   const tdName = document.createElement("td");
@@ -649,6 +654,16 @@ function createOneTableRegistration(transaction) {
   return trUsers;
 }
 
+function createBodyTable(registrations) {
+  const bodyTable = document.createElement("tbody");
+  bodyTable.setAttribute('id', "table-body");
+  for (let i = 0; i < registrations.length; i++) {
+    const registration = createOneTableRegistration(registrations[i], i + 1);
+    bodyTable.appendChild(registration);
+  }
+  return bodyTable;
+}
+
 function createBlotterView() {
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -671,6 +686,7 @@ function createBlotterView() {
   blotterTableResponsive.className = "table-responsive";
 
   const blotterTable = document.createElement("table");
+  blotterTable.setAttribute('id', "blotter-table");
   blotterTable.className = "table table-striped";
 
   const headTable = document.createElement("thead");
@@ -680,14 +696,7 @@ function createBlotterView() {
   headTable.appendChild(tr);
 
   createTableHeader(tr);
-
-  const bodyTable = document.createElement("tbody");
-
-  for (let i = 0; i < tableRegistrations.length; i++) {
-    const registration = createOneTableRegistration(tableRegistrations[i]);
-    bodyTable.appendChild(registration);
-  }
-
+  const bodyTable = createBodyTable(tableRegistrations);
   blotterTable.appendChild(headTable);
   blotterTable.appendChild(bodyTable);
 
@@ -756,10 +765,22 @@ function clearCookiesOnLogout() {
   });
 }
 
-function showToast(titleMessage, bodyMessage) {
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -776,32 +797,89 @@ function cleanup(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
-window.onload = () => {
-  //load list of currencies available
-  console.log("data");
 
-  //base currency
-  cardInputsList[0].select_options = [];
-  //secondary currency
-  cardInputsList[1].select_options = [];
-  fetch(baseUrl + "currencies", {
-    method: "GET",
-  })
-    .then((response) => {
-      return response.json();
+function filterByCYYPair() {
+  const body = document.getElementById("table-body");
+  const inputCcy = document.getElementById("inputCcy").value;
+  const inputDate = document.getElementById("inputDateFilter").value;
+  console.log(inputDate)
+  if (body) {
+    cleanup(body);
+  }
+  let selectedDate = document.getElementById('inputDateFilter').value;
+  let dateArray = selectedDate.split("-").reverse();
+  selectedDate = dateArray.join('/');
+
+  console.log(selectedDate)
+  if (inputCcy != "opt_none" && selectedDate.length !== 0) {
+    let filteredRegistrations = tableRegistrations;
+    const selectedPair = document.getElementById('inputCcy').value;
+    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair).filter(i => i.trans_date.startsWith(selectedDate));
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+    }
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+      body.appendChild(reg);
+    }
+  }
+  else if (inputCcy != "opt_none" && selectedDate.length === 0) {
+    let filteredRegistrations = tableRegistrations;
+    const selectedPair = document.getElementById('inputCcy').value;
+    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair);
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+    }
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+      body.appendChild(reg);
+    }
+  }
+  else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
+    let filteredRegistrations = tableRegistrations;
+    filteredRegistrations = tableRegistrations.filter(i => i.trans_date.startsWith(selectedDate));
+    if (filteredRegistrations.length === 0) {
+      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+    }
+    for (let i = 0; i < filteredRegistrations.length; i++) {
+      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+      body.appendChild(reg);
+    }
+  }
+  else {
+      for (let i = 0; i < tableRegistrations.length; i++) {
+        const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+        body.appendChild(reg);
+      }
+    }
+  }
+
+  function getAvailableCurrencies() {
+    fetch(baseUrl + "currencies", {
+      method: "GET",
     })
-    .then((data) => {
-      let optionsList = data.map((item) => ({
-        value: item,
-        text: item,
-      }));
-      //populate the lists
-      cardInputsList[0].select_options = optionsList;
-      cardInputsList[1].select_options = optionsList;
-      //create the page
-      createIndexPage();
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-};
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let optionsList = data.map((item) => ({
+          value: item,
+          text: item,
+        }));
+        //populate the lists
+        cardInputsList[0].select_options = optionsList;
+        cardInputsList[1].select_options = optionsList;
+        console.log("selects now have values");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  window.onload = () => {
+    //load list of currencies available
+    console.log("data");
+    //create the page
+    createIndexPage();
+  };

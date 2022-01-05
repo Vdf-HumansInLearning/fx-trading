@@ -142,8 +142,6 @@ function submitRegisterData() {
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      // e.stopPropagation();
-
       const isValid = validateRegisterForm(); // front-end validation
 
       if (isValid) {
@@ -170,20 +168,18 @@ function submitRegisterData() {
         })
           .then((data) => {
             console.log(data);
-
             if (data.status == 200) {
               console.log("afiseaza modala");
-              //save cookie
               showToast("Register succesfull", "dsdsdsds");
-              setTimeout(() => {
-                console.log("suntem in setTimeout");
+              setTimeout(function(){
+                e.preventDefault();
                 window.location.href =
                   "http://127.0.0.1:5500/client/index.html";
-              }, 3000);
+              }, 2000);
 
               //window.location.hash = "#dashboard";
             } else {
-              showToast("Register fail", "dsdsdsds");
+              showToast("Error", "Registration failed!")
             }
           })
           .catch((error) => {

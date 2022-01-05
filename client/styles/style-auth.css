@@ -26,6 +26,10 @@ body {
   height: 350px;
 }
 
+.mobile__image {
+  display: none;
+}
+
 .main__btn {
   width: 100%;
   background-color: #3496f0;
@@ -88,7 +92,20 @@ p a {
     display: none;
   }
   .main {
+    position: relative;
     width: 100%;
+  }
+  .mobile__image {
+    display: unset;
+    position: absolute;
+    margin-top: -550px;
+    margin-left: -50px;
+    width: 20%;
+    z-index: -1;
+  }
+  .register__logo {
+    margin-top: -750px;
+    width: 20%;
   }
 }
 
@@ -108,5 +125,13 @@ p a {
   }
   .main__title {
     text-align: center;
+  }
+
+  .mobile__image {
+    width: 30%;
+  }
+  .register__logo {
+    width: 20%;
+    margin-top: -650px;
   }
 }

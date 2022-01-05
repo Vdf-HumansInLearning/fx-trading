@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
 
+
 const filePath = "../db/transactions.json";
 
 /* GET transactions */
@@ -50,6 +51,7 @@ router.post("/transactions", (req, res) => {
   } else {
     res.status(400).send({ message: "Bad request" });
   }
+
 });
 
 function validateTransaction(transaction) {

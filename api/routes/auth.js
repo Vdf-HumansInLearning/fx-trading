@@ -7,8 +7,10 @@ var router = express.Router();
 
 //user: id, username, email, password
 
-let emailRegExp = /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/;
-let passRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+let emailRegExp =
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+let passRegExp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 //check if a string matches a regEx
 function checkRegExp(regExp, myStr) {
@@ -19,16 +21,18 @@ function validateUser(user) {
   let errArray = [];
 
   if (user.username < 3) {
-    errArray.push("Firstname should have between 3 and 100 characters.");
+    errArray.push("Firstname should have between 3 and 20 characters.");
   }
   if (!user.email) {
     errArray.push("Email is required!");
   }
   if (checkRegExp(emailRegExp, user.email) === false) {
-    errArray.push("Invalid! Email should contain '@' and a domain!")
+    errArray.push("Invalid! Email should contain '@' and a domain!");
   }
   if (checkRegExp(passRegExp, user.password) === false) {
-    errArray.push("Invalid! Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!")
+    errArray.push(
+      "Invalid! Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"
+    );
   }
   if (user.password !== user.repassword) {
     errArray.push("Password do not match!");
@@ -44,56 +48,64 @@ function readFromFile(relPath) {
 }
 
 // write data to a json file
-function writeToFile(content, relPath) {
-  fs.writeFile(path.resolve(__dirname, relPath), JSON.stringify(content), function (err) {
-    if (err) {
-      return err;
-    } else {
-      res.send("Successfully registered");
-      return 'User inserted in db';
+function writeToFile(res, content, relPath) {
+  fs.writeFile(
+    path.resolve(__dirname, relPath),
+    JSON.stringify(content, null, 2),
+    function (err) {
+      if (err) {
+        return err;
+      } else {
+        res.status(200);
+        res.send("Succesfully registered");
+      }
     }
-  })
+  );
 }
-// Get method for login 
-router.get('/login', function (req, res) {
+// Get method for login
+router.get("/login", function (req, res) {
   let users = readFromFile("../db/users.json");
-  console.log(users);
+  // console.log(users);
   res.json(users);
-})
+});
 
-// Post method for login 
-router.post('/login', function (req, res) {
-  let users = readFromFile("../db/users.json");
-  console.log(users);
-  let user = users.find(i => i.email == req.body.email &&
-    i.password == req.body.password);
-
-  if (user.length === 0) {
-    res.status(404).send("Invalid username or password.");
+// Post method for login
+router.post("/login", function (req, res) {
+  let usersList = readFromFile("../db/users.json");
+  // console.log(users);
+  let user = usersList.users.find(
+    (i) => i.email == req.body.email && i.password == req.body.password
+  );
+  console.log(user);
+  if (!user) {
+    res.status(404).send({ message: "Invalid username or password." });
+  } else {
+    res.status(200).send(user);
   }
-  res.json(user);
-})
+});
 
 // POST NEW REGISTERED USER
-router.post('/register', function (req, res) {
-  let users = readFromFile("../db/users.json");
-  console.log(users);
+router.post("/register", function (req, res) {
+  let usersList = readFromFile("../db/users.json");
 
   let user = {
-    "id": users.length + 1,
-    "username": req.body.username,
-    "email": req.body.email,
-    "password": req.body.password,
-    "repassword": req.body.repassword
-  }
+    id: usersList.users.length + 1,
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    repassword: req.body.repassword,
+  };
+
+  console.log(user);
   let errors = validateUser(user);
   if (errors.length > 0) {
+    // console.log("eroare server");
     res.status(400).send(errors);
     return;
   }
   delete user.repassword;
-  users.push(user);
-  writeToFile(users, "../db/users.json");
+  usersList.users.push(user);
+  writeToFile(res, usersList, "../db/users.json");
 });
 
 module.exports = router;

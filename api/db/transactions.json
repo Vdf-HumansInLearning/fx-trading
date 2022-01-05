@@ -19,6 +19,7 @@
       "notional": "20000",
       "tenor": "Spot",
       "trans_date": "12/02/2018 15:28"
+
     },
     {
       "id": "9034be5b-9ccc-4316-ab72-0ba8dae613c7",
@@ -46,6 +47,7 @@
       "action": "sell",
       "notional": "100",
       "tenor": "1M"
+
     }
   ]
 }

@@ -1,16 +1,23 @@
-@import url('./general-style.css');
+@import url("./general-style.css");
 
 body {
   box-sizing: border-box;
 }
 
+p {
+  margin-bottom: 0.5rem;
+}
+
+.body {
+  display: flex;
+}
 
 .body-container {
   display: flex;
 }
 
 .aside {
-  background-color: #75d8a6;
+  background-color: var(--color-green);
   width: 50%;
   height: 100vh;
   display: flex;
@@ -23,11 +30,16 @@ body {
   height: 350px;
 }
 
+.app {
+  width: 100%;
+  display: flex;
+}
+
 .main__btn {
   width: 100%;
-  background-color: #3496f0;
+  background-color: var(--color-blue);
   height: 40px;
-  color: white;
+  color: var(--color-white);
   font-family: "Open Sans";
   border: none;
   border-radius: 5px;
@@ -52,7 +64,7 @@ body {
 
 .main__title {
   font-weight: 700;
-  color: var(--gray-color);
+  color: var(--color-grey-titles);
   font-family: "Open Sans";
 }
 
@@ -69,11 +81,15 @@ p a {
 }
 
 .fas {
-  color: #ddd;
+  color: var(--color-grey-border);
   padding-right: 10px;
   font-size: 27px;
   display: flex;
   align-items: center;
+}
+
+.error {
+  color: var(--color-red);
 }
 
 @media (max-width: 990px) {

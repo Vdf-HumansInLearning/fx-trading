@@ -1,3 +1,5 @@
+@import url("./toast-style.css");
+
 :root {
   --color-grey-background: #f2f2f2;
   --color-grey-border: #dddddd;
@@ -12,7 +14,7 @@
 }
 
 body {
-  color: var(--dark-gray);
+  color: var(--color-grey-body);
   font-family: var(--font-openSans), sans-serif;
 }
 
@@ -26,7 +28,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--gray-color);
+  color: var(--color-grey-titles);
   font-weight: 700;
   font-size: 24px;
 }

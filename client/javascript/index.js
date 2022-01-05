@@ -1,4 +1,5 @@
 const bodyContainer = document.getElementById("body-container");
+const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
 let widgetsNr = 0;
 let pickWidget = null;
@@ -13,8 +14,41 @@ let item = {
   buyRate: 5,
 };
 
+let tableHeadArray = [
+  { name: "ID", icon: false },
+  { name: "Username", icon: true },
+  { name: "CYY Pair", icon: true },
+  { name: "Rate", icon: false },
+  { name: "Action", icon: true },
+  { name: "Notional", icon: true },
+  { name: "Tenor", icon: false },
+  { name: "Transaction Date", icon: true },
+];
+
+let tableRegistrations = [
+  {
+    id: 1,
+    username: "Mark Otto",
+    ccy_pair: "USD/EUR",
+    rate: "0.86",
+    action: "sell",
+    notional: "100",
+    tenor: "1M",
+    trans_date: "12/02/2018 12:22",
+  },
+  {
+    id: 2,
+    username: "Test Test",
+    ccy_pair: "USD/RON",
+    rate: "0.86",
+    action: "buy",
+    notional: "20000",
+    tenor: "Spot",
+    trans_date: "12/02/2018 15:28",
+  },
+];
 //card ids
-let cardIdCounter = 0;
+let widgetIdCounter = 0;
 
 //input group list
 const cardInputsList = [
@@ -44,6 +78,34 @@ const cardInputsList = [
   },
 ];
 
+//ccyPairs input
+const ccyPairs = [
+  "USD/EUR",
+  "USD/RON",
+  "USD/GBP",
+  "USD/CHF",
+  "RON/USD",
+  "RON/EUR",
+  "RON/GBP",
+  "RON/CHF",
+  "EUR/USD",
+  "EUR/RON",
+  "EUR/GBP",
+  "EUR/CHF",
+  "CHF/USD",
+  "CHF/EUR",
+  "CHF/RON",
+  "CHF/GBP",
+  "GBP/USD",
+  "GBP/EUR",
+  "GBP/RON",
+  "GBP/CHF",
+];
+
+//select for PickWidget
+let inputMainCurrency = null;
+let inputSecondaryCurrency = null;
+
 function createNavigationBar() {
   const navElem = document.createElement("nav");
   navElem.className = "navbar navbar-light bg-light mb-3";
@@ -65,6 +127,7 @@ function createNavigationBar() {
   logoutBtn.className = "btn btn-outline-secondary";
   logoutBtn.setAttribute("href", "./login.html");
   logoutBtn.setAttribute("role", "button");
+  logoutBtn.setAttribute("id", "logoutBtn");
   logoutBtn.textContent = "Logout";
 
   navBrand.appendChild(navImage);
@@ -77,7 +140,7 @@ function createNavigationBar() {
 function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
-  cardDivCol.id = `card${cardIdCounter}`;
+  cardDivCol.id = `widget${widgetIdCounter}`;
 
   let cardDiv = document.createElement("div");
   cardDivCol.appendChild(cardDiv);
@@ -180,6 +243,7 @@ function createMainWidget(item) {
   inputNational.setAttribute("type", "number");
   inputNational.setAttribute("id", "inputDate");
   inputNational.setAttribute("placeholder", "Amount");
+  inputNational.setAttribute("min", 0);
 
   let tenorDiv = document.createElement("div");
   cardMainArea.appendChild(tenorDiv);
@@ -239,7 +303,7 @@ function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
-  cardContainer.id = `cardPick${cardIdCounter}`;
+  cardContainer.id = `widgetPick${widgetIdCounter}`;
 
   //create card container
   let card = document.createElement("div");
@@ -293,8 +357,9 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
+    select.addEventListener("change", () => selectCurrency(cardContainer.id));
 
-    //add one disabled option
+    //add one default option
     let defaultOption = document.createElement("option");
     defaultOption.setAttribute("value", "opt_none");
     let defaultOptionText = document.createTextNode("Choose...");
@@ -311,7 +376,6 @@ function createPickWidget() {
       //append each option to select element
       select.append(option);
     });
-
     inputGroup.append(select);
   });
 
@@ -323,7 +387,9 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", addNewWidget);
+  confirmBtn.addEventListener("click", () =>
+    confirmSelectionCurrency(cardContainer.id)
+  );
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -370,21 +436,22 @@ function addPickWidget() {
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
+    widgetIdCounter++;
   } else {
-    generateMessage("You cannot have more than 5 widgets on the page");
+    showToast("Error", "You cannot have more than 5 widgets on the page");
   }
 }
 
 function addNewWidget() {
   //no more that 5 cards
-  if (widgetsNr <= 4) {
+  if (widgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-    pickWidget.remove();
     widgetsNr++;
+    widgetIdCounter++;
   } else {
-    generateMessage("You cannot have more than 5 widgets on the page");
+    showToast("Error", "You cannot have more than 5 widgets on the page");
   }
 }
 
@@ -393,55 +460,94 @@ function closeWidget(cardId) {
   widgetsNr--;
 }
 
-function generateMessage(message) {
-  //   let toast = document.createElement("div");
-  //   toast.className = "toast-custom success";
-  //   let outerContainer = document.createElement("div");
-  //   outerContainer.className = "outer-container";
-  //   let icon = document.createElement("i");
-  //   outerContainer.className = "fas fa-check-circle";
-  //   outerContainer.append(icon);
+function selectCurrency(pickWidgetId) {
+  let pickWidget = document.getElementById(pickWidgetId);
+  inputMainCurrency = pickWidget.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = pickWidget.querySelector("#inputSecondCurrency");
 
-  //   let innerContainer = document.createElement("div");
-  //   innerContainer.className = "inner-container";
-  //   let innerContainerTitle = document.createElement("p");
-  //   innerContainerTitle.innerText = "Success";
-  //   let innerContainerMessage = document.createElement("p");
-  //   innerContainerMessage.innerText = message;
+  if (inputMainCurrency && inputSecondCurrency)
+    if (
+      inputMainCurrency.value !== "opt_none" ||
+      inputSecondaryCurrency.value !== "opt_none"
+    ) {
+      //user must choose two different currencies
+      if (inputMainCurrency.value == inputSecondCurrency.value) {
+        showToast("Error", "You must choose two different currencies");
+      }
+    }
+}
+function confirmSelectionCurrency(pickWidgetId) {
+  console.log(pickWidgetId);
+  let pickWidget = document.getElementById(pickWidgetId);
+  inputMainCurrency = pickWidget.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = pickWidget.querySelector("#inputSecondCurrency");
 
-  //   innerContainer.append(innerContainerTitle);
-  //   innerContainer.append(innerContainerMessage);
+  if (
+    inputMainCurrency.value &&
+    inputSecondaryCurrency.value &&
+    inputMainCurrency.value !== "opt_none" &&
+    inputSecondaryCurrency.value !== "opt_none"
+  ) {
+    if (inputMainCurrency.value == inputSecondCurrency.value) {
+      showToast("Error", "You must choose two different currencies");
+    } else {
+      let currencyObj = {
+        base_currency: inputMainCurrency.value,
+        quote_currency: inputSecondaryCurrency.value,
+      };
+      fetch(baseUrl + "currencies/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(currencyObj),
+      })
+        .then((res) =>
+          res.json().then((data) => ({ status: res.status, body: data }))
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            console.log(response.body);
+            //populate the item
+            item.mainCurrency = currencyObj.base_currency;
+            item.secondCurrency = currencyObj.quote_currency;
+            item.sellRate = response.body.sell;
+            item.buyRate = response.body.buy;
 
-  //   toast.append(outerContainer);
-  //   toast.append(innerContainer);
-
-  let toast = document.createElement("div");
-  toast.className = "tn-box tn-box-color-1";
-  let toastTitle = document.createElement("p");
-  toastTitle.innerText = message;
-
-  toast.append(toastTitle);
-
-  toast.classList.add("tn-box-active");
-
-  bodyContainer.append(toast);
+            //create the page
+            addNewWidget();
+            closeWidget(pickWidgetId);
+          } else {
+            showToast("Error", response.body);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  } else {
+    showToast("Error", "Currency fields cannot be empty");
+  }
 }
 
-function createBlotterView() {
-  const blotterSection = document.createElement("section");
-  blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
+function createTableHeader(tr) {
+  for (let i = 0; i < tableHeadArray.length; i++) {
+    const th = document.createElement("th");
+    th.setAttribute("scope", "col");
+    th.textContent = tableHeadArray[i].name;
+    if (tableHeadArray[i].icon) {
+      const icon = document.createElement("i");
+      icon.className = "fas fa-sort";
+      const space = document.createElement("span");
+      space.textContent = " ";
+      th.appendChild(space);
+      th.appendChild(icon);
+    }
+    tr.appendChild(th);
+  }
+}
 
-  const blotterTitle = document.createElement("h5");
-  blotterTitle.className = "color-titles";
-  blotterTitle.textContent = "Blotter View";
-  const hr = document.createElement("hr");
-
-  blotterSection.appendChild(blotterTitle);
-  blotterSection.appendChild(hr);
-
-  const blotterButtons = document.createElement("div");
-  blotterButtons.className = "blotter-buttons";
-
+function createFiltersSection(blotterButtons) {
   const filterSubtitle = document.createElement("p");
   filterSubtitle.className = "subtitle";
   filterSubtitle.textContent = "FILTERS";
@@ -467,12 +573,11 @@ function createBlotterView() {
   inputCyy.className = "form-select";
   inputCyy.setAttribute("id", "inputCcy");
 
-  let tenantOptions = ["Spot", "1M", "3M"];
-
-  for (let i = 0; i < tenantOptions.length; i++) {
+  for (let i = 0; i < ccyPairs.length; i++) {
     const option = document.createElement("option");
-    option.setAttribute("value", tenantOptions[i]);
-    option.textContent = tenantOptions[i];
+    option.setAttribute("value", ccyPairs[i]);
+    option.setAttribute("id", ccyPairs[i] + "Ccy");
+    option.textContent = ccyPairs[i];
     inputCyy.appendChild(option);
   }
 
@@ -497,6 +602,64 @@ function createBlotterView() {
 
   inputFilters.appendChild(inputFiltersGroupSt);
   inputFilters.appendChild(inputFiltersGroupNd);
+
+  return inputFilters;
+}
+
+function createOneTableRegistration(transaction) {
+  const trUsers = document.createElement("tr");
+  const rowId = document.createElement("th");
+  rowId.setAttribute("scope", "row");
+  rowId.textContent = transaction.id;
+  trUsers.appendChild(rowId);
+
+  const tdName = document.createElement("td");
+  tdName.textContent = transaction.username;
+  trUsers.appendChild(tdName);
+
+  const tdCcyPair = document.createElement("td");
+  tdCcyPair.textContent = transaction.ccy_pair;
+  trUsers.appendChild(tdCcyPair);
+
+  const tdRate = document.createElement("td");
+  tdRate.textContent = transaction.rate;
+  trUsers.appendChild(tdRate);
+
+  const tdAction = document.createElement("td");
+  tdAction.textContent = transaction.action;
+  trUsers.appendChild(tdAction);
+
+  const tdNotional = document.createElement("td");
+  tdNotional.textContent = transaction.notional;
+  trUsers.appendChild(tdNotional);
+
+  const tdTenor = document.createElement("td");
+  tdTenor.textContent = transaction.tenor;
+  trUsers.appendChild(tdTenor);
+
+  const tdDate = document.createElement("td");
+  tdDate.textContent = transaction.trans_date;
+  trUsers.appendChild(tdDate);
+
+  return trUsers;
+}
+
+function createBlotterView() {
+  const blotterSection = document.createElement("section");
+  blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
+
+  const blotterTitle = document.createElement("h5");
+  blotterTitle.className = "color-titles";
+  blotterTitle.textContent = "Blotter View";
+  const hr = document.createElement("hr");
+
+  blotterSection.appendChild(blotterTitle);
+  blotterSection.appendChild(hr);
+
+  const blotterButtons = document.createElement("div");
+  blotterButtons.className = "blotter-buttons";
+
+  let inputFilters = createFiltersSection(blotterButtons);
   blotterButtons.appendChild(inputFilters);
 
   const blotterTableResponsive = document.createElement("div");
@@ -511,81 +674,15 @@ function createBlotterView() {
   const tr = document.createElement("tr");
   headTable.appendChild(tr);
 
-  let tableHeadArray = [
-    { name: "ID", icon: false },
-    { name: "Username", icon: true },
-    { name: "CYY Pair", icon: true },
-    { name: "Rate", icon: false },
-    { name: "Action", icon: true },
-    { name: "Notional", icon: true },
-    { name: "Tenor", icon: false },
-    { name: "Transaction Date", icon: true },
-  ];
-
-  for (let i = 0; i < tableHeadArray.length; i++) {
-    const th = document.createElement("th");
-    th.setAttribute("scope", "col");
-    th.textContent = tableHeadArray[i].name;
-    if (tableHeadArray[i].icon) {
-      const icon = document.createElement("i");
-      icon.className = "fas fa-sort";
-      th.appendChild(icon);
-    }
-    tr.appendChild(th);
-  }
+  createTableHeader(tr);
 
   const bodyTable = document.createElement("tbody");
-  const trUsers = document.createElement("tr");
-
-  let tableRegistrations = [
-    {
-      id: 1,
-      username: "Mark Otto",
-      ccy_pair: "USD/EUR",
-      rate: "0.86",
-      action: "sell",
-      notional: "100",
-      tenor: "1M",
-      trans_date: "12/02/2018 12:22",
-    },
-  ];
 
   for (let i = 0; i < tableRegistrations.length; i++) {
-    const rowId = document.createElement("th");
-    rowId.setAttribute("scope", "row");
-    rowId.textContent = tableRegistrations[i].id;
-    trUsers.appendChild(rowId);
-
-    const tdName = document.createElement("td");
-    tdName.textContent = tableRegistrations[i].username;
-    trUsers.appendChild(tdName);
-
-    const tdCcyPair = document.createElement("td");
-    tdCcyPair.textContent = tableRegistrations[i].ccy_pair;
-    trUsers.appendChild(tdCcyPair);
-
-    const tdRate = document.createElement("td");
-    tdRate.textContent = tableRegistrations[i].rate;
-    trUsers.appendChild(tdRate);
-
-    const tdAction = document.createElement("td");
-    tdAction.textContent = tableRegistrations[i].action;
-    trUsers.appendChild(tdAction);
-
-    const tdNotional = document.createElement("td");
-    tdNotional.textContent = tableRegistrations[i].notional;
-    trUsers.appendChild(tdNotional);
-
-    const tdTenor = document.createElement("td");
-    tdTenor.textContent = tableRegistrations[i].tenor;
-    trUsers.appendChild(tdTenor);
-
-    const tdDate = document.createElement("td");
-    tdDate.textContent = tableRegistrations[i].trans_date;
-    trUsers.appendChild(tdDate);
+    const registration = createOneTableRegistration(tableRegistrations[i]);
+    bodyTable.appendChild(registration);
   }
 
-  bodyTable.appendChild(trUsers);
   blotterTable.appendChild(headTable);
   blotterTable.appendChild(bodyTable);
 
@@ -642,4 +739,64 @@ function createIndexPage() {
   mainContainer.appendChild(blotter);
 }
 
-createIndexPage();
+// clear cookie using its name
+function clearCookie(name) {
+  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+}
+
+function clearCookiesOnLogout() {
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener("click", function () {
+    clearCookie("username");
+  });
+}
+
+function showToast(titleMessage, bodyMessage) {
+  let liveToast = document.getElementById("liveToast");
+  console.log(liveToast);
+  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  cleanup(toastHeader);
+  toastHeaderText = document.createTextNode(titleMessage);
+  toastHeader.appendChild(toastHeaderText);
+  let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
+  let toastBodyText = document.createTextNode(bodyMessage);
+  toastBody.appendChild(toastBodyText);
+  let toast = new bootstrap.Toast(liveToast);
+  toast.show();
+}
+function cleanup(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+window.onload = () => {
+  //load list of currencies available
+  console.log("data");
+
+  //base currency
+  cardInputsList[0].select_options = [];
+  //secondary currency
+  cardInputsList[1].select_options = [];
+  fetch(baseUrl + "currencies", {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      let optionsList = data.map((item) => ({
+        value: item,
+        text: item,
+      }));
+      //populate the lists
+      cardInputsList[0].select_options = optionsList;
+      cardInputsList[1].select_options = optionsList;
+      //create the page
+      createIndexPage();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};

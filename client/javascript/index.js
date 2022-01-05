@@ -457,7 +457,11 @@ function addNewWidget() {
 }
 
 function closeWidget(cardId) {
-  document.getElementById(cardId).remove();
+  console.log("cardID: " + cardId);
+  if (cardId !== null) {
+    document.getElementById(cardId).remove();
+  }
+
   widgetsNr--;
 }
 
@@ -521,6 +525,7 @@ function confirmSelectionCurrency(pickWidgetId) {
 
             //create the page
             addNewWidget();
+
             closeWidget(pickWidgetId);
           } else {
             showToast("Error", response.body);

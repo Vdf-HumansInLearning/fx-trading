@@ -140,7 +140,7 @@ function submitRegisterData() {
   const form = document.getElementById("form");
 
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
       // e.stopPropagation();
 
@@ -148,7 +148,7 @@ function submitRegisterData() {
 
       if (isValid) {
         // submit form
-        const form = document.getElementById("form");
+
         let username = document.getElementById("inputUsername").value;
         let email = document.getElementById("inputEmail").value;
         let password = document.getElementById("inputPassword").value;
@@ -172,22 +172,17 @@ function submitRegisterData() {
             console.log(data);
 
             if (data.status == 200) {
-              e.preventDefault();
-
               console.log("afiseaza modala");
-              console.log(data.status);
               //save cookie
-
               showToast("Register succesfull", "dsdsdsds");
               setTimeout(() => {
+                console.log("suntem in setTimeout");
                 window.location.href =
                   "http://127.0.0.1:5500/client/index.html";
               }, 3000);
 
               //window.location.hash = "#dashboard";
             } else {
-              e.preventDefault();
-
               showToast("Register fail", "dsdsdsds");
             }
           })
@@ -273,6 +268,7 @@ function removePreviousError(parent) {
 }
 
 function showToast(titleMessage, bodyMessage) {
+  console.log("suntem in showToast");
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");

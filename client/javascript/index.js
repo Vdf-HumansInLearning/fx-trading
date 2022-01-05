@@ -149,12 +149,16 @@ function createMainWidget(item) {
   let spanMainCurrency = document.createElement("span");
   pSubtitle.appendChild(spanMainCurrency);
   spanMainCurrency.className = "text-large ";
+  spanMainCurrency.setAttribute("id", "mainCurrency");
   spanMainCurrency.textContent = `${item.mainCurrency}`;
+  spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
 
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
+  spanSecondCurrency.setAttribute("id", "secondCurrency");
   spanSecondCurrency.textContent = `/${item.secondCurrency}`;
+  spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
   let divIcon = document.createElement("div");
   cardDivItems.appendChild(divIcon);
@@ -276,15 +280,123 @@ function createMainWidget(item) {
   divButtons.appendChild(sellBtn);
   sellBtn.className = "btn btn-success";
   sellBtn.setAttribute("type", "button");
+  sellBtn.setAttribute("id", "sellBtn");
   sellBtn.textContent = "Sell";
+  sellBtn.addEventListener("click", () => {
+    sendDataTransactions(
+      "sell",
+      `${item.mainCurrency}`,
+      `${item.secondCurrency}`,
+      `${item.sellRate}`
+    );
+  });
 
   let buyBtn = document.createElement("button");
   divButtons.appendChild(buyBtn);
   buyBtn.className = "btn btn-primary";
   buyBtn.setAttribute("type", "button");
+  buyBtn.setAttribute("id", "buyBtn");
   buyBtn.textContent = "Buy";
-
+  buyBtn.addEventListener("click", () => {
+    sendDataTransactions(
+      "buy",
+      `${item.mainCurrency}`,
+      `${item.secondCurrency}`,
+      `${item.buyRate}`
+    );
+  });
   return cardDivCol;
+}
+
+function sendDataTransactions(
+  action,
+  mainCurrency,
+  secondCurrency,
+  sellOrBuyRate
+) {
+  let notional = document.getElementById("inputDate").value;
+  let tenor = document.getElementById("inputCcy").value;
+  let mainCurrencyToSend = mainCurrency;
+  let secondCurrencyToSend = secondCurrency;
+  let sellOrBuyRateToSend = sellOrBuyRate;
+  if (notional && tenor !== "Choose...") {
+    let actionSellOrBuy = action;
+    const monthNames = [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+    ];
+    const dateObj = new Date();
+    const month = monthNames[dateObj.getMonth()];
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const year = dateObj.getFullYear();
+    const d = new Date();
+    function addZero(i) {
+      if (i < 10) {
+        i = "0" + i;
+      }
+      return i;
+    }
+    let h = addZero(dateObj.getHours());
+    let m = addZero(dateObj.getMinutes());
+    let s = addZero(dateObj.getSeconds());
+    let time = h + ":" + m + ":" + s;
+    const outputDate = month + "/" + day + "/" + year + " " + time;
+
+    console.log(mainCurrencyToSend);
+    console.log(secondCurrencyToSend);
+    console.log(sellOrBuyRateToSend);
+    console.log(actionSellOrBuy);
+    console.log(outputDate);
+    console.log(notional);
+    console.log(tenor);
+
+    let url = "http://localhost:8080/api/auth/transactions";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: "test",
+        ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
+        rate: sellOrBuyRateToSend,
+        action: actionSellOrBuy,
+        notional: notional,
+        tenor: tenor,
+        trans_date: outputDate,
+      }),
+    })
+      // .then((res) =>
+      //   res.json().then((data) => ({ status: res.status, body: data }))
+      // )
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          //show toaster succes
+        } else {
+          showToast("Failure", "Transaction failed");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else if (notional && tenor === "Choose...") {
+    showToast("Empty field", "Please choose a tenor value");
+  } else if (!notional && tenor !== "Choose...") {
+    showToast("Empty field", "Please choose a National value");
+  } else if (!notional && tenor === "Choose...") {
+    showToast("Empty field", "Please choose a national and tenor values");
+  }
 }
 
 function createPickWidget() {
@@ -648,7 +760,7 @@ function createOneTableRegistration(transaction, counter) {
 
 function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
-  bodyTable.setAttribute('id', "table-body");
+  bodyTable.setAttribute("id", "table-body");
   for (let i = 0; i < registrations.length; i++) {
     const registration = createOneTableRegistration(registrations[i], i + 1);
     bodyTable.appendChild(registration);
@@ -678,7 +790,7 @@ function createBlotterView() {
   blotterTableResponsive.className = "table-responsive";
 
   const blotterTable = document.createElement("table");
-  blotterTable.setAttribute('id', "blotter-table");
+  blotterTable.setAttribute("id", "blotter-table");
   blotterTable.className = "table table-striped";
 
   const headTable = document.createElement("thead");
@@ -794,84 +906,98 @@ function filterByCYYPair() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
   const inputDate = document.getElementById("inputDateFilter").value;
-  console.log(inputDate)
+  console.log(inputDate);
   if (body) {
     cleanup(body);
   }
-  let selectedDate = document.getElementById('inputDateFilter').value;
+  let selectedDate = document.getElementById("inputDateFilter").value;
   let dateArray = selectedDate.split("-").reverse();
-  selectedDate = dateArray.join('/');
+  selectedDate = dateArray.join("/");
 
-  console.log(selectedDate)
+  console.log(selectedDate);
   if (inputCcy != "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
-    const selectedPair = document.getElementById('inputCcy').value;
-    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair).filter(i => i.trans_date.startsWith(selectedDate));
+    const selectedPair = document.getElementById("inputCcy").value;
+    filteredRegistrations = tableRegistrations
+      .filter((i) => i.ccy_pair === selectedPair)
+      .filter((i) => i.trans_date.startsWith(selectedDate));
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
-      
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else if (inputCcy != "opt_none" && selectedDate.length === 0) {
+  } else if (inputCcy != "opt_none" && selectedDate.length === 0) {
     let filteredRegistrations = tableRegistrations;
-    const selectedPair = document.getElementById('inputCcy').value;
-    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair);
+    const selectedPair = document.getElementById("inputCcy").value;
+    filteredRegistrations = tableRegistrations.filter(
+      (i) => i.ccy_pair === selectedPair
+    );
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
+  } else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
-    filteredRegistrations = tableRegistrations.filter(i => i.trans_date.startsWith(selectedDate));
+    filteredRegistrations = tableRegistrations.filter((i) =>
+      i.trans_date.startsWith(selectedDate)
+    );
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else {
-      for (let i = 0; i < tableRegistrations.length; i++) {
-        const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
-        body.appendChild(reg);
-      }
+  } else {
+    for (let i = 0; i < tableRegistrations.length; i++) {
+      const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+      body.appendChild(reg);
     }
   }
+}
 
-  function getAvailableCurrencies() {
-    fetch(baseUrl + "currencies", {
-      method: "GET",
+function getAvailableCurrencies() {
+  fetch(baseUrl + "currencies", {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        let optionsList = data.map((item) => ({
-          value: item,
-          text: item,
-        }));
-        //populate the lists
-        cardInputsList[0].select_options = optionsList;
-        cardInputsList[1].select_options = optionsList;
-        console.log("selects now have values");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
+    .then((data) => {
+      let optionsList = data.map((item) => ({
+        value: item,
+        text: item,
+      }));
+      //populate the lists
+      cardInputsList[0].select_options = optionsList;
+      cardInputsList[1].select_options = optionsList;
+      console.log("selects now have values");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
-  window.onload = () => {
-    //load list of currencies available
-    console.log("data");
-    //create the page
-    createIndexPage();
-  };
+window.onload = () => {
+  //load list of currencies available
+  console.log("data");
+  //create the page
+  createIndexPage();
+};

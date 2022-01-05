@@ -27,6 +27,14 @@ function createMain() {
   main.appendChild(divContainer);
   divContainer.className = "main__container";
 
+  const logoImg = document.createElement("img");
+  logoImg.classList.add("mobile__image");
+  logoImg.classList.add("register__logo");
+  logoImg.setAttribute("src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg");
+  logoImg.setAttribute("alt", "logo");
+  main.append(logoImg);
+
   let h1 = document.createElement("h1");
   divContainer.appendChild(h1);
   h1.className = "main__title";

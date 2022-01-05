@@ -29,6 +29,13 @@ function createMainLoginForm() {
   mainContainer.classList.add("main__container");
   main.appendChild(mainContainer);
 
+  const logoImg = document.createElement("img");
+  logoImg.classList.add("mobile__image");
+  logoImg.setAttribute("src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg");
+  logoImg.setAttribute("alt", "logo");
+  main.append(logoImg);
+
   let h1 = document.createElement("h1");
   h1.classList.add("main__title");
   h1.textContent = "Log in to your account";

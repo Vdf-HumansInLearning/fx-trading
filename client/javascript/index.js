@@ -17,7 +17,7 @@ let item = {
 let tableHeadArray = [
   { name: "ID", icon: false },
   { name: "Username", icon: true },
-  { name: "CYY Pair", icon: true },
+  { name: "CCY Pair", icon: true },
   { name: "Rate", icon: false },
   { name: "Action", icon: true },
   { name: "Notional", icon: true },
@@ -89,6 +89,14 @@ const ccyPairs = [
   "GBP/RON",
   "GBP/CHF",
 ];
+
+let sortObj = {
+  username: false,
+  ccy_pair: false,
+  action: false,
+  notional: false,
+  trans_date: false,
+};
 
 //select for PickWidget
 let inputMainCurrency = null;
@@ -545,9 +553,103 @@ function createTableHeader(tr) {
       space.textContent = " ";
       th.appendChild(space);
       th.appendChild(icon);
+      addTableHeadSortEvent(tableHeadArray[i], icon);
     }
     tr.appendChild(th);
   }
+}
+
+function addTableHeadSortEvent(item, icon) {
+  if (item.name === "Username") {
+    icon.addEventListener("click", () => sortAlphabetical("username"));
+  }
+  if (item.name === "CCY Pair") {
+    icon.addEventListener("click", () => sortAlphabetical("ccy_pair"));
+  }
+  if (item.name === "Action") {
+    icon.addEventListener("click", () => sortAlphabetical("action"));
+  }
+  if (item.name === "Notional") {
+    icon.addEventListener("click", () => sortNumerical("notional"));
+  }
+  if (item.name === "Transaction Date") {
+    icon.addEventListener("click", () => sortDate("trans_date"));
+  }
+}
+
+function sortAlphabetical(property) {
+  const table = document.getElementById("blotter-table");
+  const tableBody = document.getElementById("table-body");
+  let filteredRegistrations = [];
+
+  sortObj.property = !sortObj.property;
+
+  if (tableBody) {
+    cleanup(tableBody);
+  }
+  if (sortObj.property) {
+    filteredRegistrations = tableRegistrations.sort((a, b) =>
+      a[property].toLowerCase().localeCompare(b[property].toLowerCase())
+    );
+  } else {
+    filteredRegistrations = tableRegistrations.sort((a, b) =>
+      b[property].toLowerCase().localeCompare(a[property].toLowerCase())
+    );
+  }
+
+  console.log(filteredRegistrations);
+  createBodyTable(filteredRegistrations);
+  table.appendChild(tableBody);
+}
+
+function sortNumerical(property) {
+  const table = document.getElementById("blotter-table");
+  const tableBody = document.getElementById("table-body");
+  let filteredRegistrations = [];
+
+  sortObj.property = !sortObj.property;
+
+  if (tableBody) {
+    cleanup(tableBody);
+  }
+  if (sortObj.property) {
+    filteredRegistrations = tableRegistrations.sort(
+      (a, b) => a[property] - b[property]
+    );
+  } else {
+    filteredRegistrations = tableRegistrations.sort(
+      (a, b) => b[property] - a[property]
+    );
+  }
+
+  console.log(filteredRegistrations);
+  createBodyTable(filteredRegistrations);
+  table.appendChild(tableBody);
+}
+
+function sortDate(property) {
+  const table = document.getElementById("blotter-table");
+  const tableBody = document.getElementById("table-body");
+  let filteredRegistrations = [];
+
+  sortObj.property = !sortObj.property;
+
+  if (tableBody) {
+    cleanup(tableBody);
+  }
+  if (sortObj.property) {
+    filteredRegistrations = tableRegistrations.sort(
+      (a, b) => new Date(a[property]) <= new Date(b[property])
+    );
+  } else {
+    filteredRegistrations = tableRegistrations.sort(
+      (a, b) => new Date(b[property]) <= new Date(a[property])
+    );
+  }
+
+  console.log(filteredRegistrations);
+  createBodyTable(filteredRegistrations);
+  table.appendChild(tableBody);
 }
 
 function createFiltersSection(blotterButtons) {
@@ -656,7 +758,7 @@ function createOneTableRegistration(transaction, counter) {
 
 function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
-  bodyTable.setAttribute('id', "table-body");
+  bodyTable.setAttribute("id", "table-body");
   for (let i = 0; i < registrations.length; i++) {
     const registration = createOneTableRegistration(registrations[i], i + 1);
     bodyTable.appendChild(registration);
@@ -686,7 +788,7 @@ function createBlotterView() {
   blotterTableResponsive.className = "table-responsive";
 
   const blotterTable = document.createElement("table");
-  blotterTable.setAttribute('id', "blotter-table");
+  blotterTable.setAttribute("id", "blotter-table");
   blotterTable.className = "table table-striped";
 
   const headTable = document.createElement("thead");
@@ -802,84 +904,98 @@ function filterByCYYPair() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
   const inputDate = document.getElementById("inputDateFilter").value;
-  console.log(inputDate)
+  console.log(inputDate);
   if (body) {
     cleanup(body);
   }
-  let selectedDate = document.getElementById('inputDateFilter').value;
+  let selectedDate = document.getElementById("inputDateFilter").value;
   let dateArray = selectedDate.split("-").reverse();
-  selectedDate = dateArray.join('/');
+  selectedDate = dateArray.join("/");
 
-  console.log(selectedDate)
+  console.log(selectedDate);
   if (inputCcy != "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
-    const selectedPair = document.getElementById('inputCcy').value;
-    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair).filter(i => i.trans_date.startsWith(selectedDate));
+    const selectedPair = document.getElementById("inputCcy").value;
+    filteredRegistrations = tableRegistrations
+      .filter((i) => i.ccy_pair === selectedPair)
+      .filter((i) => i.trans_date.startsWith(selectedDate));
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
-      
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else if (inputCcy != "opt_none" && selectedDate.length === 0) {
+  } else if (inputCcy != "opt_none" && selectedDate.length === 0) {
     let filteredRegistrations = tableRegistrations;
-    const selectedPair = document.getElementById('inputCcy').value;
-    filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair);
+    const selectedPair = document.getElementById("inputCcy").value;
+    filteredRegistrations = tableRegistrations.filter(
+      (i) => i.ccy_pair === selectedPair
+    );
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
+  } else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
-    filteredRegistrations = tableRegistrations.filter(i => i.trans_date.startsWith(selectedDate));
+    filteredRegistrations = tableRegistrations.filter((i) =>
+      i.trans_date.startsWith(selectedDate)
+    );
     if (filteredRegistrations.length === 0) {
-      showToast("Not found", "There are any registrations for selected filters. Please select another options.", false)
+      showToast(
+        "Not found",
+        "There are any registrations for selected filters. Please select another options.",
+        false
+      );
     }
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  }
-  else {
-      for (let i = 0; i < tableRegistrations.length; i++) {
-        const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
-        body.appendChild(reg);
-      }
+  } else {
+    for (let i = 0; i < tableRegistrations.length; i++) {
+      const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+      body.appendChild(reg);
     }
   }
+}
 
-  function getAvailableCurrencies() {
-    fetch(baseUrl + "currencies", {
-      method: "GET",
+function getAvailableCurrencies() {
+  fetch(baseUrl + "currencies", {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        let optionsList = data.map((item) => ({
-          value: item,
-          text: item,
-        }));
-        //populate the lists
-        cardInputsList[0].select_options = optionsList;
-        cardInputsList[1].select_options = optionsList;
-        console.log("selects now have values");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
+    .then((data) => {
+      let optionsList = data.map((item) => ({
+        value: item,
+        text: item,
+      }));
+      //populate the lists
+      cardInputsList[0].select_options = optionsList;
+      cardInputsList[1].select_options = optionsList;
+      console.log("selects now have values");
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
-  window.onload = () => {
-    //load list of currencies available
-    console.log("data");
-    //create the page
-    createIndexPage();
-  };
+window.onload = () => {
+  //load list of currencies available
+  console.log("data");
+  //create the page
+  createIndexPage();
+};

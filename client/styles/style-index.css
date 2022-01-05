@@ -142,3 +142,7 @@
   color: var(--color-grey-border);
   font-size: 150px;
 }
+
+.fas.fa-sort:hover {
+  cursor: pointer;
+}

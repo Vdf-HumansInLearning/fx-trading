@@ -47,11 +47,8 @@
 .card {
   padding: 10px 0;
   height: 100%;
-  -webkit-box-shadow: 2px 9px 25px 8px rgba(45, 50, 72, 0.2);
-  box-shadow: 2px 9px 25px 8px rgba(45, 50, 72, 0.2);
-  /* box-shadow: 3px 3px 16px 1px rgb(45 50 72 / 20%); */
-  /* box-shadow: 5px 7px 16px 2px rgb(90 95 120 / 20%); */
-  /* box-shadow: 5px 7px 16px 2px rgb(157 158 165 / 20%); */
+  -webkit-box-shadow: 3px 3px 16px 1px rgb(45 50 72 / 20%);
+  box-shadow: 3px 3px 16px 1px rgb(45 50 72 / 20%);
 }
 .card-currency {
   padding-bottom: 3px;

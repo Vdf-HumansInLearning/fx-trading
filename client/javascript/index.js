@@ -553,30 +553,30 @@ function createTableHeader(tr) {
       space.textContent = " ";
       th.appendChild(space);
       th.appendChild(icon);
-      addTableHeadSortEvent(tableHeadArray[i], icon);
+      addTableHeadSortEvent(tableHeadArray[i].name, icon);
     }
     tr.appendChild(th);
   }
 }
 
-function addTableHeadSortEvent(item, icon) {
-  if (item.name === "Username") {
+function addTableHeadSortEvent(name, icon) {
+  if (name === "Username") {
     icon.addEventListener("click", () =>
       sortEntries("username", "alphabetical")
     );
   }
-  if (item.name === "CCY Pair") {
+  if (name === "CCY Pair") {
     icon.addEventListener("click", () =>
       sortEntries("ccy_pair", "alphabetical")
     );
   }
-  if (item.name === "Action") {
+  if (name === "Action") {
     icon.addEventListener("click", () => sortEntries("action", "alphabetical"));
   }
-  if (item.name === "Notional") {
+  if (name === "Notional") {
     icon.addEventListener("click", () => sortEntries("notional", "numerical"));
   }
-  if (item.name === "Transaction Date") {
+  if (name === "Transaction Date") {
     icon.addEventListener("click", () => sortEntries("trans_date", "date"));
   }
 }

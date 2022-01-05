@@ -358,6 +358,7 @@ function sendDataTransactions(
     console.log(sellOrBuyRateToSend);
     console.log(actionSellOrBuy);
     console.log(outputDate);
+    console.log(time);
     console.log(notional);
     console.log(tenor);
 

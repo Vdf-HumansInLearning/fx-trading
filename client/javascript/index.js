@@ -607,11 +607,11 @@ function createFiltersSection(blotterButtons) {
   return inputFilters;
 }
 
-function createOneTableRegistration(transaction) {
+function createOneTableRegistration(transaction, counter) {
   const trUsers = document.createElement("tr");
   const rowId = document.createElement("th");
   rowId.setAttribute("scope", "row");
-  rowId.textContent = transaction.id;
+  rowId.textContent = counter;
   trUsers.appendChild(rowId);
 
   const tdName = document.createElement("td");
@@ -649,7 +649,7 @@ function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
   bodyTable.setAttribute('id', "table-body");
   for (let i = 0; i < registrations.length; i++) {
-    const registration = createOneTableRegistration(registrations[i]);
+    const registration = createOneTableRegistration(registrations[i],i+1);
     bodyTable.appendChild(registration);
   }
   return bodyTable;
@@ -803,13 +803,13 @@ function filterByCYYPair() {
     filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair.value);
 
     for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i]);
+      const reg = createOneTableRegistration(filteredRegistrations[i], i+1);
       body.appendChild(reg);
     }
   }
   else {
     for (let i = 0; i < tableRegistrations.length; i++) {
-      const reg = createOneTableRegistration(tableRegistrations[i]);
+      const reg = createOneTableRegistration(tableRegistrations[i], i+1);
       body.appendChild(reg);
     }
   }

@@ -801,7 +801,9 @@ function filterByCYYPair() {
     let filteredRegistrations = tableRegistrations;
     let selectedPair = document.getElementById('inputCcy');
     filteredRegistrations = tableRegistrations.filter(i => i.ccy_pair === selectedPair.value);
-
+    if(filteredRegistrations.length === 0){
+      showToast("Not found","There are any registrations for selected filters. Please select another options.",false)
+    }
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i+1);
       body.appendChild(reg);

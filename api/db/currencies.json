@@ -106,5 +106,27 @@
         }
       }
     }
+  ],
+  "currency_pairings": [
+    "USD/EUR",
+    "USD/RON",
+    "USD/GBP",
+    "USD/CHF",
+    "RON/USD",
+    "RON/EUR",
+    "RON/GBP",
+    "RON/CHF",
+    "EUR/USD",
+    "EUR/RON",
+    "EUR/GBP",
+    "EUR/CHF",
+    "CHF/USD",
+    "CHF/EUR",
+    "CHF/RON",
+    "CHF/GBP",
+    "GBP/USD",
+    "GBP/EUR",
+    "GBP/RON",
+    "GBP/CHF"
   ]
 }

@@ -23,6 +23,7 @@ let tableHeadArray = [
   { name: "Notional", icon: true },
   { name: "Tenor", icon: false },
   { name: "Transaction Date", icon: true },
+  { name: "Amount", icon: false}
 ];
 
 let tableRegistrations = [
@@ -759,6 +760,10 @@ function createOneTableRegistration(transaction, counter) {
   const tdDate = document.createElement("td");
   tdDate.textContent = transaction.trans_date;
   trUsers.appendChild(tdDate);
+
+  const tdAmount = document.createElement("td");
+  tdAmount.textContent = (Number(transaction.notional) * Number(transaction.rate)).toFixed(2);
+  trUsers.appendChild(tdAmount);
 
   return trUsers;
 }

@@ -145,6 +145,17 @@
       "tenor": "Spot",
       "trans_date": "06/01/2022",
       "trans_hour": "12:26"
+    },
+    {
+      "id": "eb7a398a-6daa-4149-953a-7d0f1b7e9886",
+      "username": "testGigel",
+      "ccy_pair": "USD/RON",
+      "rate": "0.23",
+      "action": "buy",
+      "notional": "444",
+      "tenor": "Spot",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:32"
     }
   ]
 }

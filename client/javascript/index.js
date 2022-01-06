@@ -719,22 +719,22 @@ function sortEntries(property, sortType) {
     case "alphabetical":
       if (sortObj.property) {
         filteredRegistrations = tableRegistrations.sort((a, b) =>
-          a[property].toLowerCase().localeCompare(b[property].toLowerCase())
+          b[property].toLowerCase().localeCompare(a[property].toLowerCase())
         );
       } else {
         filteredRegistrations = tableRegistrations.sort((a, b) =>
-          b[property].toLowerCase().localeCompare(a[property].toLowerCase())
+          a[property].toLowerCase().localeCompare(b[property].toLowerCase())
         );
       }
       break;
     case "numerical":
       if (sortObj.property) {
         filteredRegistrations = tableRegistrations.sort(
-          (a, b) => a[property] - b[property]
+          (a, b) => b[property] - a[property]
         );
       } else {
         filteredRegistrations = tableRegistrations.sort(
-          (a, b) => b[property] - a[property]
+          (a, b) => a[property] - b[property]
         );
       }
       break;

@@ -35,7 +35,7 @@ let tableRegistrations = [
     action: "sell",
     notional: "100",
     tenor: "1M",
-    trans_date: "12/02/2018 12:22",
+    trans_date: "30/05/2019 12:22",
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ let tableRegistrations = [
     action: "buy",
     notional: "20000",
     tenor: "Spot",
-    trans_date: "12/02/2018 15:28",
+    trans_date: "12/02/2022 15:28",
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ let tableRegistrations = [
     action: "buy",
     notional: "20000",
     tenor: "Spot",
-    trans_date: "24/02/2018 15:28",
+    trans_date: "05/02/2018 15:28",
   },
 ];
 //card ids
@@ -593,11 +593,11 @@ function addTableHeadSortEvent(name, icon) {
 }
 
 function sortEntries(property, sortType) {
-  const table = document.getElementById("blotter-table");
   const tableBody = document.getElementById("table-body");
   let filteredRegistrations = [];
 
   sortObj.property = !sortObj.property;
+  console.log(sortObj.property);
 
   if (tableBody) {
     cleanup(tableBody);
@@ -627,18 +627,18 @@ function sortEntries(property, sortType) {
       break;
     case "date":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort(
-          (a, b) => new Date(a[property]) <= new Date(b[property])
-        );
+        filteredRegistrations = tableRegistrations.sort((a, b) => {
+          let { firstDate, secondDate } = parseDates(a, b, property);
+          return firstDate - secondDate;
+        });
       } else {
-        filteredRegistrations = tableRegistrations.sort(
-          (a, b) => new Date(b[property]) >= new Date(a[property])
-        );
+        filteredRegistrations = tableRegistrations.sort((a, b) => {
+          let { firstDate, secondDate } = parseDates(a, b, property);
+          return secondDate - firstDate;
+        });
       }
       break;
   }
-
-  console.log(filteredRegistrations);
   for (let i = 0; i < filteredRegistrations.length; i++) {
     const registration = createOneTableRegistration(
       filteredRegistrations[i],
@@ -646,6 +646,33 @@ function sortEntries(property, sortType) {
     );
     tableBody.appendChild(registration);
   }
+}
+
+function parseDates(a, b, property) {
+  let incomingDateA = a[property].substring(0, 10);
+  let newIncomingDateA = incomingDateA.split("/");
+  [newIncomingDateA[0], newIncomingDateA[1]] = [
+    newIncomingDateA[1],
+    newIncomingDateA[0],
+  ];
+
+  incomingDateA = newIncomingDateA.join("/");
+  let firstDate = new Date(incomingDateA);
+
+  let incomingDateB = b[property].substring(0, 10);
+  let newIncomingDateB = incomingDateB.split("/");
+  [newIncomingDateB[0], newIncomingDateB[1]] = [
+    newIncomingDateB[1],
+    newIncomingDateB[0],
+  ];
+
+  incomingDateB = newIncomingDateB.join("/");
+  let secondDate = new Date(incomingDateB);
+
+  return {
+    firstDate: firstDate,
+    secondDate: secondDate,
+  };
 }
 
 function createFiltersSection(blotterButtons) {

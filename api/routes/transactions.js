@@ -5,7 +5,6 @@ const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
 
-
 const filePath = "../db/transactions.json";
 
 /* GET transactions */
@@ -42,6 +41,7 @@ router.post("/transactions", (req, res) => {
       trans_hour: req.body.trans_hour,
     };
     let isValid = validateTransaction(transaction);
+    console.log(transaction);
     if (isValid) {
       transactions.push(transaction);
       writeToFile(jsonData, filePath, res);
@@ -51,11 +51,10 @@ router.post("/transactions", (req, res) => {
   } else {
     res.status(400).send({ message: "Bad request" });
   }
-
 });
 
 function validateTransaction(transaction) {
-  const regexUsername = /^[a-zA-Z ,.'-]{4,30}$/;
+  const regexUsername = /^[a-zA-Z ,.'-]{3,20}$/;
   const regexCcyPair = /[A-Z]{3}\/[A-Z]{3}/;
   const tenorOptions = ["Spot", "1M", "3M"];
   const actionOptions = ["sell", "buy"];

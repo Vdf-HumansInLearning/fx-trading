@@ -19,7 +19,6 @@
       "notional": "20000",
       "tenor": "Spot",
       "trans_date": "12/02/2018 15:28"
-
     },
     {
       "id": "9034be5b-9ccc-4316-ab72-0ba8dae613c7",
@@ -47,7 +46,72 @@
       "action": "sell",
       "notional": "100",
       "tenor": "1M"
-
+    },
+    {
+      "id": "62873e22-ce20-46d1-bb2f-194cb1d145cc",
+      "username": "testGigel",
+      "ccy_pair": "GBP/USD",
+      "rate": "0.74",
+      "action": "buy",
+      "notional": "12",
+      "tenor": "Spot",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:08"
+    },
+    {
+      "id": "5973f6bf-f5a0-4ece-abb1-9bf76c025317",
+      "username": "testGigel",
+      "ccy_pair": "EUR/GBP",
+      "rate": "0.84",
+      "action": "sell",
+      "notional": "1234",
+      "tenor": "1M",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:10"
+    },
+    {
+      "id": "be0ee155-0c61-4737-9ae3-1e69301c24e1",
+      "username": "testGigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "123",
+      "tenor": "1M",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:11"
+    },
+    {
+      "id": "c7ca8773-19ab-4801-917a-748181dd673b",
+      "username": "testGigel",
+      "ccy_pair": "RON/CHF",
+      "rate": "4.77",
+      "action": "buy",
+      "notional": "32323",
+      "tenor": "Spot",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:12"
+    },
+    {
+      "id": "18c7e209-048f-43b8-9b8c-354795d011d3",
+      "username": "testGigel",
+      "ccy_pair": "EUR/GBP",
+      "rate": "1.19",
+      "action": "buy",
+      "notional": "1234",
+      "tenor": "Spot",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:14"
+    },
+    {
+      "id": "cabde563-07ad-412b-869d-621e75fd0e12",
+      "username": "testGigel",
+      "ccy_pair": "GBP/RON",
+      "rate": "0.71",
+      "action": "buy",
+      "notional": "1200",
+      "tenor": "Spot",
+      "trans_date": "06/01/2022",
+      "trans_hour": "12:15"
     }
   ]
 }

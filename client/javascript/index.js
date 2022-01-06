@@ -8,10 +8,10 @@ let pickWidget = null;
 let cardsRow = null;
 
 let item = {
-  mainCurrency: "EUR",
-  secondCurrency: "USD",
-  sellRate: 4.5,
-  buyRate: 5,
+  mainCurrency: "",
+  secondCurrency: "",
+  sellRate: 0,
+  buyRate: 0,
 };
 
 let tableHeadArray = [

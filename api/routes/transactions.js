@@ -58,10 +58,8 @@ function validateTransaction(transaction) {
   const regexCcyPair = /[A-Z]{3}\/[A-Z]{3}/;
   const tenorOptions = ["Spot", "1M", "3M"];
   const actionOptions = ["sell", "buy"];
-
   const rate = Number(transaction.rate);
   const notional = Number(transaction.notional);
-
   if (!regexUsername.test(transaction.username)) return false;
   else if (!regexCcyPair.test(transaction.ccy_pair)) return false;
   else if (actionOptions.indexOf(transaction.action) === -1) return false;

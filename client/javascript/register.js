@@ -181,8 +181,7 @@ function submitRegisterData() {
               showToast("Register succesfull", "dsdsdsds");
               setTimeout(function () {
                 e.preventDefault();
-                window.location.href =
-                  "http://127.0.0.1:5500/client/index.html";
+                window.location.href = "http://127.0.0.1:5502/index.html";
               }, 2000);
 
               //window.location.hash = "#dashboard";

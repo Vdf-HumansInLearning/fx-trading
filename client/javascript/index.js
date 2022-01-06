@@ -63,7 +63,7 @@ let tableRegistrations = [
 let cardIdCounter = 0;
 
 //input group list
-const cardInputsList = [
+let cardInputsList = [
   {
     label_for: "inputMainCurrency",
     label_text: "Primary",
@@ -79,7 +79,7 @@ const cardInputsList = [
 ];
 
 //ccyPairs input
-const ccyPairs = [
+let ccyPairs = [
   "USD/EUR",
   "USD/RON",
   "USD/GBP",
@@ -1162,6 +1162,43 @@ function getAvailableCurrencies() {
 }
 
 window.onload = () => {
-  //create the page
-  createIndexPage();
+  const urlPairs = "http://localhost:8080/api/currencies/pairs";
+  const urlTransactions = "http://localhost:8080/api/transactions";
+  const urlCurrencies = "http://localhost:8080/api/currencies";
+
+  const fetchPairs = fetch(urlPairs);
+  const fetchTransactions = fetch(urlTransactions);
+  const fetchCurrencies = fetch(urlCurrencies);
+
+  Promise.all([fetchPairs, fetchTransactions, fetchCurrencies])
+    .then((responses) => Promise.all(responses.map((r) => r.json())))
+    .then((data) => {
+      console.log(data);
+      ccyPairs = data[0];
+      cardInputsList[0].select_options = data[2];
+      cardInputsList[1].select_options = data[2];
+      tableRegistrations = data[1];
+
+      //create the page
+      createIndexPage();
+
+      // data[0].json().then(function (data) {
+      //   console.log(data);
+      // });
+      // data[1].json().then(function (data) {
+      //   console.log(data);
+      // });
+      // data[2].json().then(function (data) {
+      //   console.log(data);
+      // });
+      // responses.forEach((response) =>
+      //   response.json().then(function (data) {
+      //     console.log(data);
+      //   })
+      // );
+    })
+
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 };

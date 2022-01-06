@@ -108,7 +108,7 @@ function createMainLoginForm() {
   p.textContent = "You don't have an account? ";
   let a = document.createElement("a");
   p.appendChild(a);
-  a.setAttribute("href", "../client/register.html");
+  a.setAttribute("href", "register.html");
   a.textContent = "Register";
 
   return main;
@@ -143,8 +143,7 @@ function login() {
 
               showToast("Login succesfull", "You have been logged in");
               setTimeout(() => {
-                window.location.href =
-                  "http://127.0.0.1:5500/client/index.html";
+                window.location.href = "http://127.0.0.1:5502/index.html";
               }, 2000);
 
               //window.location.hash = "#dashboard";

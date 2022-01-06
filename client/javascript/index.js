@@ -588,6 +588,7 @@ function selectCurrency() {
       }
     }
 }
+
 function confirmSelectionCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
@@ -643,6 +644,8 @@ function confirmSelectionCurrency() {
   }
 }
 
+//create the header 
+//containing fields names
 function createTableHeader(tr) {
   for (let i = 0; i < tableHeadArray.length; i++) {
     const th = document.createElement("th");
@@ -660,6 +663,7 @@ function createTableHeader(tr) {
   }
 }
 
+//create filterSection
 function createFiltersSection(blotterButtons) {
   const filterSubtitle = document.createElement("p");
   filterSubtitle.className = "subtitle";
@@ -677,6 +681,7 @@ function createFiltersSection(blotterButtons) {
   const inputFiltersGroupSt = document.createElement("div");
   inputFiltersGroupSt.className = "input-group col mb-3";
 
+  //create elements for ccy-pair filter
   const inputCcyLabel = document.createElement("label");
   inputCcyLabel.className = "input-group-text";
   inputCcyLabel.setAttribute("for", "inputCcy");
@@ -685,7 +690,7 @@ function createFiltersSection(blotterButtons) {
   const inputCyy = document.createElement("select");
   inputCyy.className = "form-select";
   inputCyy.setAttribute("id", "inputCcy");
-  inputCyy.addEventListener("change", () => filterByCYYPair());
+  inputCyy.addEventListener("change", () => filterBlotterTable());
 
   const defaultOption = document.createElement("option");
   defaultOption.textContent = "Choose..";
@@ -710,12 +715,13 @@ function createFiltersSection(blotterButtons) {
   inputDateLabel.className = "input-group-text";
   inputDateLabel.textContent = "Date";
 
+  //create elements for date filter
   const inputDate = document.createElement("input");
   inputDate.setAttribute("type", "date");
   inputDate.className = "form-control";
   inputDate.setAttribute("id", "inputDateFilter");
   inputDate.setAttribute("placeholder", "12/02/2018");
-  inputDate.addEventListener("change", () => filterByCYYPair());
+  inputDate.addEventListener("change", () => filterBlotterTable());
 
   inputFiltersGroupNd.appendChild(inputDateLabel);
   inputFiltersGroupNd.appendChild(inputDate);
@@ -726,6 +732,7 @@ function createFiltersSection(blotterButtons) {
   return inputFilters;
 }
 
+//adds one registration in blotter table
 function createOneTableRegistration(transaction, counter) {
   const trUsers = document.createElement("tr");
   const rowId = document.createElement("th");
@@ -768,6 +775,7 @@ function createOneTableRegistration(transaction, counter) {
   return trUsers;
 }
 
+//create body content for registrations
 function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
   bodyTable.setAttribute("id", "table-body");
@@ -779,9 +787,11 @@ function createBodyTable(registrations) {
 }
 
 function createBlotterView() {
+  //create blotter section
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
 
+  //create blotter title
   const blotterTitle = document.createElement("h5");
   blotterTitle.className = "color-titles";
   blotterTitle.textContent = "Blotter View";
@@ -793,6 +803,7 @@ function createBlotterView() {
   const blotterButtons = document.createElement("div");
   blotterButtons.className = "blotter-buttons";
 
+  //create filter section
   let inputFilters = createFiltersSection(blotterButtons);
   blotterButtons.appendChild(inputFilters);
 
@@ -803,17 +814,20 @@ function createBlotterView() {
   blotterTable.setAttribute("id", "blotter-table");
   blotterTable.className = "table table-striped";
 
+  //creat table head
   const headTable = document.createElement("thead");
   headTable.className = "thead-primary";
 
   const tr = document.createElement("tr");
   headTable.appendChild(tr);
-
   createTableHeader(tr);
+
+  //create table body
   const bodyTable = createBodyTable(tableRegistrations);
   blotterTable.appendChild(headTable);
   blotterTable.appendChild(bodyTable);
 
+  //append header and body to table container
   blotterTableResponsive.appendChild(blotterTable);
   blotterSection.appendChild(blotterButtons);
   blotterSection.appendChild(blotterTableResponsive);
@@ -872,6 +886,8 @@ function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
 
+//clear username from cookies
+//on logout
 function clearCookiesOnLogout() {
   const logoutBtn = document.getElementById("logoutBtn");
   logoutBtn.addEventListener("click", function () {
@@ -879,6 +895,7 @@ function clearCookiesOnLogout() {
   });
 }
 
+//display succes/error toast
 function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
@@ -912,19 +929,22 @@ function cleanup(parent) {
   }
 }
 
-function filterByCYYPair() {
+//filter blotter table by given inputs
+function filterBlotterTable() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
   const inputDate = document.getElementById("inputDateFilter").value;
-  console.log(inputDate);
+
+  //clear blotter table
   if (body) {
     cleanup(body);
   }
+
   let selectedDate = document.getElementById("inputDateFilter").value;
   let dateArray = selectedDate.split("-").reverse();
   selectedDate = dateArray.join("/");
 
-  console.log(selectedDate);
+  //ccy input and date input exist 
   if (inputCcy != "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
@@ -938,11 +958,14 @@ function filterByCYYPair() {
         false
       );
     }
+    //display filterd table registration
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  } else if (inputCcy != "opt_none" && selectedDate.length === 0) {
+  }
+  //ccy input exists but date input doesn`t  
+  else if (inputCcy != "opt_none" && selectedDate.length === 0) {
     let filteredRegistrations = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
     filteredRegistrations = tableRegistrations.filter(
@@ -955,11 +978,14 @@ function filterByCYYPair() {
         false
       );
     }
+    //display filterd table registration
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  } else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
+  }
+  //date input exists but ccy input doesn`t  
+  else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
     let filteredRegistrations = tableRegistrations;
     filteredRegistrations = tableRegistrations.filter((i) =>
       i.trans_date.startsWith(selectedDate)
@@ -971,11 +997,15 @@ function filterByCYYPair() {
         false
       );
     }
+    //display filterd table registration
     for (let i = 0; i < filteredRegistrations.length; i++) {
       const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
       body.appendChild(reg);
     }
-  } else {
+  }
+  //there is no input for any filter fields 
+  else {
+    //display filterd table registration
     for (let i = 0; i < tableRegistrations.length; i++) {
       const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
       body.appendChild(reg);
@@ -1006,8 +1036,6 @@ function getAvailableCurrencies() {
 }
 
 window.onload = () => {
-  //load list of currencies available
-  console.log("data");
   //create the page
   createIndexPage();
 };

@@ -632,7 +632,7 @@ function sortEntries(property, sortType) {
         );
       } else {
         filteredRegistrations = tableRegistrations.sort(
-          (a, b) => new Date(b[property]) <= new Date(a[property])
+          (a, b) => new Date(b[property]) >= new Date(a[property])
         );
       }
       break;

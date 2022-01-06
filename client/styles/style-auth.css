@@ -8,10 +8,6 @@ p {
   margin-bottom: 0.5rem;
 }
 
-.body {
-  display: flex;
-}
-
 .body-container {
   display: flex;
 }

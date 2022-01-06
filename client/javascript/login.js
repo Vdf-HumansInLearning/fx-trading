@@ -4,6 +4,8 @@
 //const { response } = require("express");
 
 const body = document.getElementsByClassName("body")[0];
+const appContainer = document.getElementById("app");
+let loginContainer = null;
 
 function createAsideImage() {
   let aside = document.createElement("aside");
@@ -15,7 +17,7 @@ function createAsideImage() {
     "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-grayscale.svg"
   );
   img.setAttribute("alt", "logo");
-  body.appendChild(aside);
+  loginContainer.appendChild(aside);
   aside.appendChild(img);
 
   return aside;
@@ -24,15 +26,17 @@ function createAsideImage() {
 function createMainLoginForm() {
   let main = document.createElement("main");
   main.classList.add("main");
-  body.appendChild(main);
+  loginContainer.appendChild(main);
   let mainContainer = document.createElement("div");
   mainContainer.classList.add("main__container");
   main.appendChild(mainContainer);
 
   const logoImg = document.createElement("img");
   logoImg.classList.add("mobile__image");
-  logoImg.setAttribute("src",
-    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg");
+  logoImg.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg"
+  );
   logoImg.setAttribute("alt", "logo");
   main.append(logoImg);
 
@@ -109,9 +113,6 @@ function createMainLoginForm() {
 
   return main;
 }
-
-createAsideImage();
-createMainLoginForm();
 
 function login() {
   const form = document.getElementById("form");
@@ -240,3 +241,17 @@ function cleanup(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
+
+//when we move to login/register page from index,
+//we should clear the whole body
+//or, we can get navbar by id and remove the element
+function createLoginPage() {
+  loginContainer = document.createElement("div");
+  loginContainer.className = "d-flex";
+  appContainer.appendChild(loginContainer);
+
+  createAsideImage();
+  createMainLoginForm();
+}
+
+createLoginPage();

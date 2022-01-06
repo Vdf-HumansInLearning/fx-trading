@@ -1,4 +1,5 @@
 const bodyContainer = document.getElementById("body-container");
+const appContainer = document.getElementById("app");
 const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
 let widgetsNr = 0;
@@ -45,6 +46,16 @@ let tableRegistrations = [
     notional: "20000",
     tenor: "Spot",
     trans_date: "12/02/2018 15:28",
+  },
+  {
+    id: 3,
+    username: "Test Test",
+    ccy_pair: "USD/RON",
+    rate: "0.86",
+    action: "buy",
+    notional: "20000",
+    tenor: "Spot",
+    trans_date: "24/02/2018 15:28",
   },
 ];
 //card ids
@@ -628,8 +639,13 @@ function sortEntries(property, sortType) {
   }
 
   console.log(filteredRegistrations);
-  createBodyTable(filteredRegistrations);
-  table.appendChild(tableBody);
+  for (let i = 0; i < filteredRegistrations.length; i++) {
+    const registration = createOneTableRegistration(
+      filteredRegistrations[i],
+      i + 1
+    );
+    tableBody.appendChild(registration);
+  }
 }
 
 function createFiltersSection(blotterButtons) {
@@ -821,12 +837,12 @@ function createRatesView() {
 function createIndexPage() {
   //create navbar
   const navBar = createNavigationBar();
-  bodyContainer.appendChild(navBar);
+  appContainer.appendChild(navBar);
 
-  //create main div
   let mainContainer = document.createElement("main");
+  //create main div
   mainContainer.className = "container-fluid row mb-5";
-  bodyContainer.append(mainContainer);
+  appContainer.appendChild(mainContainer);
 
   let ratesSection = createRatesView();
   mainContainer.append(ratesSection);

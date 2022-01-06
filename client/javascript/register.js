@@ -1,9 +1,10 @@
 const body = document.getElementsByClassName("body")[0];
-const app = document.querySelector(".app");
+const appContainer = document.getElementById("app");
+let registerContainer = null;
 
 function createRegisterAside() {
   let aside = document.createElement("aside");
-  app.appendChild(aside);
+  registerContainer.appendChild(aside);
   aside.className = "aside";
 
   let imgAside = document.createElement("img");
@@ -16,11 +17,9 @@ function createRegisterAside() {
   imgAside.setAttribute("alt", "logo");
 }
 
-createRegisterAside();
-
 function createMain() {
   let main = document.createElement("main");
-  app.appendChild(main);
+  registerContainer.appendChild(main);
   main.className = "main";
 
   let divContainer = document.createElement("div");
@@ -30,8 +29,10 @@ function createMain() {
   const logoImg = document.createElement("img");
   logoImg.classList.add("mobile__image");
   logoImg.classList.add("register__logo");
-  logoImg.setAttribute("src",
-    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg");
+  logoImg.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg"
+  );
   logoImg.setAttribute("alt", "logo");
   main.append(logoImg);
 
@@ -142,7 +143,6 @@ function createMain() {
   aRegister.setAttribute("href", "./login.html");
   aRegister.textContent = "Login";
 }
-createMain();
 
 function submitRegisterData() {
   const form = document.getElementById("form");
@@ -179,7 +179,7 @@ function submitRegisterData() {
             if (data.status == 200) {
               console.log("afiseaza modala");
               showToast("Register succesfull", "dsdsdsds");
-              setTimeout(function(){
+              setTimeout(function () {
                 e.preventDefault();
                 window.location.href =
                   "http://127.0.0.1:5500/client/index.html";
@@ -187,7 +187,7 @@ function submitRegisterData() {
 
               //window.location.hash = "#dashboard";
             } else {
-              showToast("Error", "Registration failed!")
+              showToast("Error", "Registration failed!");
             }
           })
           .catch((error) => {
@@ -292,3 +292,13 @@ function cleanup(parent) {
     parent.removeChild(parent.firstChild);
   }
 }
+
+function createRegisterPage() {
+  registerContainer = document.createElement("div");
+  registerContainer.className = "d-flex";
+  appContainer.appendChild(registerContainer);
+  createRegisterAside();
+  createMain();
+}
+
+createRegisterPage();

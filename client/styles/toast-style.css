@@ -1,7 +1,0 @@
-/* 
-bootstrap toast */
-
-.toast-container {
-  top: 30px !important;
-  z-index: 9999;
-}

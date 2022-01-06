@@ -350,12 +350,13 @@ function sendDataTransactions(
     let h = addZero(dateObj.getHours());
     let m = addZero(dateObj.getMinutes());
     let s = addZero(dateObj.getSeconds());
-    let time = h + ":" + m + ":" + s;
-    const outputDate = month + "/" + day + "/" + year;
+    let time = h + ":" + m;
+    const outputDate = day + "/" + month + "/" + year;
 
     console.log(mainCurrencyToSend);
     console.log(secondCurrencyToSend);
     console.log(sellOrBuyRateToSend);
+    console.log(`${mainCurrencyToSend}/${secondCurrencyToSend}`);
     console.log(actionSellOrBuy);
     console.log(outputDate);
     console.log(time);
@@ -369,7 +370,7 @@ function sendDataTransactions(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "testGigel7000", //must be changed
+        username: "testGigel", //must be changed
         ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
         rate: sellOrBuyRateToSend,
         action: actionSellOrBuy,
@@ -379,9 +380,9 @@ function sendDataTransactions(
         trans_hour: time,
       }),
     })
-      // .then((res) =>
-      //   res.json().then((data) => ({ status: res.status, body: data }))
-      // )
+      .then((res) =>
+        res.json().then((data) => ({ status: res.status, body: data.message }))
+      )
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

@@ -88,6 +88,24 @@ router.post("/login", function (req, res) {
 router.post("/register", function (req, res) {
   let usersList = readFromFile("../db/users.json");
 
+  let searchEmail = usersList.users.find(
+    (i) => i.email == req.body.email);
+
+  let searchUsername = usersList.users.find(
+    (i) => i.username == req.body.username);
+  
+  if(searchEmail!= undefined){
+    res.status(500);
+    res.send("Email already registered!");
+    return;
+  }
+
+  if(searchUsername != undefined){
+    res.status(500);
+    res.send("Username already exist. Please choose another one.");
+    return;
+  }
+  
   let user = {
     id: usersList.users.length + 1,
     username: req.body.username,

@@ -134,13 +134,16 @@ function login() {
           body: JSON.stringify({ email: userEmail, password: password }),
         })
           .then((res) =>
-            res.json().then((data) => ({ status: res.status, body: data }))
+            res.json().then((data) => ({
+              status: res.status,
+              body: data,
+            }))
           )
           .then((response) => {
-            console.log(response);
+            let username = response.body.username;
             if (response.status === 200) {
               //save cookie
-
+              createCookie("username", `${username}`, 2);
               showToast("Login succesfull", "You have been logged in");
               setTimeout(() => {
                 window.location.href = "/";
@@ -239,6 +242,18 @@ function cleanup(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
 }
 
 //when we move to login/register page from index,

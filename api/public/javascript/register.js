@@ -177,7 +177,7 @@ function submitRegisterData() {
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
-              console.log("afiseaza modala");
+              createCookie("user", `${username}`, 2);
               showToast("Register succesfull", "dsdsdsds");
               setTimeout(function () {
                 e.preventDefault();
@@ -298,6 +298,18 @@ function createRegisterPage() {
   appContainer.appendChild(registerContainer);
   createRegisterAside();
   createMain();
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
 }
 
 createRegisterPage();

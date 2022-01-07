@@ -29,6 +29,7 @@ let tableHeadArray = [
 
 //table registrations
 let tableRegistrations = [];
+let currentSelectionTable = [];
 //ccyPairs input
 let ccyPairs = [];
 //card ids
@@ -658,7 +659,6 @@ function sortEntries(property, sortType) {
   let filteredRegistrations = [];
 
   sortObj.property = !sortObj.property;
-  console.log(sortObj.property);
 
   if (tableBody) {
     cleanup(tableBody);
@@ -666,34 +666,34 @@ function sortEntries(property, sortType) {
   switch (sortType) {
     case "alphabetical":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort((a, b) =>
+        filteredRegistrations = currentSelectionTable.sort((a, b) =>
           a[property].toLowerCase().localeCompare(b[property].toLowerCase())
         );
       } else {
-        filteredRegistrations = tableRegistrations.sort((a, b) =>
+        filteredRegistrations = currentSelectionTable.sort((a, b) =>
           b[property].toLowerCase().localeCompare(a[property].toLowerCase())
         );
       }
       break;
     case "numerical":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort(
+        filteredRegistrations = currentSelectionTable.sort(
           (a, b) => a[property] - b[property]
         );
       } else {
-        filteredRegistrations = tableRegistrations.sort(
+        filteredRegistrations = currentSelectionTable.sort(
           (a, b) => b[property] - a[property]
         );
       }
       break;
     case "date":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort((a, b) => {
+        filteredRegistrations = currentSelectionTable.sort((a, b) => {
           let { firstDate, secondDate } = parseDates(a, b, property);
           return firstDate - secondDate;
         });
       } else {
-        filteredRegistrations = tableRegistrations.sort((a, b) => {
+        filteredRegistrations = currentSelectionTable.sort((a, b) => {
           let { firstDate, secondDate } = parseDates(a, b, property);
           return secondDate - firstDate;
         });
@@ -1020,12 +1020,12 @@ function filterBlotterTable() {
 
   //ccy input and date input exist
   if (inputCcy != "opt_none" && selectedDate.length !== 0) {
-    let filteredRegistrations = tableRegistrations;
+    currentSelectionTable = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
-    filteredRegistrations = tableRegistrations
+    currentSelectionTable = tableRegistrations
       .filter((i) => i.ccy_pair === selectedPair)
       .filter((i) => i.trans_date.startsWith(selectedDate));
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1033,19 +1033,19 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
   //ccy input exists but date input doesn`t
   else if (inputCcy != "opt_none" && selectedDate.length === 0) {
-    let filteredRegistrations = tableRegistrations;
+    currentSelectionTable = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
-    filteredRegistrations = tableRegistrations.filter(
+    currentSelectionTable = tableRegistrations.filter(
       (i) => i.ccy_pair === selectedPair
     );
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1053,18 +1053,18 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
   //date input exists but ccy input doesn`t
   else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
-    let filteredRegistrations = tableRegistrations;
-    filteredRegistrations = tableRegistrations.filter((i) =>
+    currentSelectionTable = tableRegistrations;
+    currentSelectionTable = tableRegistrations.filter((i) =>
       i.trans_date.startsWith(selectedDate)
     );
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1072,8 +1072,8 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
@@ -1082,31 +1082,10 @@ function filterBlotterTable() {
     //display filterd table registration
     for (let i = 0; i < tableRegistrations.length; i++) {
       const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+      currentSelectionTable = tableRegistrations;
       body.appendChild(reg);
     }
   }
-}
-
-function getAvailableCurrencies() {
-  fetch(baseUrl + "currencies", {
-    method: "GET",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      let optionsList = data.map((item) => ({
-        value: item,
-        text: item,
-      }));
-      //populate the lists
-      cardInputsList[0].select_options = optionsList;
-      cardInputsList[1].select_options = optionsList;
-      console.log("selects now have values");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
 }
 
 window.onload = () => {
@@ -1126,6 +1105,7 @@ window.onload = () => {
       cardInputsList[0].select_options = data[2];
       cardInputsList[1].select_options = data[2];
       tableRegistrations = data[1];
+      currentSelectionTable = data[1];
 
       //create the page
       createIndexPage();

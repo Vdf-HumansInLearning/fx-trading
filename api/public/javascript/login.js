@@ -1,8 +1,3 @@
-////const methods = require("methods");
-//onst { response } = require("../../api/app");
-
-//const { response } = require("express");
-
 const body = document.getElementsByClassName("body")[0];
 const appContainer = document.getElementById("app");
 let loginContainer = null;
@@ -131,24 +126,6 @@ function login() {
         body: JSON.stringify({ email: userEmail, password: password }),
       })
         .then((res) =>
-          res.json().then((data) => ({ status: res.status, body: data }))
-        )
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            //save cookie
-
-            showToast("Login succesfull", "You have been logged in!", true);
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 2000);
-
-            //window.location.hash = "#dashboard";
-          } else {
-            showToast("Login failed", response.body.message, false);
-          }
-        })
-        .then((res) =>
           res.json().then((data) => ({
             status: res.status,
             body: data,
@@ -159,14 +136,14 @@ function login() {
           if (response.status === 200) {
             //save cookie
             createCookie("username", `${username}`, 2);
-            showToast("Login succesfull", "You have been logged in");
+            showToast("Login succesfull", "You have been logged in!", true);
             setTimeout(() => {
               window.location.href = "/";
             }, 2000);
 
             //window.location.hash = "#dashboard";
           } else {
-            showToast("Login failed", response.body.message);
+            showToast("Login failed", response.body.message, false);
           }
         })
 

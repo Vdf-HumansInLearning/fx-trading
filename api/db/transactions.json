@@ -109,6 +109,28 @@
       "tenor": "Spot",
       "trans_date": "07/01/2022",
       "trans_hour": "14:24"
+    },
+    {
+      "id": "4887e74d-3f6b-4a9e-8e2c-50a8e73a3834",
+      "username": "alex",
+      "ccy_pair": "USD/GBP",
+      "rate": "1.35",
+      "action": "buy",
+      "notional": "233",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:53"
+    },
+    {
+      "id": "98dd0d9c-2cdb-466c-be77-8138af0287ba",
+      "username": "alex",
+      "ccy_pair": "USD/GBP",
+      "rate": "0.74",
+      "action": "sell",
+      "notional": "233",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:54"
     }
   ]
 }

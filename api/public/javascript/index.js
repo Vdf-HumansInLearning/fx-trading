@@ -836,7 +836,7 @@ function createOneTableRegistration(transaction, counter) {
   trUsers.appendChild(tdTenor);
 
   const tdDate = document.createElement("td");
-  tdDate.textContent = transaction.trans_date;
+  tdDate.textContent = transaction.trans_date + " " + transaction.trans_hour;
   trUsers.appendChild(tdDate);
 
   const tdAmount = document.createElement("td");

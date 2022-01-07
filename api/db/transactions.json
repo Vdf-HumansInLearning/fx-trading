@@ -8,7 +8,8 @@
       "action": "sell",
       "notional": "100",
       "tenor": "1M",
-      "trans_date": "12/02/2018 12:22"
+      "trans_date": "12/02/2018",
+      "trans_hour": "12:22"
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "action": "buy",
       "notional": "20000",
       "tenor": "Spot",
-      "trans_date": "12/02/2018 15:28"
+      "trans_date": "12/02/2018",
+      "trans_hour": "15:28"
     },
     {
       "id": "9034be5b-9ccc-4316-ab72-0ba8dae613c7",
@@ -27,7 +29,9 @@
       "rate": "0.86",
       "action": "sell",
       "notional": "100",
-      "tenor": "1M"
+      "tenor": "1M",
+      "trans_date": "11/06/2022",
+      "trans_hour": "17:59"
     },
     {
       "id": "1fb38aff-31f4-4dec-b309-5c9a0c71a786",
@@ -36,7 +40,9 @@
       "rate": "0.86",
       "action": "sell",
       "notional": "100",
-      "tenor": "1M"
+      "tenor": "1M",
+      "trans_date": "04/01/2022",
+      "trans_hour": "12:12"
     },
     {
       "id": "71a6b8c1-2fd1-4cf4-9975-2fa7c7340e87",
@@ -45,7 +51,9 @@
       "rate": "0.86",
       "action": "sell",
       "notional": "100",
-      "tenor": "1M"
+      "tenor": "1M",
+      "trans_date": "07/02/2022",
+      "trans_hour": "22:02"
     },
     {
       "id": "62873e22-ce20-46d1-bb2f-194cb1d145cc",

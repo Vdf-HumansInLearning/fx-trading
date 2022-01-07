@@ -41,7 +41,6 @@ router.post("/transactions", (req, res) => {
       trans_hour: req.body.trans_hour,
     };
     let isValid = validateTransaction(transaction);
-    console.log(transaction);
     if (isValid) {
       transactions.push(transaction);
       writeToFile(jsonData, filePath, res);
@@ -66,7 +65,17 @@ function validateTransaction(transaction) {
   else if (tenorOptions.indexOf(transaction.tenor) === -1) return false;
   else if (isNaN(rate)) return false;
   else if (isNaN(notional)) return false;
-  else return true;
+  else {
+    let ccyPair = transaction.ccy_pair.split("/");
+    //get the list of available currencies
+    let jsonData = readFromFile("../db/currencies.json");
+    let currencies = jsonData.currencies_available;
+
+    if (!currencies.includes(ccyPair[0]) || !currencies.includes(ccyPair[1])) {
+      return false;
+    }
+    return true;
+  }
 }
 // write data to a json file
 function writeToFile(content, relPath, res) {

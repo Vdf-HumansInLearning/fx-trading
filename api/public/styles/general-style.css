@@ -1,4 +1,5 @@
 @import url("./toast-style.css");
+@import url("./spinner-style.css");
 
 :root {
   --color-grey-background: #f2f2f2;

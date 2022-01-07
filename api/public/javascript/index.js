@@ -27,43 +27,16 @@ let tableHeadArray = [
   { name: "Amount", icon: false },
 ];
 
-let tableRegistrations = [
-  {
-    id: 1,
-    username: "Mark Otto",
-    ccy_pair: "USD/EUR",
-    rate: "0.86",
-    action: "sell",
-    notional: "100",
-    tenor: "1M",
-    trans_date: "30/05/2019 12:22",
-  },
-  {
-    id: 2,
-    username: "Test Test",
-    ccy_pair: "USD/RON",
-    rate: "0.86",
-    action: "buy",
-    notional: "20000",
-    tenor: "Spot",
-    trans_date: "12/02/2022 15:28",
-  },
-  {
-    id: 3,
-    username: "Test Test",
-    ccy_pair: "USD/RON",
-    rate: "0.86",
-    action: "buy",
-    notional: "20000",
-    tenor: "Spot",
-    trans_date: "05/02/2018 15:28",
-  },
-];
+//table registrations
+let tableRegistrations = [];
+let currentSelectionTable = [];
+//ccyPairs input
+let ccyPairs = [];
 //card ids
 let cardIdCounter = 0;
 
 //input group list
-const cardInputsList = [
+let cardInputsList = [
   {
     label_for: "inputMainCurrency",
     label_text: "Primary",
@@ -76,30 +49,6 @@ const cardInputsList = [
     select_id: "inputSecondCurrency",
     select_options: [],
   },
-];
-
-//ccyPairs input
-const ccyPairs = [
-  "USD/EUR",
-  "USD/RON",
-  "USD/GBP",
-  "USD/CHF",
-  "RON/USD",
-  "RON/EUR",
-  "RON/GBP",
-  "RON/CHF",
-  "EUR/USD",
-  "EUR/RON",
-  "EUR/GBP",
-  "EUR/CHF",
-  "CHF/USD",
-  "CHF/EUR",
-  "CHF/RON",
-  "CHF/GBP",
-  "GBP/USD",
-  "GBP/EUR",
-  "GBP/RON",
-  "GBP/CHF",
 ];
 
 let sortObj = {
@@ -133,9 +82,10 @@ function createNavigationBar() {
 
   const logoutBtn = document.createElement("a");
   logoutBtn.className = "btn btn-outline-secondary";
-  logoutBtn.setAttribute("href", "./login.html");
+  logoutBtn.setAttribute("href", "/login");
   logoutBtn.setAttribute("role", "button");
   logoutBtn.setAttribute("id", "logoutBtn");
+  logoutBtn.addEventListener("click", clearCookiesOnLogout);
   logoutBtn.textContent = "Logout";
 
   navBrand.appendChild(navImage);
@@ -275,6 +225,7 @@ function createMainWidget(item) {
   let optionEmpty = document.createElement("option");
   select.appendChild(optionEmpty);
   optionEmpty.setAttribute("selected", "true");
+  optionEmpty.setAttribute("id", "optionDefault");
   optionEmpty.textContent = "Choose...";
 
   let optionSpot = document.createElement("option");
@@ -339,6 +290,7 @@ function sendDataTransactions(
   let mainCurrencyToSend = mainCurrency.toUpperCase();
   let secondCurrencyToSend = secondCurrency.toUpperCase();
   let sellOrBuyRateToSend = sellOrBuyRate;
+  let userName = getCookie("username");
 
   if (notional && tenor !== "Choose...") {
     let actionSellOrBuy = action;
@@ -382,6 +334,7 @@ function sendDataTransactions(
     console.log(time);
     console.log(notional);
     console.log(tenor);
+    console.log(userName);
 
     let url = "http://localhost:8080/api/transactions";
     fetch(url, {
@@ -390,7 +343,7 @@ function sendDataTransactions(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "testGigel", //must be changed
+        username: `${userName}`,
         ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
         rate: sellOrBuyRateToSend,
         action: actionSellOrBuy,
@@ -407,11 +360,36 @@ function sendDataTransactions(
         console.log(response);
         if (response.status === 200) {
           showToast("Succes", "Transaction completed", true);
-          //clean up notional and
+          document.getElementById("inputDate").value = null;
+          document.getElementById("inputCcy").value =
+            document.getElementById("inputCcy").options[0].value;
         } else {
           showToast("Failure", "Transaction failed", false);
         }
       })
+      .then(
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) =>
+          res.json().then((data) => {
+            tableRegistrations = data;
+            const tableBody = document.getElementById("table-body");
+            if (tableBody) {
+              cleanup(tableBody);
+            }
+            for (let i = 0; i < tableRegistrations.length; i++) {
+              const registration = createOneTableRegistration(
+                tableRegistrations[i],
+                i + 1
+              );
+              tableBody.appendChild(registration);
+            }
+          })
+        )
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -495,8 +473,8 @@ function createPickWidget() {
     //iterate through options to append to select
     cardInput.select_options.forEach((selectOption) => {
       let option = document.createElement("option");
-      option.setAttribute("value", selectOption.value);
-      let optionText = document.createTextNode(selectOption.text);
+      option.setAttribute("value", selectOption);
+      let optionText = document.createTextNode(selectOption);
       option.append(optionText);
       //append each option to select element
       select.append(option);
@@ -556,7 +534,6 @@ function createAddWidget() {
 function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
-    getAvailableCurrencies();
     console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
@@ -599,7 +576,7 @@ function selectCurrency() {
   if (inputMainCurrency && inputSecondCurrency)
     if (
       inputMainCurrency.value !== "opt_none" ||
-      inputSecondaryCurrency.value !== "opt_none"
+      inputSecondCurrency.value !== "opt_none"
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
@@ -710,7 +687,6 @@ function sortEntries(property, sortType) {
   let filteredRegistrations = [];
 
   sortObj.property = !sortObj.property;
-  console.log(sortObj.property);
 
   if (tableBody) {
     cleanup(tableBody);
@@ -718,34 +694,34 @@ function sortEntries(property, sortType) {
   switch (sortType) {
     case "alphabetical":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort((a, b) =>
-          b[property].toLowerCase().localeCompare(a[property].toLowerCase())
+        filteredRegistrations = currentSelectionTable.sort((a, b) =>
+          a[property].toLowerCase().localeCompare(b[property].toLowerCase())
         );
       } else {
-        filteredRegistrations = tableRegistrations.sort((a, b) =>
-          a[property].toLowerCase().localeCompare(b[property].toLowerCase())
+        filteredRegistrations = currentSelectionTable.sort((a, b) =>
+          b[property].toLowerCase().localeCompare(a[property].toLowerCase())
         );
       }
       break;
     case "numerical":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort(
-          (a, b) => b[property] - a[property]
+        filteredRegistrations = currentSelectionTable.sort(
+          (a, b) => a[property] - b[property]
         );
       } else {
-        filteredRegistrations = tableRegistrations.sort(
-          (a, b) => a[property] - b[property]
+        filteredRegistrations = currentSelectionTable.sort(
+          (a, b) => b[property] - a[property]
         );
       }
       break;
     case "date":
       if (sortObj.property) {
-        filteredRegistrations = tableRegistrations.sort((a, b) => {
+        filteredRegistrations = currentSelectionTable.sort((a, b) => {
           let { firstDate, secondDate } = parseDates(a, b, property);
           return firstDate - secondDate;
         });
       } else {
-        filteredRegistrations = tableRegistrations.sort((a, b) => {
+        filteredRegistrations = currentSelectionTable.sort((a, b) => {
           let { firstDate, secondDate } = parseDates(a, b, property);
           return secondDate - firstDate;
         });
@@ -889,7 +865,7 @@ function createOneTableRegistration(transaction, counter) {
   trUsers.appendChild(tdTenor);
 
   const tdDate = document.createElement("td");
-  tdDate.textContent = transaction.trans_date;
+  tdDate.textContent = transaction.trans_date + " " + transaction.trans_hour;
   trUsers.appendChild(tdDate);
 
   const tdAmount = document.createElement("td");
@@ -1011,14 +987,27 @@ function createIndexPage() {
 function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 //clear username from cookies
 //on logout
 function clearCookiesOnLogout() {
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", function () {
-    clearCookie("username");
-  });
+  console.log("dsdsd log out an delete cookie");
+  clearCookie("username");
 }
 
 //display succes/error toast
@@ -1072,12 +1061,12 @@ function filterBlotterTable() {
 
   //ccy input and date input exist
   if (inputCcy != "opt_none" && selectedDate.length !== 0) {
-    let filteredRegistrations = tableRegistrations;
+    currentSelectionTable = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
-    filteredRegistrations = tableRegistrations
+    currentSelectionTable = tableRegistrations
       .filter((i) => i.ccy_pair === selectedPair)
       .filter((i) => i.trans_date.startsWith(selectedDate));
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1085,19 +1074,19 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
   //ccy input exists but date input doesn`t
   else if (inputCcy != "opt_none" && selectedDate.length === 0) {
-    let filteredRegistrations = tableRegistrations;
+    currentSelectionTable = tableRegistrations;
     const selectedPair = document.getElementById("inputCcy").value;
-    filteredRegistrations = tableRegistrations.filter(
+    currentSelectionTable = tableRegistrations.filter(
       (i) => i.ccy_pair === selectedPair
     );
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1105,18 +1094,18 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
   //date input exists but ccy input doesn`t
   else if (inputCcy === "opt_none" && selectedDate.length !== 0) {
-    let filteredRegistrations = tableRegistrations;
-    filteredRegistrations = tableRegistrations.filter((i) =>
+    currentSelectionTable = tableRegistrations;
+    currentSelectionTable = tableRegistrations.filter((i) =>
       i.trans_date.startsWith(selectedDate)
     );
-    if (filteredRegistrations.length === 0) {
+    if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
@@ -1124,8 +1113,8 @@ function filterBlotterTable() {
       );
     }
     //display filterd table registration
-    for (let i = 0; i < filteredRegistrations.length; i++) {
-      const reg = createOneTableRegistration(filteredRegistrations[i], i + 1);
+    for (let i = 0; i < currentSelectionTable.length; i++) {
+      const reg = createOneTableRegistration(currentSelectionTable[i], i + 1);
       body.appendChild(reg);
     }
   }
@@ -1134,34 +1123,52 @@ function filterBlotterTable() {
     //display filterd table registration
     for (let i = 0; i < tableRegistrations.length; i++) {
       const reg = createOneTableRegistration(tableRegistrations[i], i + 1);
+      currentSelectionTable = tableRegistrations;
       body.appendChild(reg);
     }
   }
 }
 
-function getAvailableCurrencies() {
-  fetch(baseUrl + "currencies", {
-    method: "GET",
-  })
-    .then((response) => {
-      return response.json();
-    })
+window.onload = () => {
+  showLoading();
+  const urlPairs = "http://localhost:8080/api/currencies/pairs";
+  const urlTransactions = "http://localhost:8080/api/transactions";
+  const urlCurrencies = "http://localhost:8080/api/currencies";
+
+  const fetchPairs = fetch(urlPairs);
+  const fetchTransactions = fetch(urlTransactions);
+  const fetchCurrencies = fetch(urlCurrencies);
+
+  Promise.all([fetchPairs, fetchTransactions, fetchCurrencies])
+    .then((responses) => Promise.all(responses.map((r) => r.json())))
     .then((data) => {
-      let optionsList = data.map((item) => ({
-        value: item,
-        text: item,
-      }));
-      //populate the lists
-      cardInputsList[0].select_options = optionsList;
-      cardInputsList[1].select_options = optionsList;
-      console.log("selects now have values");
+      console.log(data);
+      ccyPairs = data[0];
+      cardInputsList[0].select_options = data[2];
+      cardInputsList[1].select_options = data[2];
+      tableRegistrations = data[1];
+      currentSelectionTable = data[1];
+
+      //create the page
+      createIndexPage();
+      hideLoading();
     })
+
     .catch((error) => {
       console.error("Error:", error);
     });
+};
+
+//loading
+function showLoading() {
+  let loading = document.createElement("div");
+  loading.classList.add("spinner");
+  loading.id = "loadingContainer";
+
+  appContainer.appendChild(loading);
 }
 
-window.onload = () => {
-  //create the page
-  createIndexPage();
-};
+function hideLoading() {
+  let container = document.getElementById("loadingContainer");
+  if (container) container.remove();
+}

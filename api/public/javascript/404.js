@@ -33,7 +33,7 @@ function create404Page() {
 
   let a = document.createElement("a");
   divLoginBtn.appendChild(a);
-  a.setAttribute("href", "login.html");
+  a.setAttribute("href", "/login");
 
   let loginBtn = document.createElement("button");
   a.appendChild(loginBtn);

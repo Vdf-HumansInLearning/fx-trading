@@ -1,75 +1,79 @@
 {
-"users": [{
-            "username":"",
-            "user_id":1,
-            "password":"",
-            "email":"",
-            "transactions": 
-            [           
+    "users": [
+        {
+            "username": "",
+            "user_id": 1,
+            "password": "",
+            "email": "",
+            "transactions": [
                 {
-                "trans_id": 1,
-                "ccy_pair":"USD/RON",
-                "rate":"0.86",
-                "action": "sell",
-                "notional":"100",
-                "tenor": "1M",
-                "trans_date": "12/02/2018",
-                "trans_hour": "12:22"
+                    "trans_id": 1,
+                    "ccy_pair": "USD/RON",
+                    "rate": "0.86",
+                    "action": "sell",
+                    "notional": "100",
+                    "tenor": "1M",
+                    "trans_date": "12/02/2018",
+                    "trans_hour": "12:22"
                 }
             ]
-        }],
-
-"currency_available": ["USD","EUR","GBP","RON","CHF"],
-"currency_rates": [
-    {
-        "base_currenry":"USD",
-        "quotes": {
-            "EUR": 0.82,
-            "GBP": 1.1,
-            "RON": 4.5,
-            "CHF": 0.9        
         }
-    },
-    {
-        "base_currenry":"EUR",
-        "quotes": {
-            "USD": 0.82,
-            "GBP": 1.1,
-            "RON": 4.5,
-            "CHF": 0.9        
+    ],
+    "currency_available": [
+        "USD",
+        "EUR",
+        "GBP",
+        "RON",
+        "CHF"
+    ],
+    "currency_rates": [
+        {
+            "base_currenry": "USD",
+            "quotes": {
+                "EUR": 0.82,
+                "GBP": 1.1,
+                "RON": 4.5,
+                "CHF": 0.9
+            }
+        },
+        {
+            "base_currenry": "EUR",
+            "quotes": {
+                "USD": 0.82,
+                "GBP": 1.1,
+                "RON": 4.5,
+                "CHF": 0.9
+            }
+        },
+        {
+            "base_currenry": "GBP",
+            "quotes": {
+                "EUR": 0.82,
+                "USD": 1.1,
+                "RON": 4.5,
+                "CHF": 0.9
+            }
+        },
+        {
+            "base_currenry": "RON",
+            "quotes": {
+                "EUR": {
+                    "sell": 4.8,
+                    "buy": 4.9
+                },
+                "GBP": 1.1,
+                "USD": 4.5,
+                "CHF": 0.9
+            }
+        },
+        {
+            "base_currenry": "CHF",
+            "quotes": {
+                "EUR": 0.82,
+                "GBP": 1.1,
+                "RON": 4.5,
+                "USD": 0.9
+            }
         }
-    },
-    {
-        "base_currenry":"GBP",
-        "quotes": {
-            "EUR": 0.82,
-            "USD": 1.1,
-            "RON": 4.5,
-            "CHF": 0.9        
-        }
-    },
-    {
-        "base_currenry":"RON",
-        "quotes": {
-            "EUR":{
-                "sell": 4.8,
-                "buy": 4.9
-            },
-            "GBP": 1.1,
-            "USD": 4.5,
-            "CHF": 0.9        
-        }
-    },
-    {
-        "base_currenry":"CHF",
-        "quotes": {
-            "EUR": 0.82,
-            "GBP": 1.1,
-            "RON": 4.5,
-            "USD": 0.9        
-        }
-    }
-
-]
-
+    ]
 }

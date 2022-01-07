@@ -1,21 +1,21 @@
-const bodyContainer = document.getElementById("body-container");
-const appContainer = document.getElementById("app");
-const baseUrl = "http://localhost:8080/api/";
+export const bodyContainer = document.getElementById("body-container");
+export const appContainer = document.getElementById("app");
+export const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
-let widgetsNr = 0;
-let pickWidget = null;
+export let widgetsNr = 0;
+export let pickWidget = null;
 
 //initialize container for cards
-let cardsRow = null;
+export let cardsRow = null;
 
-let item = {
+export let item = {
   mainCurrency: "",
   secondCurrency: "",
   sellRate: 0,
   buyRate: 0,
 };
 
-let tableHeadArray = [
+export let tableHeadArray = [
   { name: "ID", icon: false },
   { name: "Username", icon: true },
   { name: "CCY Pair", icon: true },
@@ -28,15 +28,15 @@ let tableHeadArray = [
 ];
 
 //table registrations
-let tableRegistrations = [];
-let currentSelectionTable = [];
+export let tableRegistrations = [];
+export let currentSelectionTable = [];
 //ccyPairs input
-let ccyPairs = [];
+export let ccyPairs = [];
 //card ids
-let cardIdCounter = 0;
+export let cardIdCounter = 0;
 
 //input group list
-let cardInputsList = [
+export let cardInputsList = [
   {
     label_for: "inputMainCurrency",
     label_text: "Primary",
@@ -51,7 +51,7 @@ let cardInputsList = [
   },
 ];
 
-let sortObj = {
+export let sortObj = {
   username: false,
   ccy_pair: false,
   action: false,
@@ -60,10 +60,10 @@ let sortObj = {
 };
 
 //select for PickWidget
-let inputMainCurrency = null;
-let inputSecondaryCurrency = null;
+export let inputMainCurrency = null;
+export let inputSecondaryCurrency = null;
 
-function createNavigationBar() {
+export function createNavigationBar() {
   const navElem = document.createElement("nav");
   navElem.className = "navbar navbar-light bg-light mb-3";
 
@@ -95,7 +95,7 @@ function createNavigationBar() {
   return navElem;
 }
 
-function createMainWidget(item) {
+export function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
   cardDivCol.id = `card${cardIdCounter}`;
@@ -279,7 +279,7 @@ function createMainWidget(item) {
   return cardDivCol;
 }
 
-function sendDataTransactions(
+export function sendDataTransactions(
   action,
   mainCurrency,
   secondCurrency,
@@ -402,7 +402,7 @@ function sendDataTransactions(
   }
 }
 
-function createPickWidget() {
+export function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
@@ -505,7 +505,7 @@ function createPickWidget() {
   return cardContainer;
 }
 
-function createAddWidget() {
+export function createAddWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
@@ -531,7 +531,7 @@ function createAddWidget() {
   return cardContainer;
 }
 
-function addPickWidget() {
+export function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
     console.log("create pick widget");
@@ -547,7 +547,7 @@ function addPickWidget() {
   }
 }
 
-function addNewWidget() {
+export function addNewWidget() {
   //no more that 5 cards
   if (widgetsNr <= 5) {
     //fetch item from api
@@ -564,12 +564,12 @@ function addNewWidget() {
   }
 }
 
-function closeWidget(cardId) {
+export function closeWidget(cardId) {
   document.getElementById(cardId).remove();
   widgetsNr--;
 }
 
-function selectCurrency() {
+export function selectCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondCurrency = document.getElementById("inputSecondCurrency");
 
@@ -585,7 +585,7 @@ function selectCurrency() {
     }
 }
 
-function confirmSelectionCurrency() {
+export function confirmSelectionCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
   console.log("inside confirm selection");
@@ -642,7 +642,7 @@ function confirmSelectionCurrency() {
 
 //create the header
 //containing fields names
-function createTableHeader(tr) {
+export function createTableHeader(tr) {
   for (let i = 0; i < tableHeadArray.length; i++) {
     const th = document.createElement("th");
     th.setAttribute("scope", "col");
@@ -682,7 +682,7 @@ function addTableHeadSortEvent(name, icon) {
   }
 }
 
-function sortEntries(property, sortType) {
+export function sortEntries(property, sortType) {
   const tableBody = document.getElementById("table-body");
   let filteredRegistrations = [];
 
@@ -737,7 +737,7 @@ function sortEntries(property, sortType) {
   }
 }
 
-function parseDates(a, b, property) {
+export function parseDates(a, b, property) {
   let incomingDateA = a[property].substring(0, 10);
   let newIncomingDateA = incomingDateA.split("/");
   [newIncomingDateA[0], newIncomingDateA[1]] = [
@@ -764,7 +764,7 @@ function parseDates(a, b, property) {
   };
 }
 
-function createFiltersSection(blotterButtons) {
+export function createFiltersSection(blotterButtons) {
   const filterSubtitle = document.createElement("p");
   filterSubtitle.className = "subtitle";
   filterSubtitle.textContent = "FILTERS";
@@ -833,7 +833,7 @@ function createFiltersSection(blotterButtons) {
 }
 
 //adds one registration in blotter table
-function createOneTableRegistration(transaction, counter) {
+export function createOneTableRegistration(transaction, counter) {
   const trUsers = document.createElement("tr");
   const rowId = document.createElement("th");
   rowId.setAttribute("scope", "row");
@@ -878,7 +878,7 @@ function createOneTableRegistration(transaction, counter) {
 }
 
 //create body content for registrations
-function createBodyTable(registrations) {
+export function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
   bodyTable.setAttribute("id", "table-body");
   for (let i = 0; i < registrations.length; i++) {
@@ -888,7 +888,7 @@ function createBodyTable(registrations) {
   return bodyTable;
 }
 
-function createBlotterView() {
+export function createBlotterView() {
   //create blotter section
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -937,7 +937,7 @@ function createBlotterView() {
   return blotterSection;
 }
 
-function createRatesView() {
+export function createRatesView() {
   //create main section in which the cards will be
   let ratesSection = document.createElement("section");
   ratesSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -966,7 +966,7 @@ function createRatesView() {
   return ratesSection;
 }
 
-function createIndexPage() {
+export function createIndexPage() {
   //create navbar
   const navBar = createNavigationBar();
   appContainer.appendChild(navBar);
@@ -984,10 +984,10 @@ function createIndexPage() {
 }
 
 // clear cookie using its name
-function clearCookie(name) {
+export function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
-function getCookie(cname) {
+export function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(";");
@@ -1011,7 +1011,7 @@ function clearCookiesOnLogout() {
 }
 
 //display succes/error toast
-function showToast(titleMessage, bodyMessage, toastType) {
+export function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
@@ -1045,7 +1045,7 @@ function cleanup(parent) {
 }
 
 //filter blotter table by given inputs
-function filterBlotterTable() {
+export function filterBlotterTable() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
   const inputDate = document.getElementById("inputDateFilter").value;
@@ -1160,7 +1160,7 @@ window.onload = () => {
 };
 
 //loading
-function showLoading() {
+export function showLoading() {
   let loading = document.createElement("div");
   loading.classList.add("spinner");
   loading.id = "loadingContainer";
@@ -1168,7 +1168,7 @@ function showLoading() {
   appContainer.appendChild(loading);
 }
 
-function hideLoading() {
+export function hideLoading() {
   let container = document.getElementById("loadingContainer");
   if (container) container.remove();
 }

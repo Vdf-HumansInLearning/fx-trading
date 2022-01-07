@@ -186,6 +186,17 @@
       "tenor": "Spot",
       "trans_date": "07/01/2022",
       "trans_hour": "12:27"
+    },
+    {
+      "id": "201b5644-25c4-4171-b045-f59299416a03",
+      "username": "testGigel",
+      "ccy_pair": "USD/EUR",
+      "rate": "1.14",
+      "action": "buy",
+      "notional": "1",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:36"
     }
   ]
 }

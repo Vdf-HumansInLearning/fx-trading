@@ -71,14 +71,8 @@ function validateTransaction(transaction) {
     let jsonData = readFromFile("../db/currencies.json");
     let currencies = jsonData.currencies_available;
 
-    if (!currencies.includes(ccyPair[0])) {
-      console.log("first currrency not");
+    if (!currencies.includes(ccyPair[0]) || !currencies.includes(ccyPair[1])) {
       return false;
-    } else {
-      if (!currencies.includes(ccyPair[1])) {
-        console.log("second currrency not");
-        return false;
-      }
     }
     return true;
   }

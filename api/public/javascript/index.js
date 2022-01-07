@@ -547,7 +547,7 @@ function selectCurrency() {
   if (inputMainCurrency && inputSecondCurrency)
     if (
       inputMainCurrency.value !== "opt_none" ||
-      inputSecondaryCurrency.value !== "opt_none"
+      inputSecondCurrency.value !== "opt_none"
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {

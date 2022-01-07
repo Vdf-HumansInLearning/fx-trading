@@ -122,79 +122,39 @@ function login() {
       let userEmail = document.getElementById("inputEmail").value;
       let password = document.getElementById("inputPassword").value;
 
-      const isValid = validateRegisterForm();
+      let url = "http://localhost:8080/api/auth/login";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail, password: password }),
+      })
+        .then((res) =>
+          res.json().then((data) => ({ status: res.status, body: data }))
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            //save cookie
 
-      if (isValid) {
-        let url = "http://localhost:8080/api/auth/login";
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: userEmail, password: password }),
+            showToast("Login succesfull", "You have been logged in");
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 2000);
+
+            //window.location.hash = "#dashboard";
+          } else {
+            showToast("Login failed", response.body.message);
+          }
         })
-          .then((res) =>
-            res.json().then((data) => ({ status: res.status, body: data }))
-          )
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              //save cookie
 
-              showToast("Login succesfull", "You have been logged in");
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 2000);
+        .catch((error) => {
+          console.log(error);
+        });
 
-              //window.location.hash = "#dashboard";
-            } else {
-              showToast("Login failed", response.body.message);
-            }
-          })
-
-          .catch((error) => {
-            console.log(error);
-          });
-      }
     });
   }
-}
-
-function validateRegisterForm() {
-  let isValid = true;
-  const passRegExp =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  const email = document.getElementById("inputEmail");
-  removePreviousError(email.parentElement);
-  const pattern = /^\S+@\S+\.\S+$/;
-  if (!pattern.test(email.value)) {
-    email.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">Email is not valid</div>'
-    );
-  }
-
-  const password = document.getElementById("inputPassword");
-  removePreviousError(password.parentElement);
-  if (password.value.length < 7 || password.value.length >= 20) {
-    isValid = false;
-    password.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">Password must be between 8 and 20 characters</div>'
-    );
-  } else if (checkRegExp(passRegExp, password.value) === false) {
-    isValid = false;
-    password.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">"Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"</div>'
-    );
-  }
-  function checkRegExp(regExp, myStr) {
-    return regExp.test(myStr);
-  }
-
-  return isValid;
 }
 
 function removePreviousError(parent) {

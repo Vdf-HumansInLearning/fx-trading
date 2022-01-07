@@ -444,8 +444,8 @@ function createPickWidget() {
     //iterate through options to append to select
     cardInput.select_options.forEach((selectOption) => {
       let option = document.createElement("option");
-      option.setAttribute("value", selectOption.value);
-      let optionText = document.createTextNode(selectOption.text);
+      option.setAttribute("value", selectOption);
+      let optionText = document.createTextNode(selectOption);
       option.append(optionText);
       //append each option to select element
       select.append(option);
@@ -505,7 +505,6 @@ function createAddWidget() {
 function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
-    getAvailableCurrencies();
     console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);

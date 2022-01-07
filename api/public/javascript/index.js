@@ -1088,6 +1088,7 @@ function filterBlotterTable() {
 }
 
 window.onload = () => {
+  showLoading();
   const urlPairs = "http://localhost:8080/api/currencies/pairs";
   const urlTransactions = "http://localhost:8080/api/transactions";
   const urlCurrencies = "http://localhost:8080/api/currencies";
@@ -1106,6 +1107,7 @@ window.onload = () => {
       tableRegistrations = data[1];
       currentSelectionTable = data[1];
 
+      hideLoading();
       //create the page
       createIndexPage();
     })
@@ -1114,3 +1116,17 @@ window.onload = () => {
       console.error("Error:", error);
     });
 };
+
+//loading
+function showLoading() {
+  let loading = document.createElement("div");
+  loading.classList.add("spinner");
+  loading.id = "loadingContainer";
+
+  appContainer.appendChild(loading);
+}
+
+function hideLoading() {
+  let container = document.getElementById("loadingContainer");
+  if (container) container.remove();
+}

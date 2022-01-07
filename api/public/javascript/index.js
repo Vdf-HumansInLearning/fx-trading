@@ -27,38 +27,10 @@ let tableHeadArray = [
   { name: "Amount", icon: false },
 ];
 
-let tableRegistrations = [
-  {
-    id: 1,
-    username: "Mark Otto",
-    ccy_pair: "USD/EUR",
-    rate: "0.86",
-    action: "sell",
-    notional: "100",
-    tenor: "1M",
-    trans_date: "30/05/2019 12:22",
-  },
-  {
-    id: 2,
-    username: "Test Test",
-    ccy_pair: "USD/RON",
-    rate: "0.86",
-    action: "buy",
-    notional: "20000",
-    tenor: "Spot",
-    trans_date: "12/02/2022 15:28",
-  },
-  {
-    id: 3,
-    username: "Test Test",
-    ccy_pair: "USD/RON",
-    rate: "0.86",
-    action: "buy",
-    notional: "20000",
-    tenor: "Spot",
-    trans_date: "05/02/2018 15:28",
-  },
-];
+//table registrations
+let tableRegistrations = [];
+//ccyPairs input
+let ccyPairs = [];
 //card ids
 let cardIdCounter = 0;
 
@@ -76,30 +48,6 @@ let cardInputsList = [
     select_id: "inputSecondCurrency",
     select_options: [],
   },
-];
-
-//ccyPairs input
-let ccyPairs = [
-  "USD/EUR",
-  "USD/RON",
-  "USD/GBP",
-  "USD/CHF",
-  "RON/USD",
-  "RON/EUR",
-  "RON/GBP",
-  "RON/CHF",
-  "EUR/USD",
-  "EUR/RON",
-  "EUR/GBP",
-  "EUR/CHF",
-  "CHF/USD",
-  "CHF/EUR",
-  "CHF/RON",
-  "CHF/GBP",
-  "GBP/USD",
-  "GBP/EUR",
-  "GBP/RON",
-  "GBP/CHF",
 ];
 
 let sortObj = {

@@ -76,6 +76,39 @@
       "tenor": "Spot",
       "trans_date": "07/01/2022",
       "trans_hour": "14:13"
+    },
+    {
+      "id": "96eed75a-839f-4567-a311-33f004ba1773",
+      "username": "oana",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "45",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:20"
+    },
+    {
+      "id": "78a64b02-0411-4e76-b480-e222ffdc9388",
+      "username": "oana",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "45000000",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:20"
+    },
+    {
+      "id": "93e3f55f-0c1d-4046-86d3-f09aaa3075e7",
+      "username": "oanaddddd",
+      "ccy_pair": "GBP/RON",
+      "rate": "0.71",
+      "action": "buy",
+      "notional": "256",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:24"
     }
   ]
 }

@@ -177,7 +177,7 @@ function submitRegisterData() {
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
-              createCookie("user", `${username}`, 2);
+              createCookie("username", `${username}`, 2);
               showToast("Register succesfull", "dsdsdsds");
               setTimeout(function () {
                 e.preventDefault();

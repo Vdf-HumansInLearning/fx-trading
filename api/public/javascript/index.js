@@ -342,7 +342,7 @@ function sendDataTransactions(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: `${userName}`, //must be changed
+        username: `${userName}`,
         ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
         rate: sellOrBuyRateToSend,
         action: actionSellOrBuy,

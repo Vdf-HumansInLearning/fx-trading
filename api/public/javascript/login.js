@@ -138,14 +138,14 @@ function login() {
           if (response.status === 200) {
             //save cookie
 
-            showToast("Login succesfull", "You have been logged in");
+            showToast("Login succesfull", "You have been logged in!", true);
             setTimeout(() => {
               window.location.href = "/";
             }, 2000);
 
             //window.location.hash = "#dashboard";
           } else {
-            showToast("Login failed", response.body.message);
+            showToast("Login failed", response.body.message, false);
           }
         })
 
@@ -167,23 +167,22 @@ function removePreviousError(parent) {
   }
 }
 
-function generateMessage(message) {
-  let toast = document.createElement("div");
-  toast.className = "tn-box tn-box-color-1";
-  let toastTitle = document.createElement("p");
-  toastTitle.innerText = message;
-
-  toast.append(toastTitle);
-
-  toast.classList.add("tn-box-active");
-
-  body.append(toast);
-}
-
-function showToast(titleMessage, bodyMessage) {
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -195,6 +194,7 @@ function showToast(titleMessage, bodyMessage) {
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
 }
+
 function cleanup(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);

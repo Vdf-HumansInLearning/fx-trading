@@ -1108,21 +1108,6 @@ window.onload = () => {
 
       //create the page
       createIndexPage();
-
-      // data[0].json().then(function (data) {
-      //   console.log(data);
-      // });
-      // data[1].json().then(function (data) {
-      //   console.log(data);
-      // });
-      // data[2].json().then(function (data) {
-      //   console.log(data);
-      // });
-      // responses.forEach((response) =>
-      //   response.json().then(function (data) {
-      //     console.log(data);
-      //   })
-      // );
     })
 
     .catch((error) => {

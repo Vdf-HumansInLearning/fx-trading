@@ -1107,9 +1107,9 @@ window.onload = () => {
       tableRegistrations = data[1];
       currentSelectionTable = data[1];
 
-      hideLoading();
       //create the page
       createIndexPage();
+      hideLoading();
     })
 
     .catch((error) => {

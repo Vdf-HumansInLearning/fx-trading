@@ -205,7 +205,7 @@ function createMainWidget(item) {
   inputNational.setAttribute("type", "number");
   inputNational.setAttribute("id", "inputDate");
   inputNational.setAttribute("placeholder", "Amount");
-  inputNational.setAttribute("min", 0);
+  inputNational.setAttribute("min", 1);
 
   let tenorDiv = document.createElement("div");
   cardMainArea.appendChild(tenorDiv);

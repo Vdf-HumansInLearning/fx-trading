@@ -1,4 +1,6 @@
 @import url("./general-style.css");
+@import url("./style-404.css");
+@import url("./style-auth.css");
 
 .card-rates {
   background-color: var(--color-grey-background);

@@ -69,7 +69,9 @@ function createNavigationBar() {
 
   const navBrand = document.createElement("a");
   navBrand.className = "navbar-brand";
-  navBrand.setAttribute("href", "#");
+  navBrand.addEventListener("click", () => {
+    window.scrollTo(0, 0);
+  });
 
   const navImage = document.createElement("img");
   navImage.setAttribute(
@@ -82,7 +84,6 @@ function createNavigationBar() {
 
   const logoutBtn = document.createElement("a");
   logoutBtn.className = "btn btn-outline-secondary";
-  logoutBtn.setAttribute("href", "/login");
   logoutBtn.setAttribute("role", "button");
   logoutBtn.setAttribute("id", "logoutBtn");
   logoutBtn.addEventListener("click", clearCookiesOnLogout);
@@ -1011,6 +1012,7 @@ function getCookie(cname) {
 function clearCookiesOnLogout() {
   console.log("dsdsd log out an delete cookie");
   clearCookie("username");
+  changeHash("#login");
 }
 
 //display succes/error toast
@@ -1282,8 +1284,9 @@ function createMainLoginForm() {
   p.textContent = "You don't have an account? ";
   let a = document.createElement("a");
   p.appendChild(a);
-  a.setAttribute("href", "/register");
+  a.addEventListener("click", () => changeHash("#register"));
   a.textContent = "Register";
+  a.className = "link-primary";
 
   return main;
 }
@@ -1316,11 +1319,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", true);
-            setTimeout(() => {
-              window.location.href = "/";
-            }, 2000);
-
-            //window.location.hash = "#dashboard";
+            changeHash("#dashboard");
           } else {
             showToast("Login failed", response.body.message, false);
           }
@@ -1537,8 +1536,11 @@ function createMain() {
 
   let aRegister = document.createElement("a");
   pRegister.appendChild(aRegister);
-  aRegister.setAttribute("href", "/login");
+  aRegister.addEventListener("click", () => {
+    changeHash("#login");
+  });
   aRegister.textContent = "Login";
+  aRegister.className = "link-primary";
 }
 
 function submitRegisterData() {
@@ -1580,12 +1582,7 @@ function submitRegisterData() {
                 "You have been registered successfully!",
                 true
               );
-              setTimeout(function () {
-                e.preventDefault();
-                window.location.href = "/";
-              }, 2000);
-
-              //window.location.hash = "#dashboard";
+              changeHash("dashboard");
             } else {
               showToast("Error", "Registration failed!", false);
             }
@@ -1721,6 +1718,11 @@ function createCookie(name, value, days) {
   document.cookie = name + "=" + value + expires;
 }
 
+function changeHash(hash) {
+  //hash should include #
+  window.location.hash = hash;
+}
+
 //hash router
 class MyHashRouter {
   constructor() {
@@ -1748,16 +1750,19 @@ class MyHashRouter {
         console.log("dashboard page");
         createIndexPage();
         hideLoading();
+        window.scrollTo(0, 0);
         break;
 
       case "login":
         console.log("login route");
         createLoginPage();
+        window.scrollTo(0, 0);
         break;
 
       case "register":
         console.log("register route");
         createRegisterPage();
+        window.scrollTo(0, 0);
         break;
 
       default:

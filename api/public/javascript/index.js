@@ -1,21 +1,21 @@
-export const bodyContainer = document.getElementById("body-container");
-export const appContainer = document.getElementById("app");
-export const baseUrl = "http://localhost:8080/api/";
+const bodyContainer = document.getElementById("body-container");
+const appContainer = document.getElementById("app");
+const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
-export let widgetsNr = 0;
-export let pickWidget = null;
+let widgetsNr = 0;
+let pickWidget = null;
 
 //initialize container for cards
-export let cardsRow = null;
+let cardsRow = null;
 
-export let item = {
+let item = {
   mainCurrency: "",
   secondCurrency: "",
   sellRate: 0,
   buyRate: 0,
 };
 
-export let tableHeadArray = [
+let tableHeadArray = [
   { name: "ID", icon: false },
   { name: "Username", icon: true },
   { name: "CCY Pair", icon: true },
@@ -28,15 +28,15 @@ export let tableHeadArray = [
 ];
 
 //table registrations
-export let tableRegistrations = [];
-export let currentSelectionTable = [];
+let tableRegistrations = [];
+let currentSelectionTable = [];
 //ccyPairs input
-export let ccyPairs = [];
+let ccyPairs = [];
 //card ids
-export let cardIdCounter = 0;
+let cardIdCounter = 0;
 
 //input group list
-export let cardInputsList = [
+let cardInputsList = [
   {
     label_for: "inputMainCurrency",
     label_text: "Primary",
@@ -51,7 +51,7 @@ export let cardInputsList = [
   },
 ];
 
-export let sortObj = {
+let sortObj = {
   username: false,
   ccy_pair: false,
   action: false,
@@ -60,10 +60,10 @@ export let sortObj = {
 };
 
 //select for PickWidget
-export let inputMainCurrency = null;
-export let inputSecondaryCurrency = null;
+let inputMainCurrency = null;
+let inputSecondaryCurrency = null;
 
-export function createNavigationBar() {
+function createNavigationBar() {
   const navElem = document.createElement("nav");
   navElem.className = "navbar navbar-light bg-light mb-3";
 
@@ -95,7 +95,7 @@ export function createNavigationBar() {
   return navElem;
 }
 
-export function createMainWidget(item) {
+function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
   cardDivCol.id = `card${cardIdCounter}`;
@@ -279,7 +279,7 @@ export function createMainWidget(item) {
   return cardDivCol;
 }
 
-export function sendDataTransactions(
+function sendDataTransactions(
   action,
   mainCurrency,
   secondCurrency,
@@ -402,7 +402,7 @@ export function sendDataTransactions(
   }
 }
 
-export function createPickWidget() {
+function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
@@ -505,7 +505,7 @@ export function createPickWidget() {
   return cardContainer;
 }
 
-export function createAddWidget() {
+function createAddWidget() {
   //create column
   let cardContainer = document.createElement("div");
   cardContainer.classList.add("col");
@@ -531,7 +531,7 @@ export function createAddWidget() {
   return cardContainer;
 }
 
-export function addPickWidget() {
+function addPickWidget() {
   //no more that 5 cards
   if (widgetsNr <= 4) {
     console.log("create pick widget");
@@ -547,7 +547,7 @@ export function addPickWidget() {
   }
 }
 
-export function addNewWidget() {
+function addNewWidget() {
   //no more that 5 cards
   if (widgetsNr <= 5) {
     //fetch item from api
@@ -564,12 +564,12 @@ export function addNewWidget() {
   }
 }
 
-export function closeWidget(cardId) {
+function closeWidget(cardId) {
   document.getElementById(cardId).remove();
   widgetsNr--;
 }
 
-export function selectCurrency() {
+function selectCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondCurrency = document.getElementById("inputSecondCurrency");
 
@@ -585,7 +585,7 @@ export function selectCurrency() {
     }
 }
 
-export function confirmSelectionCurrency() {
+function confirmSelectionCurrency() {
   inputMainCurrency = document.getElementById("inputMainCurrency");
   inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
   console.log("inside confirm selection");
@@ -642,7 +642,7 @@ export function confirmSelectionCurrency() {
 
 //create the header
 //containing fields names
-export function createTableHeader(tr) {
+function createTableHeader(tr) {
   for (let i = 0; i < tableHeadArray.length; i++) {
     const th = document.createElement("th");
     th.setAttribute("scope", "col");
@@ -682,7 +682,7 @@ function addTableHeadSortEvent(name, icon) {
   }
 }
 
-export function sortEntries(property, sortType) {
+function sortEntries(property, sortType) {
   const tableBody = document.getElementById("table-body");
   let filteredRegistrations = [];
 
@@ -737,7 +737,7 @@ export function sortEntries(property, sortType) {
   }
 }
 
-export function parseDates(a, b, property) {
+function parseDates(a, b, property) {
   let incomingDateA = a[property].substring(0, 10);
   let newIncomingDateA = incomingDateA.split("/");
   [newIncomingDateA[0], newIncomingDateA[1]] = [
@@ -764,7 +764,7 @@ export function parseDates(a, b, property) {
   };
 }
 
-export function createFiltersSection(blotterButtons) {
+function createFiltersSection(blotterButtons) {
   const filterSubtitle = document.createElement("p");
   filterSubtitle.className = "subtitle";
   filterSubtitle.textContent = "FILTERS";
@@ -833,7 +833,7 @@ export function createFiltersSection(blotterButtons) {
 }
 
 //adds one registration in blotter table
-export function createOneTableRegistration(transaction, counter) {
+function createOneTableRegistration(transaction, counter) {
   const trUsers = document.createElement("tr");
   const rowId = document.createElement("th");
   rowId.setAttribute("scope", "row");
@@ -878,7 +878,7 @@ export function createOneTableRegistration(transaction, counter) {
 }
 
 //create body content for registrations
-export function createBodyTable(registrations) {
+function createBodyTable(registrations) {
   const bodyTable = document.createElement("tbody");
   bodyTable.setAttribute("id", "table-body");
   for (let i = 0; i < registrations.length; i++) {
@@ -888,7 +888,7 @@ export function createBodyTable(registrations) {
   return bodyTable;
 }
 
-export function createBlotterView() {
+function createBlotterView() {
   //create blotter section
   const blotterSection = document.createElement("section");
   blotterSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -937,7 +937,7 @@ export function createBlotterView() {
   return blotterSection;
 }
 
-export function createRatesView() {
+function createRatesView() {
   //create main section in which the cards will be
   let ratesSection = document.createElement("section");
   ratesSection.className = "col-sm-12 col-md-12 col-lg-6";
@@ -966,7 +966,10 @@ export function createRatesView() {
   return ratesSection;
 }
 
-export function createIndexPage() {
+function createIndexPage() {
+  //cleanup
+  cleanup(appContainer);
+
   //create navbar
   const navBar = createNavigationBar();
   appContainer.appendChild(navBar);
@@ -984,10 +987,10 @@ export function createIndexPage() {
 }
 
 // clear cookie using its name
-export function clearCookie(name) {
+function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
-export function getCookie(cname) {
+function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(";");
@@ -1011,7 +1014,7 @@ function clearCookiesOnLogout() {
 }
 
 //display succes/error toast
-export function showToast(titleMessage, bodyMessage, toastType) {
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
@@ -1045,7 +1048,7 @@ function cleanup(parent) {
 }
 
 //filter blotter table by given inputs
-export function filterBlotterTable() {
+function filterBlotterTable() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
   const inputDate = document.getElementById("inputDateFilter").value;
@@ -1149,9 +1152,12 @@ window.onload = () => {
       tableRegistrations = data[1];
       currentSelectionTable = data[1];
 
-      //create the page
-      createIndexPage();
-      hideLoading();
+      //when document loads, initialize router
+      let myRouter = new MyHashRouter();
+      //change hash so it triggers the event on first start
+      const initialHash = window.location.hash;
+      window.location.hash = "#aa";
+      window.location.hash = initialHash;
     })
 
     .catch((error) => {
@@ -1160,7 +1166,7 @@ window.onload = () => {
 };
 
 //loading
-export function showLoading() {
+function showLoading() {
   let loading = document.createElement("div");
   loading.classList.add("spinner");
   loading.id = "loadingContainer";
@@ -1168,7 +1174,598 @@ export function showLoading() {
   appContainer.appendChild(loading);
 }
 
-export function hideLoading() {
+function hideLoading() {
   let container = document.getElementById("loadingContainer");
   if (container) container.remove();
+}
+
+let loginContainer = null;
+
+function createAsideImage() {
+  let aside = document.createElement("aside");
+  aside.classList.add("aside");
+  let img = document.createElement("img");
+  img.classList.add("aside__img");
+  img.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-grayscale.svg"
+  );
+  img.setAttribute("alt", "logo");
+  loginContainer.appendChild(aside);
+  aside.appendChild(img);
+
+  return aside;
+}
+
+function createMainLoginForm() {
+  let main = document.createElement("main");
+  main.classList.add("main");
+  loginContainer.appendChild(main);
+  let mainContainer = document.createElement("div");
+  mainContainer.classList.add("main__container");
+  main.appendChild(mainContainer);
+
+  const logoImg = document.createElement("img");
+  logoImg.classList.add("mobile__image");
+  logoImg.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg"
+  );
+  logoImg.setAttribute("alt", "logo");
+  main.append(logoImg);
+
+  let h1 = document.createElement("h1");
+  h1.classList.add("main__title");
+  h1.textContent = "Log in to your account";
+  mainContainer.appendChild(h1);
+
+  let hr = document.createElement("hr");
+  mainContainer.appendChild(hr);
+  hr.className = "solid";
+
+  let form = document.createElement("form");
+  form.setAttribute("id", "form");
+  form.setAttribute("method", "POST");
+  mainContainer.appendChild(form);
+
+  let firstDiv = document.createElement("div");
+  firstDiv.className =
+    "mb-3 d-flex align-content-center justify-content-evenly";
+  form.appendChild(firstDiv);
+  let emailIcon = document.createElement("i");
+  emailIcon.className = "fas fa-user-alt";
+  firstDiv.appendChild(emailIcon);
+
+  let emailInput = document.createElement("input");
+  firstDiv.appendChild(emailInput);
+  emailInput.id = "inputEmail";
+  emailInput.setAttribute("type", "email");
+  emailInput.setAttribute("name", "email");
+  emailInput.classList.add("form-control");
+  emailInput.setAttribute("aria-describedby", "emailHelp");
+  emailInput.setAttribute("placeholder", "Email");
+
+  let secondDiv = document.createElement("div");
+  secondDiv.className = "mb-3 d-flex align-content-center ";
+  form.appendChild(secondDiv);
+
+  let passwordIcon = document.createElement("i");
+  passwordIcon.className = "fas fa-unlock";
+  secondDiv.appendChild(passwordIcon);
+
+  let divIconAndPassword = document.createElement("div");
+  secondDiv.appendChild(divIconAndPassword);
+  divIconAndPassword.className = "mb-3 d-flex align-content-center flex-column";
+
+  let passwordInput = document.createElement("input");
+  secondDiv.appendChild(passwordInput);
+  passwordInput.setAttribute("type", "password");
+  passwordInput.setAttribute("name", "password");
+  passwordInput.className = "form-control";
+  passwordInput.setAttribute("id", "inputPassword");
+  passwordInput.setAttribute("placeholder", "Password");
+
+  let loginBtn = document.createElement("button");
+  form.appendChild(loginBtn);
+  loginBtn.setAttribute("id", "loginBtn");
+  loginBtn.setAttribute("type", "submit");
+  loginBtn.className = "main__btn";
+  loginBtn.textContent = "Login";
+  loginBtn.addEventListener("click", login);
+
+  let divRegister = document.createElement("div");
+  form.appendChild(divRegister);
+  divRegister.className = "register";
+
+  let p = document.createElement("p");
+  divRegister.appendChild(p);
+  p.textContent = "You don't have an account? ";
+  let a = document.createElement("a");
+  p.appendChild(a);
+  a.setAttribute("href", "/register");
+  a.textContent = "Register";
+
+  return main;
+}
+
+function login() {
+  const form = document.getElementById("form");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let userEmail = document.getElementById("inputEmail").value;
+      let password = document.getElementById("inputPassword").value;
+
+      let url = "http://localhost:8080/api/auth/login";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail, password: password }),
+      })
+        .then((res) =>
+          res.json().then((data) => ({
+            status: res.status,
+            body: data,
+          }))
+        )
+        .then((response) => {
+          let username = response.body.username;
+          if (response.status === 200) {
+            //save cookie
+            createCookie("username", `${username}`, 2);
+            showToast("Login succesfull", "You have been logged in!", true);
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 2000);
+
+            //window.location.hash = "#dashboard";
+          } else {
+            showToast("Login failed", response.body.message, false);
+          }
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  }
+}
+
+function removePreviousError(parent) {
+  const errors = parent.getElementsByClassName("error");
+
+  if (errors.length > 0) {
+    for (let errChild of errors) {
+      parent.removeChild(errChild);
+    }
+  }
+}
+
+function showToast(titleMessage, bodyMessage, toastType) {
+  let liveToast = document.getElementById("liveToast");
+  console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
+  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
+  cleanup(toastHeader);
+  toastHeaderText = document.createTextNode(titleMessage);
+  toastHeader.appendChild(toastHeaderText);
+  let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
+  let toastBodyText = document.createTextNode(bodyMessage);
+  toastBody.appendChild(toastBodyText);
+  let toast = new bootstrap.Toast(liveToast);
+  toast.show();
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
+}
+
+//when we move to login/register page from index,
+//we should clear the whole body
+//or, we can get navbar by id and remove the element
+function createLoginPage() {
+  //cleanup
+  cleanup(appContainer);
+  loginContainer = document.createElement("div");
+  loginContainer.className = "d-flex";
+  appContainer.appendChild(loginContainer);
+
+  createAsideImage();
+  createMainLoginForm();
+}
+
+let registerContainer = null;
+
+function createRegisterAside() {
+  let aside = document.createElement("aside");
+  registerContainer.appendChild(aside);
+  aside.className = "aside";
+
+  let imgAside = document.createElement("img");
+  aside.appendChild(imgAside);
+  imgAside.className = "aside__img";
+  imgAside.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-grayscale.svg"
+  );
+  imgAside.setAttribute("alt", "logo");
+}
+
+function createMain() {
+  let main = document.createElement("main");
+  registerContainer.appendChild(main);
+  main.className = "main";
+
+  let divContainer = document.createElement("div");
+  main.appendChild(divContainer);
+  divContainer.className = "main__container";
+
+  const logoImg = document.createElement("img");
+  logoImg.classList.add("mobile__image");
+  logoImg.classList.add("register__logo");
+  logoImg.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/logo-main.svg"
+  );
+  logoImg.setAttribute("alt", "logo");
+  main.append(logoImg);
+
+  let h1 = document.createElement("h1");
+  divContainer.appendChild(h1);
+  h1.className = "main__title";
+  h1.textContent = "Register a new account";
+
+  let hr = document.createElement("hr");
+  divContainer.appendChild(hr);
+  hr.className = "solid";
+
+  let form = document.createElement("form");
+  divContainer.appendChild(form);
+  form.setAttribute("method", "POST");
+  form.setAttribute("id", "form");
+
+  let divUsername = document.createElement("div");
+  form.appendChild(divUsername);
+  divUsername.className = "mb-3 align-content-center";
+
+  let pUsername = document.createElement("p");
+  divUsername.appendChild(pUsername);
+  pUsername.textContent = "Username";
+
+  let inputUsername = document.createElement("input");
+
+  divUsername.appendChild(inputUsername);
+  inputUsername.className = "form-control";
+  inputUsername.setAttribute("id", "inputUsername");
+  inputUsername.setAttribute("type", "text");
+  inputUsername.setAttribute("name", "user");
+  inputUsername.setAttribute("aria-describedby", "emailHelp");
+  inputUsername.setAttribute("placeholder", "Username");
+  inputUsername.setAttribute("value", "oana");
+
+  let divEmail = document.createElement("div");
+  form.appendChild(divEmail);
+  divEmail.className = "mb-3 align-content-center";
+
+  let pEmail = document.createElement("p");
+  divEmail.appendChild(pEmail);
+  pEmail.textContent = "Email adress";
+
+  let inputEmail = document.createElement("input");
+  divEmail.appendChild(inputEmail);
+  inputEmail.className = "form-control";
+  inputEmail.setAttribute("id", "inputEmail");
+  inputEmail.setAttribute("type", "email");
+  inputEmail.setAttribute("name", "email");
+  inputEmail.setAttribute("placeholder", "Email");
+  inputEmail.setAttribute("value", "oana@oana2.com");
+
+  let divPassword = document.createElement("div");
+  form.appendChild(divPassword);
+  divPassword.className = "mb-3 align-content-center";
+
+  let pPassword = document.createElement("p");
+  divPassword.appendChild(pPassword);
+  pPassword.textContent = "Password";
+
+  let inputPassword = document.createElement("input");
+  divPassword.appendChild(inputPassword);
+  inputPassword.className = "form-control";
+  inputPassword.setAttribute("id", "inputPassword");
+  inputPassword.setAttribute("type", "password");
+  inputPassword.setAttribute("name", "password");
+  inputPassword.setAttribute("placeholder", "Password");
+  inputPassword.setAttribute("value", "Test123!");
+
+  let divPasswordConfirm = document.createElement("div");
+  form.appendChild(divPasswordConfirm);
+  divPasswordConfirm.className = "mb-3 align-content-center";
+
+  let pPasswordConfirm = document.createElement("p");
+  divPasswordConfirm.appendChild(pPasswordConfirm);
+  pPasswordConfirm.textContent = "Confirm Password";
+
+  let inputPasswordConfirm = document.createElement("input");
+  divPasswordConfirm.appendChild(inputPasswordConfirm);
+  inputPasswordConfirm.className = "form-control";
+  inputPasswordConfirm.setAttribute("id", "inputPasswordConfirm");
+  inputPasswordConfirm.setAttribute("type", "password");
+  inputPasswordConfirm.setAttribute("name", "co-password");
+  inputPasswordConfirm.setAttribute("placeholder", "Confirm Password");
+  inputPasswordConfirm.setAttribute("value", "Test123!");
+
+  let submitBtn = document.createElement("button");
+  form.appendChild(submitBtn);
+  submitBtn.setAttribute("id", "submitBtn");
+  submitBtn.className = "main__btn";
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.addEventListener("click", () => {
+    submitRegisterData();
+  });
+  submitBtn.textContent = "Register";
+
+  let divRegister = document.createElement("div");
+  divContainer.appendChild(divRegister);
+  divRegister.className = "register";
+
+  let pRegister = document.createElement("p");
+  divRegister.appendChild(pRegister);
+  pRegister.textContent = "Already have an account? ";
+
+  let aRegister = document.createElement("a");
+  pRegister.appendChild(aRegister);
+  aRegister.setAttribute("href", "/login");
+  aRegister.textContent = "Login";
+}
+
+function submitRegisterData() {
+  const form = document.getElementById("form");
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const isValid = validateRegisterForm(); // front-end validation
+
+      if (isValid) {
+        // submit form
+
+        let username = document.getElementById("inputUsername").value;
+        let email = document.getElementById("inputEmail").value;
+        let password = document.getElementById("inputPassword").value;
+        let repassword = document.getElementById("inputPasswordConfirm").value;
+        const url = "http://localhost:8080/api/auth/register";
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            //Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            repassword: repassword,
+          }),
+        })
+          .then((data) => {
+            console.log(data);
+            if (data.status == 200) {
+              createCookie("username", `${username}`, 2);
+              showToast(
+                "Register succesfull",
+                "You have been registered successfully!",
+                true
+              );
+              setTimeout(function () {
+                e.preventDefault();
+                window.location.href = "/";
+              }, 2000);
+
+              //window.location.hash = "#dashboard";
+            } else {
+              showToast("Error", "Registration failed!", false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  }
+}
+
+function validateRegisterForm() {
+  let isValid = true;
+  const passRegExp =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const username = document.getElementById("inputUsername");
+  removePreviousError(username.parentElement);
+  if (!username.value) {
+    isValid = false;
+    username.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Username is not valid</p>'
+    );
+  } else if (username.value.length < 3 || username.value.length > 20) {
+    isValid = false;
+    username.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Username must be between 3 and 20 characters</p>'
+    );
+  }
+
+  const email = document.getElementById("inputEmail");
+  removePreviousError(email.parentElement);
+  const pattern = /^\S+@\S+\.\S+$/;
+  if (!pattern.test(email.value)) {
+    email.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Email is not valid</p>'
+    );
+  }
+
+  const password = document.getElementById("inputPassword");
+  removePreviousError(password.parentElement);
+  if (password.value.length < 7 || password.value.length >= 20) {
+    isValid = false;
+    password.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Password must be between 8 and 20 characters</p>'
+    );
+  } else if (checkRegExp(passRegExp, password.value) === false) {
+    isValid = false;
+    password.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!</p>'
+    );
+  }
+  function checkRegExp(regExp, myStr) {
+    return regExp.test(myStr);
+  }
+
+  const confirmPassword = document.getElementById("inputPasswordConfirm");
+  removePreviousError(confirmPassword.parentElement);
+  if (confirmPassword.value !== password.value) {
+    isValid = false;
+    confirmPassword.parentElement.insertAdjacentHTML(
+      "beforeend",
+      '<p class="error">Passwords do not match</p>'
+    );
+  }
+
+  return isValid;
+}
+
+function removePreviousError(parent) {
+  const errors = parent.getElementsByClassName("error");
+
+  if (errors.length > 0) {
+    for (let errChild of errors) {
+      parent.removeChild(errChild);
+    }
+  }
+}
+
+function showToast(titleMessage, bodyMessage, toastType) {
+  let liveToast = document.getElementById("liveToast");
+  console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
+  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
+  cleanup(toastHeader);
+  toastHeaderText = document.createTextNode(titleMessage);
+  toastHeader.appendChild(toastHeaderText);
+  let toastBody = liveToast.querySelector(".toast-body");
+  cleanup(toastBody);
+
+  let toastBodyText = document.createTextNode(bodyMessage);
+  toastBody.appendChild(toastBodyText);
+  let toast = new bootstrap.Toast(liveToast);
+  toast.show();
+}
+
+function createRegisterPage() {
+  //cleanup
+  cleanup(appContainer);
+  registerContainer = document.createElement("div");
+  registerContainer.className = "d-flex";
+  appContainer.appendChild(registerContainer);
+  createRegisterAside();
+  createMain();
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
+}
+
+//hash router
+class MyHashRouter {
+  constructor() {
+    window.addEventListener("hashchange", (event) => this.onRouteChange(event));
+    this.app = document.getElementById("app");
+    console.log("hash router init");
+  }
+  onRouteChange(event) {
+    const hashLocation = window.location.hash.substring(1);
+    this.loadContent(hashLocation);
+  }
+
+  loadContent(uri) {
+    const contentUri = `${uri}`;
+    console.log(contentUri);
+
+    //generate pages by uri
+    switch (contentUri) {
+      case "":
+        window.location.hash = "#dashboard";
+
+        break;
+      case "dashboard":
+        //create the page
+        console.log("dashboard page");
+        createIndexPage();
+        hideLoading();
+        break;
+
+      case "login":
+        console.log("login route");
+        createLoginPage();
+        break;
+
+      case "register":
+        console.log("register route");
+        createRegisterPage();
+        break;
+
+      default:
+        let message = document.createElement("p");
+        let messageText = document.createTextNode("Not Found");
+        message.appendChild(messageText);
+        app.appendChild(message);
+        break;
+    }
+  }
 }

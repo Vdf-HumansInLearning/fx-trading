@@ -1,8 +1,9 @@
 const body = document.getElementsByClassName("body-container-404")[0];
+const appContainer = document.getElementById("app");
 
 function create404Page() {
   let main = document.createElement("main");
-  body.appendChild(main);
+  appContainer.appendChild(main);
   main.className = "main404";
 
   let divContainer = document.createElement("div");

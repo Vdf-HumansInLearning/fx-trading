@@ -177,8 +177,12 @@ function submitRegisterData() {
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
-              console.log("afiseaza modala");
-              showToast("Register succesfull", "dsdsdsds");
+              createCookie("username", `${username}`, 2);
+              showToast(
+                "Register succesfull",
+                "You have been registered successfully!",
+                true
+              );
               setTimeout(function () {
                 e.preventDefault();
                 window.location.href = "/";
@@ -186,7 +190,7 @@ function submitRegisterData() {
 
               //window.location.hash = "#dashboard";
             } else {
-              showToast("Error", "Registration failed!");
+              showToast("Error", "Registration failed!", false);
             }
           })
           .catch((error) => {
@@ -270,11 +274,28 @@ function removePreviousError(parent) {
   }
 }
 
-function showToast(titleMessage, bodyMessage) {
-  console.log("suntem in showToast");
+function cleanup(parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+}
+
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -286,11 +307,6 @@ function showToast(titleMessage, bodyMessage) {
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
 }
-function cleanup(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-}
 
 function createRegisterPage() {
   registerContainer = document.createElement("div");
@@ -298,6 +314,18 @@ function createRegisterPage() {
   appContainer.appendChild(registerContainer);
   createRegisterAside();
   createMain();
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
 }
 
 createRegisterPage();

@@ -174,6 +174,12 @@ function submitRegisterData() {
             repassword: repassword,
           }),
         })
+          .then((res) =>
+            res.json().then((data) => ({
+              status: res.status,
+              body: data,
+            }))
+          )
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
@@ -189,7 +195,26 @@ function submitRegisterData() {
               }, 2000);
 
               //window.location.hash = "#dashboard";
-            } else {
+            } else if (data.status == 409) {
+              console.log(data.body.message);
+              if (data.body.existing === "email") {
+                const email = document.getElementById("inputEmail");
+                removePreviousError(email.parentElement);
+                email.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              } 
+              else if (data.body.existing === "username") {
+                const username = document.getElementById("inputUsername");
+                removePreviousError(username.parentElement);
+                username.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              }
+            }
+            else {
               showToast("Error", "Registration failed!", false);
             }
           })

@@ -225,6 +225,7 @@ function createMainWidget(item) {
   let optionEmpty = document.createElement("option");
   select.appendChild(optionEmpty);
   optionEmpty.setAttribute("selected", "true");
+  optionEmpty.setAttribute("id", "optionDefault");
   optionEmpty.textContent = "Choose...";
 
   let optionSpot = document.createElement("option");
@@ -359,7 +360,9 @@ function sendDataTransactions(
         console.log(response);
         if (response.status === 200) {
           showToast("Succes", "Transaction completed", true);
-          //clean up notional and
+          document.getElementById("inputDate").value = null;
+          document.getElementById("inputCcy").value =
+            document.getElementById("inputCcy").options[0].value;
         } else {
           showToast("Failure", "Transaction failed", false);
         }

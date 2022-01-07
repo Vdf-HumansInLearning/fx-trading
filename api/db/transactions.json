@@ -131,6 +131,248 @@
       "tenor": "Spot",
       "trans_date": "07/01/2022",
       "trans_hour": "14:54"
+    },
+    {
+      "id": "e28336fc-51aa-46f6-854d-46c0067252e9",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "1222",
+      "tenor": "1M",
+      "trans_date": "07/01/2022",
+      "trans_hour": "14:59"
+    },
+    {
+      "id": "257d4db9-2dc3-4e4f-97ba-409da186e802",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "12",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:01"
+    },
+    {
+      "id": "8e0b3ef8-c117-462c-bc1a-aefc66c6468d",
+      "username": "oanagigel",
+      "ccy_pair": "USD/GBP",
+      "rate": "1.35",
+      "action": "buy",
+      "notional": "45",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:05"
+    },
+    {
+      "id": "21bb1ff0-63c8-4af6-9e0e-2972654e13f8",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "5",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:05"
+    },
+    {
+      "id": "2c426019-ff37-45c5-a664-2039255b923b",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/GBP",
+      "rate": "1.19",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:06"
+    },
+    {
+      "id": "4edc0e20-4d2f-4270-8e57-5a0b05e64eae",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "4",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:06"
+    },
+    {
+      "id": "341a607a-9e66-4c93-b587-7d56b9459b45",
+      "username": "oanagigel",
+      "ccy_pair": "USD/GBP",
+      "rate": "1.35",
+      "action": "buy",
+      "notional": "223",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:07"
+    },
+    {
+      "id": "b6da1410-210b-4e8d-b2d1-11b2fac12e12",
+      "username": "oanagigel",
+      "ccy_pair": "USD/RON",
+      "rate": "0.23",
+      "action": "buy",
+      "notional": "343",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:07"
+    },
+    {
+      "id": "3d5af05a-5a4e-4dc3-bac3-38eb8d34f16b",
+      "username": "oanagigel",
+      "ccy_pair": "USD/RON",
+      "rate": "0.23",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:08"
+    },
+    {
+      "id": "98d99db2-c27b-460b-b7ad-7b7681ddbfff",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "23",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:12"
+    },
+    {
+      "id": "9a3c60ec-e988-4739-b803-112525b40eee",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "99",
+      "tenor": "1M",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:12"
+    },
+    {
+      "id": "9c1f2bde-eaab-404c-a105-0e60823afa3d",
+      "username": "oanagigel",
+      "ccy_pair": "GBP/RON",
+      "rate": "0.71",
+      "action": "buy",
+      "notional": "44",
+      "tenor": "3M",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:12"
+    },
+    {
+      "id": "735a1e35-13ab-475a-98ea-ba623019011d",
+      "username": "oanagigel",
+      "ccy_pair": "USD/CHF",
+      "rate": "1.1",
+      "action": "buy",
+      "notional": "23",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:15"
+    },
+    {
+      "id": "f4246df3-8303-46be-b82a-e6ab223827d4",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:15"
+    },
+    {
+      "id": "78f7b2b5-2b3b-4a84-a621-21d77dea280d",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "4",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:17"
+    },
+    {
+      "id": "e2ccf0e7-c5fb-4254-8e74-fb3b76012cf4",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "223",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:19"
+    },
+    {
+      "id": "064f95f1-b09e-4175-a3ad-84c23ae19466",
+      "username": "oanagigel",
+      "ccy_pair": "GBP/CHF",
+      "rate": "0.81",
+      "action": "buy",
+      "notional": "23",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:20"
+    },
+    {
+      "id": "44556bae-608a-40c8-b649-9e6a318a0daf",
+      "username": "oanagigel",
+      "ccy_pair": "GBP/CHF",
+      "rate": "0.81",
+      "action": "buy",
+      "notional": "88",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:20"
+    },
+    {
+      "id": "6e0243c4-f251-4510-b792-6851d4f035ca",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "8",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:20"
+    },
+    {
+      "id": "f315f9c0-e8d1-4de0-a1aa-d46f86df4ac3",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/GBP",
+      "rate": "1.19",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:21"
+    },
+    {
+      "id": "bb8e41b3-1736-4de9-bc7e-834506d7640f",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "4",
+      "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:22"
+    },
+    {
+      "id": "3529f1dd-5cb5-4525-a0ed-56fa8443f506",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "1M",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:23"
     }
   ]
 }

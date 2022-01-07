@@ -576,7 +576,7 @@ function selectCurrency() {
   if (inputMainCurrency && inputSecondCurrency)
     if (
       inputMainCurrency.value !== "opt_none" ||
-      inputSecondaryCurrency.value !== "opt_none"
+      inputSecondCurrency.value !== "opt_none"
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
@@ -1130,6 +1130,7 @@ function filterBlotterTable() {
 }
 
 window.onload = () => {
+  showLoading();
   const urlPairs = "http://localhost:8080/api/currencies/pairs";
   const urlTransactions = "http://localhost:8080/api/transactions";
   const urlCurrencies = "http://localhost:8080/api/currencies";
@@ -1150,9 +1151,24 @@ window.onload = () => {
 
       //create the page
       createIndexPage();
+      hideLoading();
     })
 
     .catch((error) => {
       console.error("Error:", error);
     });
 };
+
+//loading
+function showLoading() {
+  let loading = document.createElement("div");
+  loading.classList.add("spinner");
+  loading.id = "loadingContainer";
+
+  appContainer.appendChild(loading);
+}
+
+function hideLoading() {
+  let container = document.getElementById("loadingContainer");
+  if (container) container.remove();
+}

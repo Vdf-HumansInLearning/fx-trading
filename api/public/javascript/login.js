@@ -122,79 +122,39 @@ function login() {
       let userEmail = document.getElementById("inputEmail").value;
       let password = document.getElementById("inputPassword").value;
 
-      const isValid = validateRegisterForm();
+      let url = "http://localhost:8080/api/auth/login";
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: userEmail, password: password }),
+      })
+        .then((res) =>
+          res.json().then((data) => ({ status: res.status, body: data }))
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            //save cookie
 
-      if (isValid) {
-        let url = "http://localhost:8080/api/auth/login";
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: userEmail, password: password }),
+            showToast("Login succesfull", "You have been logged in!", true);
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 2000);
+
+            //window.location.hash = "#dashboard";
+          } else {
+            showToast("Login failed", response.body.message, false);
+          }
         })
-          .then((res) =>
-            res.json().then((data) => ({ status: res.status, body: data }))
-          )
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              //save cookie
 
-              showToast("Login succesfull", "You have been logged in");
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 2000);
+        .catch((error) => {
+          console.log(error);
+        });
 
-              //window.location.hash = "#dashboard";
-            } else {
-              showToast("Login failed", response.body.message);
-            }
-          })
-
-          .catch((error) => {
-            console.log(error);
-          });
-      }
     });
   }
-}
-
-function validateRegisterForm() {
-  let isValid = true;
-  const passRegExp =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  const email = document.getElementById("inputEmail");
-  removePreviousError(email.parentElement);
-  const pattern = /^\S+@\S+\.\S+$/;
-  if (!pattern.test(email.value)) {
-    email.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">Email is not valid</div>'
-    );
-  }
-
-  const password = document.getElementById("inputPassword");
-  removePreviousError(password.parentElement);
-  if (password.value.length < 7 || password.value.length >= 20) {
-    isValid = false;
-    password.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">Password must be between 8 and 20 characters</div>'
-    );
-  } else if (checkRegExp(passRegExp, password.value) === false) {
-    isValid = false;
-    password.parentElement.insertAdjacentHTML(
-      "beforeend",
-      '<div class="error">"Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!"</div>'
-    );
-  }
-  function checkRegExp(regExp, myStr) {
-    return regExp.test(myStr);
-  }
-
-  return isValid;
 }
 
 function removePreviousError(parent) {
@@ -207,23 +167,22 @@ function removePreviousError(parent) {
   }
 }
 
-function generateMessage(message) {
-  let toast = document.createElement("div");
-  toast.className = "tn-box tn-box-color-1";
-  let toastTitle = document.createElement("p");
-  toastTitle.innerText = message;
-
-  toast.append(toastTitle);
-
-  toast.classList.add("tn-box-active");
-
-  body.append(toast);
-}
-
-function showToast(titleMessage, bodyMessage) {
+function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+  if (toastType) {
+    toastHeaderContainer.classList.remove("bg-danger");
+    toastHeaderContainer.classList.add("bg-success");
+    liveToast.classList.remove("border-danger");
+    liveToast.classList.add("border-success");
+  } else {
+    toastHeaderContainer.classList.remove("bg-success");
+    toastHeaderContainer.classList.add("bg-danger");
+    liveToast.classList.remove("border-success");
+    liveToast.classList.add("border-danger");
+  }
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -235,6 +194,7 @@ function showToast(titleMessage, bodyMessage) {
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
 }
+
 function cleanup(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);

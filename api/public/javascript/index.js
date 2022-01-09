@@ -34,6 +34,7 @@ let currentSelectionTable = [];
 let ccyPairs = [];
 //card ids
 let cardIdCounter = 0;
+let inputId = 0;
 
 //input group list
 let cardInputsList = [
@@ -119,14 +120,14 @@ function createMainWidget(item) {
   let spanMainCurrency = document.createElement("span");
   pSubtitle.appendChild(spanMainCurrency);
   spanMainCurrency.className = "text-large ";
-  spanMainCurrency.setAttribute("id", "mainCurrency");
+  spanMainCurrency.setAttribute("id", `mainCurrency${inputId}`);
   spanMainCurrency.textContent = `${item.mainCurrency}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
 
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
-  spanSecondCurrency.setAttribute("id", "secondCurrency");
+  spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
   spanSecondCurrency.textContent = `/${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
@@ -137,6 +138,12 @@ function createMainWidget(item) {
   let iconExchange = document.createElement("i");
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
+  //---creeaza id separat pt icon
+  //--- foarEachh si adauga fiecarui icon addEventListener
+
+  // iconExchange.addEventListener("click", () => {
+  //   swappCurrency(`mainCurrency${inputId}`, `${item.secondCurrency}`, 0, 0);
+  // }); //===========
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -203,7 +210,8 @@ function createMainWidget(item) {
   mainArea.appendChild(inputNational);
   inputNational.className = "form-control";
   inputNational.setAttribute("type", "number");
-  inputNational.setAttribute("id", "inputDate");
+  let inputIdtoSendNotional = `inputDate${inputId}`;
+  inputNational.setAttribute("id", `inputDate${inputId}`);
   inputNational.setAttribute("placeholder", "Amount");
   inputNational.setAttribute("min", 1);
 
@@ -214,13 +222,14 @@ function createMainWidget(item) {
   let labelTenor = document.createElement("label");
   tenorDiv.appendChild(labelTenor);
   labelTenor.className = "input-group-text";
-  labelTenor.setAttribute("for", "inputCcy");
+  let inputIdToSendTenor = `inputCcy${inputId}`;
+  labelTenor.setAttribute("for", `inputCcy${inputId}`);
   labelTenor.textContent = "Tenor";
 
   let select = document.createElement("select");
   tenorDiv.appendChild(select);
   select.className = "form-select";
-  select.setAttribute("id", "inputCcy");
+  select.setAttribute("id", `inputCcy${inputId}`);
 
   let optionEmpty = document.createElement("option");
   select.appendChild(optionEmpty);
@@ -258,7 +267,9 @@ function createMainWidget(item) {
       "sell",
       `${item.mainCurrency}`,
       `${item.secondCurrency}`,
-      `${item.sellRate}`
+      `${item.sellRate}`,
+      `${inputIdtoSendNotional}`,
+      `${inputIdToSendTenor}`
     );
   });
 
@@ -273,20 +284,34 @@ function createMainWidget(item) {
       "buy",
       `${item.mainCurrency}`,
       `${item.secondCurrency}`,
-      `${item.buyRate}`
+      `${item.buyRate}`,
+      `${inputIdtoSendNotional}`,
+      `${inputIdToSendTenor}`
     );
   });
   return cardDivCol;
 }
+// function swappCurrency(main, sec, sell, buy) {
+//   console.log(main);
+//   console.log(sec);
+//   console.log(sell);
+//   console.log(buy);
+// }
 
 function sendDataTransactions(
   action,
   mainCurrency,
   secondCurrency,
-  sellOrBuyRate
+  sellOrBuyRate,
+  inputIdtoSendNotional,
+  inputIdToSendTenor
 ) {
-  let notional = document.getElementById("inputDate").value;
-  let tenor = document.getElementById("inputCcy").value;
+  let inputToSendN = inputIdtoSendNotional;
+  let inputToSendT = inputIdToSendTenor;
+  console.log(inputToSendN);
+  console.log(inputToSendT);
+  let notional = document.getElementById(`${inputToSendN}`).value;
+  let tenor = document.getElementById(`${inputToSendT}`).value;
   let mainCurrencyToSend = mainCurrency.toUpperCase();
   let secondCurrencyToSend = secondCurrency.toUpperCase();
   let sellOrBuyRateToSend = sellOrBuyRate;
@@ -360,9 +385,9 @@ function sendDataTransactions(
         console.log(response);
         if (response.status === 200) {
           showToast("Succes", "Transaction completed", true);
-          document.getElementById("inputDate").value = null;
-          document.getElementById("inputCcy").value =
-            document.getElementById("inputCcy").options[0].value;
+          document.getElementById(`${inputToSendN}`).value = null;
+          document.getElementById(`inputCcy${inputId}`).value =
+            document.getElementById(`inputCcy${inputId}`).options[0].value;
         } else {
           showToast("Failure", "Transaction failed", false);
         }
@@ -618,6 +643,8 @@ function confirmSelectionCurrency() {
         )
         .then((response) => {
           if (response.status === 200) {
+            inputId++;
+            console.log("inputId  " + inputId);
             console.log(response.body);
             //populate the item
             item.mainCurrency = currencyObj.base_currency;

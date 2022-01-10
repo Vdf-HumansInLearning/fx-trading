@@ -1136,6 +1136,15 @@ function filterBlotterTable() {
 
 window.onload = () => {
   showLoading();
+  //when document loads, initialize router
+  let myRouter = new MyHashRouter();
+  //change hash so it triggers the event on first start
+  const initialHash = window.location.hash;
+  window.location.hash = "#aa";
+  window.location.hash = initialHash;
+};
+
+function getIndexData() {
   const urlPairs = "http://localhost:8080/api/currencies/pairs";
   const urlTransactions = "http://localhost:8080/api/transactions";
   const urlCurrencies = "http://localhost:8080/api/currencies";
@@ -1154,18 +1163,13 @@ window.onload = () => {
       tableRegistrations = data[1];
       currentSelectionTable = data[1];
 
-      //when document loads, initialize router
-      let myRouter = new MyHashRouter();
-      //change hash so it triggers the event on first start
-      const initialHash = window.location.hash;
-      window.location.hash = "#aa";
-      window.location.hash = initialHash;
+      createIndexPage();
     })
 
     .catch((error) => {
       console.error("Error:", error);
     });
-};
+}
 
 //loading
 function showLoading() {
@@ -1730,6 +1734,7 @@ class MyHashRouter {
     this.app = document.getElementById("app");
     console.log("hash router init");
   }
+  //home
   onRouteChange(event) {
     const hashLocation = window.location.hash.substring(1);
     this.loadContent(hashLocation);
@@ -1742,13 +1747,10 @@ class MyHashRouter {
     //generate pages by uri
     switch (contentUri) {
       case "":
-        window.location.hash = "#dashboard";
-
-        break;
-      case "dashboard":
+        //get data from server
+        getIndexData();
         //create the page
         console.log("dashboard page");
-        createIndexPage();
         hideLoading();
         window.scrollTo(0, 0);
         break;

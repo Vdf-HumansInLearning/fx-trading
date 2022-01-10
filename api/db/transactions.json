@@ -67,125 +67,26 @@
       "trans_hour": "15:54"
     },
     {
-      "id": "22d733a3-1894-4419-99cd-dd876c8e085e",
+      "id": "f4df07db-badc-4b95-8d23-47fd3f59446e",
       "username": "alex",
-      "ccy_pair": "USD/GBP",
-      "rate": "1.35",
+      "ccy_pair": "CHF/GBP",
+      "rate": "1.23",
       "action": "buy",
-      "notional": "123466666",
-      "tenor": "1M",
-      "trans_date": "09/01/2022",
-      "trans_hour": "15:55"
-    },
-    {
-      "id": "40c12fa9-237b-4e7a-8555-81c76b1c7e3b",
-      "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.2",
-      "action": "buy",
-      "notional": "444",
+      "notional": "122",
       "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "16:15"
+      "trans_date": "10/01/2022",
+      "trans_hour": "14:01"
     },
     {
-      "id": "964729c4-324e-4367-8f20-fd65d5951fcb",
+      "id": "8da6af6f-60f4-49b4-b1c2-a8031016ff4f",
       "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.2",
+      "ccy_pair": "CHF/GBP",
+      "rate": "1.23",
       "action": "buy",
-      "notional": "555",
-      "tenor": "1M",
-      "trans_date": "09/01/2022",
-      "trans_hour": "16:15"
-    },
-    {
-      "id": "4fce2286-c027-4426-8af8-f69cdf1133a2",
-      "username": "alex",
-      "ccy_pair": "GBP/CHF",
-      "rate": "0.81",
-      "action": "buy",
-      "notional": "300",
-      "tenor": "1M",
-      "trans_date": "09/01/2022",
-      "trans_hour": "17:28"
-    },
-    {
-      "id": "943ee3ec-e058-42e1-84d8-259c8bc9b6e0",
-      "username": "alex",
-      "ccy_pair": "GBP/CHF",
-      "rate": "0.81",
-      "action": "buy",
-      "notional": "100",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "17:28"
-    },
-    {
-      "id": "900d47b4-bed9-48a3-a70a-834e945b5677",
-      "username": "alex",
-      "ccy_pair": "USD/EUR",
-      "rate": "1.14",
-      "action": "buy",
-      "notional": "12222",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:02"
-    },
-    {
-      "id": "6d4a9292-cf21-4bef-8b4e-8641f1cbde27",
-      "username": "alex",
-      "ccy_pair": "GBP/RON",
-      "rate": "0.71",
-      "action": "buy",
-      "notional": "222",
-      "tenor": "1M",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:02"
-    },
-    {
-      "id": "eb12b11b-779b-4057-b0ff-9921280860c9",
-      "username": "alex",
-      "ccy_pair": "CHF/EUR",
-      "rate": "1.04",
-      "action": "buy",
-      "notional": "6600",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:03"
-    },
-    {
-      "id": "b3efefda-2f07-4a17-b4f2-d03e4b3c205c",
-      "username": "alex",
-      "ccy_pair": "CHF/EUR",
-      "rate": "0.96",
-      "action": "sell",
-      "notional": "7777",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:03"
-    },
-    {
-      "id": "bd695739-2fcb-4210-a6f4-a0a03fdc3dc2",
-      "username": "alex",
-      "ccy_pair": "USD/CHF",
-      "rate": "1.1",
-      "action": "buy",
-      "notional": "1",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:12"
-    },
-    {
-      "id": "26be1066-739e-4215-9b89-ae4366a8d82b",
-      "username": "alex",
-      "ccy_pair": "USD/CHF",
-      "rate": "0.91",
-      "action": "sell",
-      "notional": "7",
-      "tenor": "Spot",
-      "trans_date": "09/01/2022",
-      "trans_hour": "18:12"
+      "notional": "8",
+      "tenor": "3M",
+      "trans_date": "10/01/2022",
+      "trans_hour": "14:01"
     }
   ]
 }

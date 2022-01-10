@@ -485,7 +485,9 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
-    select.addEventListener("change", selectCurrency);
+    select.addEventListener("change", () => {
+      selectCurrency(cardContainer.id);
+    });
 
     //add one default option
     let defaultOption = document.createElement("option");
@@ -515,7 +517,9 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", confirmSelectionCurrency);
+  confirmBtn.addEventListener("click", () => {
+    confirmSelectionCurrency(cardContainer.id);
+  });
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -563,6 +567,7 @@ function addPickWidget() {
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
+    cardIdCounter++;
   } else {
     showToast(
       "Error",
@@ -572,14 +577,14 @@ function addPickWidget() {
   }
 }
 
-function addNewWidget() {
+function addNewWidget(cardId) {
   //no more that 5 cards
   if (widgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-    pickWidget.remove();
-    widgetsNr++;
+    closeWidget(cardId);
+    //widgetsNr++;
   } else {
     showToast(
       "Error",
@@ -594,9 +599,11 @@ function closeWidget(cardId) {
   widgetsNr--;
 }
 
-function selectCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondCurrency = document.getElementById("inputSecondCurrency");
+function selectCurrency(cardId) {
+  let card = document.getElementById(`${cardId}`);
+  console.log(inputMainCurrency);
+  inputMainCurrency = card.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = card.querySelector("#inputSecondCurrency");
 
   if (inputMainCurrency && inputSecondCurrency)
     if (
@@ -610,9 +617,10 @@ function selectCurrency() {
     }
 }
 
-function confirmSelectionCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
+function confirmSelectionCurrency(cardId) {
+  let card = document.getElementById(`${cardId}`);
+  inputMainCurrency = card.querySelector("#inputMainCurrency");
+  inputSecondaryCurrency = card.querySelector("#inputSecondCurrency");
   console.log("inside confirm selection");
   console.log(inputMainCurrency);
 
@@ -653,7 +661,7 @@ function confirmSelectionCurrency() {
             item.buyRate = response.body.buy;
 
             //create the page
-            addNewWidget();
+            addNewWidget(cardId);
           } else {
             showToast("Error", response.body, false);
           }

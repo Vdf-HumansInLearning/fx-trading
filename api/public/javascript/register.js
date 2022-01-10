@@ -175,9 +175,9 @@ function submitRegisterData() {
           }),
         })
           .then((res) =>
-            res.json().then((data) => ({
+            res.json().then((response) => ({
               status: res.status,
-              body: data,
+              body: response,
             }))
           )
           .then((data) => {
@@ -204,8 +204,7 @@ function submitRegisterData() {
                   "beforeend",
                   `<p class="error">${data.body.message}</p>`
                 );
-              } 
-              else if (data.body.existing === "username") {
+              } else if (data.body.existing === "username") {
                 const username = document.getElementById("inputUsername");
                 removePreviousError(username.parentElement);
                 username.parentElement.insertAdjacentHTML(
@@ -213,8 +212,7 @@ function submitRegisterData() {
                   `<p class="error">${data.body.message}</p>`
                 );
               }
-            }
-            else {
+            } else {
               showToast("Error", "Registration failed!", false);
             }
           })

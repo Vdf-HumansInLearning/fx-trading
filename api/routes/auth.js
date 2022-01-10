@@ -57,7 +57,7 @@ function writeToFile(res, content, relPath) {
         return err;
       } else {
         res.status(200);
-        res.send("Succesfully registered");
+        res.json("Succesfully registered");
       }
     }
   );
@@ -88,17 +88,17 @@ router.post("/login", function (req, res) {
 router.post("/register", function (req, res) {
   let usersList = readFromFile("../db/users.json");
 
-  let searchEmail = usersList.users.find(
-    (i) => i.email == req.body.email);
+  let searchEmail = usersList.users.find((i) => i.email == req.body.email);
 
   let searchUsername = usersList.users.find(
-    (i) => i.username == req.body.username);
+    (i) => i.username == req.body.username
+  );
 
   if (searchUsername != undefined) {
     res.status(409);
     res.send({
       message: "This username already exist. Try another one.",
-      existing: "username"
+      existing: "username",
     });
     return;
   }
@@ -106,7 +106,7 @@ router.post("/register", function (req, res) {
     res.status(409);
     res.send({
       message: "This email already registered!",
-      existing: "email"
+      existing: "email",
     });
     return;
   }

@@ -1019,6 +1019,8 @@ function clearCookiesOnLogout() {
 function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  console.log(toastType);
+
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
   if (toastType) {
@@ -1748,7 +1750,13 @@ class MyHashRouter {
     switch (contentUri) {
       case "":
         //get data from server
-        getIndexData();
+        if (getCookie('username')) {
+          getIndexData();
+        }
+        else {
+          createLoginPage();
+          showToast("Please log in", "You have to be logged to see this page!", false);
+        }
         //create the page
         console.log("dashboard page");
         hideLoading();
@@ -1756,15 +1764,27 @@ class MyHashRouter {
         break;
 
       case "login":
-        console.log("login route");
-        createLoginPage();
-        window.scrollTo(0, 0);
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+          showLoading();
+          getIndexData();
+        } else {
+          console.log("login route");
+          createLoginPage();
+          window.scrollTo(0, 0);
+        }
         break;
 
       case "register":
-        console.log("register route");
-        createRegisterPage();
-        window.scrollTo(0, 0);
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+          showLoading();
+          getIndexData();
+        } else {
+          console.log("register route");
+          createRegisterPage();
+          window.scrollTo(0, 0);
+        }
         break;
 
       default:

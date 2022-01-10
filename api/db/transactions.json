@@ -373,6 +373,17 @@
       "tenor": "1M",
       "trans_date": "07/01/2022",
       "trans_hour": "15:23"
+    },
+    {
+      "id": "40ac6889-f36f-4f82-84f7-6b1b69e90429",
+      "username": "oana",
+      "ccy_pair": "RON/EUR",
+      "rate": "4.95",
+      "action": "buy",
+      "notional": "2",
+      "tenor": "Spot",
+      "trans_date": "10/01/2022",
+      "trans_hour": "18:42"
     }
   ]
 }

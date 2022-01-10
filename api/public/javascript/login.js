@@ -1,8 +1,3 @@
-////const methods = require("methods");
-//onst { response } = require("../../api/app");
-
-//const { response } = require("express");
-
 const body = document.getElementsByClassName("body")[0];
 const appContainer = document.getElementById("app");
 let loginContainer = null;
@@ -131,13 +126,16 @@ function login() {
         body: JSON.stringify({ email: userEmail, password: password }),
       })
         .then((res) =>
-          res.json().then((data) => ({ status: res.status, body: data }))
+          res.json().then((data) => ({
+            status: res.status,
+            body: data,
+          }))
         )
         .then((response) => {
-          console.log(response);
+          let username = response.body.username;
           if (response.status === 200) {
             //save cookie
-
+            createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", true);
             setTimeout(() => {
               window.location.href = "/";
@@ -152,7 +150,6 @@ function login() {
         .catch((error) => {
           console.log(error);
         });
-
     });
   }
 }
@@ -199,6 +196,18 @@ function cleanup(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
 }
 
 //when we move to login/register page from index,

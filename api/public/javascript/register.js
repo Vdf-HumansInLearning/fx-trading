@@ -177,8 +177,12 @@ function submitRegisterData() {
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
-              console.log("afiseaza modala");
-              showToast("Register succesfull", "You have been registered successfully!", true);
+              createCookie("username", `${username}`, 2);
+              showToast(
+                "Register succesfull",
+                "You have been registered successfully!",
+                true
+              );
               setTimeout(function () {
                 e.preventDefault();
                 window.location.href = "/";
@@ -310,6 +314,18 @@ function createRegisterPage() {
   appContainer.appendChild(registerContainer);
   createRegisterAside();
   createMain();
+}
+
+function createCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+    date = new Date();
+    date.setDate(date.getDate() + days);
+    expires = "; expires=" + date.toUTCString();
+  } else {
+    expires = "";
+  }
+  document.cookie = name + "=" + value + expires;
 }
 
 createRegisterPage();

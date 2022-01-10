@@ -88,6 +88,7 @@ function createNavigationBar() {
   logoutBtn.setAttribute("href", "/login");
   logoutBtn.setAttribute("role", "button");
   logoutBtn.setAttribute("id", "logoutBtn");
+  logoutBtn.addEventListener("click", clearCookiesOnLogout);
   logoutBtn.textContent = "Logout";
 
   navBrand.appendChild(navImage);
@@ -207,7 +208,7 @@ function createMainWidget(item) {
   inputNational.setAttribute("type", "number");
   inputNational.setAttribute("id", "inputDate");
   inputNational.setAttribute("placeholder", "Amount");
-  inputNational.setAttribute("min", 0);
+  inputNational.setAttribute("min", 1);
 
   let tenorDiv = document.createElement("div");
   cardMainArea.appendChild(tenorDiv);
@@ -227,6 +228,7 @@ function createMainWidget(item) {
   let optionEmpty = document.createElement("option");
   select.appendChild(optionEmpty);
   optionEmpty.setAttribute("selected", "true");
+  optionEmpty.setAttribute("id", "optionDefault");
   optionEmpty.textContent = "Choose...";
 
   let optionSpot = document.createElement("option");
@@ -291,6 +293,7 @@ function sendDataTransactions(
   let mainCurrencyToSend = mainCurrency.toUpperCase();
   let secondCurrencyToSend = secondCurrency.toUpperCase();
   let sellOrBuyRateToSend = sellOrBuyRate;
+  let userName = getCookie("username");
 
   if (notional && tenor !== "Choose...") {
     let actionSellOrBuy = action;
@@ -334,6 +337,7 @@ function sendDataTransactions(
     console.log(time);
     console.log(notional);
     console.log(tenor);
+    console.log(userName);
 
     let url = "http://localhost:8080/api/transactions";
     fetch(url, {
@@ -342,7 +346,7 @@ function sendDataTransactions(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "testGigel", //must be changed
+        username: `${userName}`,
         ccy_pair: `${mainCurrencyToSend}/${secondCurrencyToSend}`,
         rate: sellOrBuyRateToSend,
         action: actionSellOrBuy,
@@ -359,11 +363,36 @@ function sendDataTransactions(
         console.log(response);
         if (response.status === 200) {
           showToast("Succes", "Transaction completed", true);
-          //clean up notional and
+          document.getElementById("inputDate").value = null;
+          document.getElementById("inputCcy").value =
+            document.getElementById("inputCcy").options[0].value;
         } else {
           showToast("Failure", "Transaction failed", false);
         }
       })
+      .then(
+        fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) =>
+          res.json().then((data) => {
+            tableRegistrations = data;
+            const tableBody = document.getElementById("table-body");
+            if (tableBody) {
+              cleanup(tableBody);
+            }
+            for (let i = 0; i < tableRegistrations.length; i++) {
+              const registration = createOneTableRegistration(
+                tableRegistrations[i],
+                i + 1
+              );
+              tableBody.appendChild(registration);
+            }
+          })
+        )
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -966,14 +995,27 @@ function createIndexPage() {
 function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 //clear username from cookies
 //on logout
 function clearCookiesOnLogout() {
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", function () {
-    clearCookie("username");
-  });
+  console.log("dsdsd log out an delete cookie");
+  clearCookie("username");
 }
 
 //display succes/error toast

@@ -120,14 +120,18 @@ function createMainWidget(item) {
   let spanMainCurrency = document.createElement("span");
   pSubtitle.appendChild(spanMainCurrency);
   spanMainCurrency.className = "text-large ";
+
   spanMainCurrency.setAttribute("id", `mainCurrency${inputId}`);
   spanMainCurrency.textContent = `${item.mainCurrency}`;
+  let sendMainCurrency = `mainCurrency${inputId}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
 
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
+
   spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
+  let sendSecCurrency = `secondCurrency${inputId}`;
   spanSecondCurrency.textContent = `/${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
@@ -164,7 +168,10 @@ function createMainWidget(item) {
   let spanRate = document.createElement("span");
   pRatesSell.appendChild(spanRate);
   spanRate.className = "text-large";
+  spanRate.setAttribute("value", `${item.sellRate}`);
   spanRate.textContent = `${item.sellRate}`;
+  spanRate.setAttribute("id", `sellRate${inputId}`);
+  let sellRatetoSend = `sellRate${inputId}`;
 
   let spanSellIcon = document.createElement("span");
   pRatesSell.appendChild(spanSellIcon);
@@ -183,6 +190,9 @@ function createMainWidget(item) {
   pRatesBuy.appendChild(spanBuyRate);
   spanBuyRate.className = "text-large";
   spanBuyRate.textContent = `${item.buyRate}`;
+  spanBuyRate.setAttribute("value", `${item.buyRate}`);
+  spanBuyRate.setAttribute("id", `buyRate${inputId}`);
+  let sellOrBuyRateToSend = `buyRate${inputId}`;
 
   let spanIconBuy = document.createElement("span");
   pRatesBuy.appendChild(spanIconBuy);
@@ -265,9 +275,9 @@ function createMainWidget(item) {
   sellBtn.addEventListener("click", () => {
     sendDataTransactions(
       "sell",
-      `${item.mainCurrency}`,
-      `${item.secondCurrency}`,
-      `${item.sellRate}`,
+      sendMainCurrency,
+      sendSecCurrency,
+      sellRatetoSend,
       `${inputIdtoSendNotional}`,
       `${inputIdToSendTenor}`
     );
@@ -282,39 +292,41 @@ function createMainWidget(item) {
   buyBtn.addEventListener("click", () => {
     sendDataTransactions(
       "buy",
-      `${item.mainCurrency}`,
-      `${item.secondCurrency}`,
-      `${item.buyRate}`,
+      sendMainCurrency,
+      sendSecCurrency,
+      sellOrBuyRateToSend,
       `${inputIdtoSendNotional}`,
       `${inputIdToSendTenor}`
     );
   });
   return cardDivCol;
 }
-// function swappCurrency(main, sec, sell, buy) {
-//   console.log(main);
-//   console.log(sec);
-//   console.log(sell);
-//   console.log(buy);
-// }
 
 function sendDataTransactions(
   action,
-  mainCurrency,
-  secondCurrency,
+  sendMainCurrency,
+  sendSecCurrency,
   sellOrBuyRate,
   inputIdtoSendNotional,
   inputIdToSendTenor
 ) {
   let inputToSendN = inputIdtoSendNotional;
   let inputToSendT = inputIdToSendTenor;
-  console.log(inputToSendN);
-  console.log(inputToSendT);
+  let mainC = sendMainCurrency;
+  let secC = sendSecCurrency;
   let notional = document.getElementById(`${inputToSendN}`).value;
   let tenor = document.getElementById(`${inputToSendT}`).value;
-  let mainCurrencyToSend = mainCurrency.toUpperCase();
-  let secondCurrencyToSend = secondCurrency.toUpperCase();
-  let sellOrBuyRateToSend = sellOrBuyRate;
+  let mainCurrencyToSend = document
+    .getElementById(`${mainC}`)
+    .getAttribute("value");
+  let secondCurrencyToSend = document
+    .getElementById(`${secC}`)
+    .getAttribute("value");
+
+  let sellOrBuyRateToSend = document
+    .getElementById(`${sellOrBuyRate}`)
+    .getAttribute("value");
+
   let userName = getCookie("username");
 
   if (notional && tenor !== "Choose...") {
@@ -349,17 +361,6 @@ function sendDataTransactions(
     let s = addZero(dateObj.getSeconds());
     let time = h + ":" + m;
     const outputDate = day + "/" + month + "/" + year;
-
-    console.log(mainCurrencyToSend);
-    console.log(secondCurrencyToSend);
-    console.log(sellOrBuyRateToSend);
-    console.log(`${mainCurrencyToSend}/${secondCurrencyToSend}`);
-    console.log(actionSellOrBuy);
-    console.log(outputDate);
-    console.log(time);
-    console.log(notional);
-    console.log(tenor);
-    console.log(userName);
 
     let url = "http://localhost:8080/api/transactions";
     fetch(url, {
@@ -485,9 +486,7 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
-    select.addEventListener("change", () => {
-      selectCurrency(cardContainer.id);
-    });
+    select.addEventListener("change", selectCurrency);
 
     //add one default option
     let defaultOption = document.createElement("option");
@@ -517,9 +516,7 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", () => {
-    confirmSelectionCurrency(cardContainer.id);
-  });
+  confirmBtn.addEventListener("click", confirmSelectionCurrency);
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -567,7 +564,6 @@ function addPickWidget() {
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
     widgetsNr++;
-    cardIdCounter++;
   } else {
     showToast(
       "Error",
@@ -577,14 +573,14 @@ function addPickWidget() {
   }
 }
 
-function addNewWidget(cardId) {
+function addNewWidget() {
   //no more that 5 cards
   if (widgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-    closeWidget(cardId);
-    //widgetsNr++;
+    pickWidget.remove();
+    widgetsNr++;
   } else {
     showToast(
       "Error",
@@ -599,11 +595,9 @@ function closeWidget(cardId) {
   widgetsNr--;
 }
 
-function selectCurrency(cardId) {
-  let card = document.getElementById(`${cardId}`);
-  console.log(inputMainCurrency);
-  inputMainCurrency = card.querySelector("#inputMainCurrency");
-  inputSecondaryCurrency = card.querySelector("#inputSecondCurrency");
+function selectCurrency() {
+  inputMainCurrency = document.getElementById("inputMainCurrency");
+  inputSecondCurrency = document.getElementById("inputSecondCurrency");
 
   if (inputMainCurrency && inputSecondCurrency)
     if (
@@ -617,10 +611,9 @@ function selectCurrency(cardId) {
     }
 }
 
-function confirmSelectionCurrency(cardId) {
-  let card = document.getElementById(`${cardId}`);
-  inputMainCurrency = card.querySelector("#inputMainCurrency");
-  inputSecondaryCurrency = card.querySelector("#inputSecondCurrency");
+function confirmSelectionCurrency() {
+  inputMainCurrency = document.getElementById("inputMainCurrency");
+  inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
   console.log("inside confirm selection");
   console.log(inputMainCurrency);
 
@@ -661,7 +654,7 @@ function confirmSelectionCurrency(cardId) {
             item.buyRate = response.body.buy;
 
             //create the page
-            addNewWidget(cardId);
+            addNewWidget();
           } else {
             showToast("Error", response.body, false);
           }

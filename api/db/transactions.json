@@ -34,28 +34,6 @@
       "trans_hour": "16:33"
     },
     {
-      "id": "9677ffd8-7509-4e1d-b4f1-e49896231eb6",
-      "username": "alex",
-      "ccy_pair": "RON/USD",
-      "rate": "4.36",
-      "action": "buy",
-      "notional": "333",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:34"
-    },
-    {
-      "id": "50f7f250-54fa-4aef-91d7-c0358a0b0398",
-      "username": "alex",
-      "ccy_pair": "EUR/GBP",
-      "rate": "1.19",
-      "action": "buy",
-      "notional": "444",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:34"
-    },
-    {
       "id": "cd827e3a-6dc5-4c30-bc84-3dc4301e906e",
       "username": "alex",
       "ccy_pair": "EUR/GBP",
@@ -100,114 +78,26 @@
       "trans_hour": "16:39"
     },
     {
-      "id": "cf11391a-e002-4a2f-ad7d-9ff308d3d1c5",
-      "username": "alex",
-      "ccy_pair": "USD/EUR",
-      "rate": "0.88",
+      "id": "552ceefe-adfe-4141-9b0b-481b40c6b54b",
+      "username": "adela",
+      "ccy_pair": "GBP/USD",
+      "rate": "0.74",
+      "action": "buy",
+      "notional": "888888888",
+      "tenor": "Spot",
+      "trans_date": "10/01/2022",
+      "trans_hour": "17:23"
+    },
+    {
+      "id": "0fe3288f-5b13-47d8-a48c-8c2b1f94f83b",
+      "username": "oana",
+      "ccy_pair": "USD/CHF",
+      "rate": "0.91",
       "action": "sell",
-      "notional": "22222",
-      "tenor": "3M",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:39"
-    },
-    {
-      "id": "33fb6f28-5af3-4c3e-acfc-7506ad7100c4",
-      "username": "alex",
-      "ccy_pair": "RON/EUR",
-      "rate": "4.95",
-      "action": "buy",
-      "notional": "3333",
+      "notional": "4444444",
       "tenor": "Spot",
       "trans_date": "10/01/2022",
-      "trans_hour": "16:40"
-    },
-    {
-      "id": "171e1dff-98b1-4701-be71-a903b8565ab9",
-      "username": "alex",
-      "ccy_pair": "EUR/CHF",
-      "rate": "0.96",
-      "action": "buy",
-      "notional": "2222",
-      "tenor": "1M",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:47"
-    },
-    {
-      "id": "1c24c0c5-24fa-4564-b5f4-d89de7350162",
-      "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "4.95",
-      "action": "sell",
-      "notional": "5555",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:47"
-    },
-    {
-      "id": "8920a938-1772-4225-abfe-fbede7ad91c5",
-      "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.2",
-      "action": "buy",
-      "notional": "7777",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:47"
-    },
-    {
-      "id": "00d37ff2-148f-4a28-9d55-407c30a57524",
-      "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.2",
-      "action": "buy",
-      "notional": "3333",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:48"
-    },
-    {
-      "id": "50a87f0e-beb5-418b-b2f5-7b6c68efee73",
-      "username": "alex",
-      "ccy_pair": "GBP/CHF",
-      "rate": "0.81",
-      "action": "buy",
-      "notional": "4444",
-      "tenor": "3M",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:48"
-    },
-    {
-      "id": "030acdec-8866-45de-a692-33128957f535",
-      "username": "alex",
-      "ccy_pair": "GBP/CHF",
-      "rate": "1.23",
-      "action": "sell",
-      "notional": "7777",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:49"
-    },
-    {
-      "id": "9a936269-2a64-4361-8043-26b46e92954b",
-      "username": "alex",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.2",
-      "action": "buy",
-      "notional": "555",
-      "tenor": "1M",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:49"
-    },
-    {
-      "id": "050d3e07-55d2-4a07-979f-1d00d97424ea",
-      "username": "alex",
-      "ccy_pair": "RON/USD",
-      "rate": "0.23",
-      "action": "sell",
-      "notional": "55555",
-      "tenor": "Spot",
-      "trans_date": "10/01/2022",
-      "trans_hour": "16:50"
+      "trans_hour": "17:24"
     }
   ]
 }

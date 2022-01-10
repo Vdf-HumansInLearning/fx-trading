@@ -489,7 +489,7 @@ function createPickWidget() {
     let select = document.createElement("select");
     select.classList.add("form-select");
     select.setAttribute("id", cardInput.select_id);
-    select.addEventListener("change", selectCurrency);
+    select.addEventListener("change", () => selectCurrency(cardContainer.id));
 
     //add one default option
     let defaultOption = document.createElement("option");
@@ -519,7 +519,9 @@ function createPickWidget() {
   confirmBtn.setAttribute("type", "button");
   confirmBtnText = document.createTextNode("Ok");
   confirmBtn.append(confirmBtnText);
-  confirmBtn.addEventListener("click", confirmSelectionCurrency);
+  confirmBtn.addEventListener("click", () =>
+    confirmSelectionCurrency(cardContainer.id)
+  );
   cardActions.append(confirmBtn);
 
   //add card to cardContainer
@@ -566,7 +568,9 @@ function addPickWidget() {
     console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
+
     pickWidgetsNr++;
+    cardIdCounter++;
   } else {
     showToast(
       "Error",
@@ -576,14 +580,13 @@ function addPickWidget() {
   }
 }
 
-function addNewWidget() {
-  pickWidgetsNr--;
+function addNewWidget(cardId) {
   //no more that 5 cards
-  if (pickWidgetsNr + mainWidgetsNr <= 4) {
+  if (pickWidgetsNr + mainWidgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-    pickWidget.remove();
+    closeWidget(cardId);
     mainWidgetsNr++;
   } else {
     showToast(
@@ -595,6 +598,7 @@ function addNewWidget() {
 }
 
 function closeWidget(cardId) {
+  console.log(cardId);
   document.getElementById(cardId).remove();
   if (cardId.startsWith("cardPick")) {
     pickWidgetsNr--;
@@ -603,9 +607,10 @@ function closeWidget(cardId) {
   }
 }
 
-function selectCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondCurrency = document.getElementById("inputSecondCurrency");
+function selectCurrency(cardId) {
+  let card = document.getElementById(cardId);
+  inputMainCurrency = card.querySelector("#inputMainCurrency");
+  inputSecondCurrency = card.querySelector("#inputSecondCurrency");
 
   if (inputMainCurrency && inputSecondCurrency)
     if (
@@ -619,26 +624,25 @@ function selectCurrency() {
     }
 }
 
-function confirmSelectionCurrency() {
-  inputMainCurrency = document.getElementById("inputMainCurrency");
-  inputSecondaryCurrency = document.getElementById("inputSecondCurrency");
-  console.log("inside confirm selection");
-  console.log(inputMainCurrency);
+function confirmSelectionCurrency(cardId) {
+  let card = document.getElementById(cardId);
 
-  console.log(inputSecondaryCurrency.value);
+  inputMainCurrency = card.querySelector("#inputMainCurrency");
+  inputSecondCurrency = card.querySelector("#inputSecondCurrency");
+  console.log(inputMainCurrency);
 
   if (
     inputMainCurrency.value &&
-    inputSecondaryCurrency.value &&
+    inputSecondCurrency.value &&
     inputMainCurrency.value !== "opt_none" &&
-    inputSecondaryCurrency.value !== "opt_none"
+    inputSecondCurrency.value !== "opt_none"
   ) {
     if (inputMainCurrency.value == inputSecondCurrency.value) {
       showToast("Error", "You must choose two different currencies", false);
     } else {
       let currencyObj = {
         base_currency: inputMainCurrency.value,
-        quote_currency: inputSecondaryCurrency.value,
+        quote_currency: inputSecondCurrency.value,
       };
       fetch(baseUrl + "currencies/quote", {
         method: "POST",
@@ -662,7 +666,7 @@ function confirmSelectionCurrency() {
             item.buyRate = response.body.buy;
 
             //create the page
-            addNewWidget();
+            addNewWidget(cardId);
           } else {
             showToast("Error", response.body, false);
           }

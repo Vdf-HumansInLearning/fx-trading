@@ -143,6 +143,12 @@
       "username": "ccc",
       "email": "ccc@ccc.com",
       "password": "Test123!"
+    },
+    {
+      "id": 25,
+      "username": "adela",
+      "email": "adela@adela.com",
+      "password": "Test123!"
     }
   ]
 }

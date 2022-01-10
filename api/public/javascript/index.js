@@ -1012,7 +1012,7 @@ function getCookie(cname) {
 function clearCookiesOnLogout() {
   console.log("dsdsd log out an delete cookie");
   clearCookie("username");
-  changeHash("#login");
+  changeHash("login");
 }
 
 //display succes/error toast
@@ -1325,7 +1325,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", true);
-            changeHash("#dashboard");
+            changeHash("");
           } else {
             showToast("Login failed", response.body.message, false);
           }
@@ -1588,7 +1588,7 @@ function submitRegisterData() {
                 "You have been registered successfully!",
                 true
               );
-              changeHash("dashboard");
+              changeHash("");
             } else {
               showToast("Error", "Registration failed!", false);
             }

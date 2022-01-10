@@ -2,7 +2,10 @@ const bodyContainer = document.getElementById("body-container");
 const appContainer = document.getElementById("app");
 const baseUrl = "http://localhost:8080/api/";
 //keep track of how many widgets are on the page
-let widgetsNr = 0;
+let pickWidgetsNr = 0;
+let mainWidgetsNr = 0;
+let totalWidgetsNr = pickWidgetsNr + mainWidgetsNr;
+
 let pickWidget = null;
 
 //initialize container for cards
@@ -559,11 +562,11 @@ function createAddWidget() {
 
 function addPickWidget() {
   //no more that 5 cards
-  if (widgetsNr <= 4) {
+  if (pickWidgetsNr + mainWidgetsNr <= 4) {
     console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
-    widgetsNr++;
+    pickWidgetsNr++;
   } else {
     showToast(
       "Error",
@@ -574,13 +577,14 @@ function addPickWidget() {
 }
 
 function addNewWidget() {
+  pickWidgetsNr--;
   //no more that 5 cards
-  if (widgetsNr <= 5) {
+  if (pickWidgetsNr + mainWidgetsNr <= 4) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
     pickWidget.remove();
-    widgetsNr++;
+    mainWidgetsNr++;
   } else {
     showToast(
       "Error",
@@ -592,7 +596,11 @@ function addNewWidget() {
 
 function closeWidget(cardId) {
   document.getElementById(cardId).remove();
-  widgetsNr--;
+  if (cardId.startsWith("cardPick")) {
+    pickWidgetsNr--;
+  } else {
+    mainWidgetsNr--;
+  }
 }
 
 function selectCurrency() {

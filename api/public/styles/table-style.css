@@ -1,0 +1,6 @@
+.table-fixed {
+    display: block;
+    height: 600px;
+    overflow-y: auto;
+  }
+  

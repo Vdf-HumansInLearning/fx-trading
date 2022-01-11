@@ -34,6 +34,54 @@ router.get("/currencies/pairs", (req, res) => {
   res.status(200).json(currenciesPairings);
 });
 
+/* GET one currency pairing from request query */
+// {
+//   base_currency: "EUR",
+//   quote_currency: "RON"
+// }
+router.get("/currencies/quote", (req, res) => {
+  let rawdata = fs.readFileSync(
+    path.resolve(__dirname, "../db/currencies.json")
+  );
+  let fileContents = JSON.parse(rawdata);
+  const currenciesRates = fileContents.currency_rates;
+  if (req.query.base_currency && req.query.quote_currency) {
+    let foundBase = currenciesRates.find(
+      (pair) => pair.base_currency === req.query.base_currency
+    ).quotes;
+
+    for (item in foundBase) {
+      if (item === req.query.quote_currency) {
+        res.writeHead(200, {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache",
+        });
+
+        let timer = setInterval(
+          () => getNewCurrencyData(res, foundBase[item]),
+          3000
+        );
+      }
+    }
+  } else {
+    res.status(400).json({ message: "Bad request" });
+  }
+});
+
+function getNewCurrencyData(res, currencyObj) {
+  let sendObj = {
+    sell: (
+      Math.random() * (currencyObj.sell + 0.1 - (currencyObj.sell - 0.1)) +
+      (currencyObj.sell - 0.1)
+    ).toFixed(2),
+    buy: (
+      Math.random() * (currencyObj.buy + 0.1 - (currencyObj.buy - 0.1)) +
+      (currencyObj.buy - 0.1)
+    ).toFixed(2),
+  };
+  res.status(200).write(`data: ${JSON.stringify(sendObj)}\n\n`);
+}
+
 /* POST one base currency */
 router.post("/currencies", (req, res) => {
   let rawdata = fs.readFileSync(
@@ -56,7 +104,7 @@ router.post("/currencies", (req, res) => {
   }
 });
 
-/* POST one currency pairing */
+/* POST one currency pairing from request body*/
 // {
 //   base_currency: "EUR",
 //   quote_currency: "RON"
@@ -74,11 +122,23 @@ router.post("/currencies/quote", (req, res) => {
 
     for (item in foundBase) {
       if (item === req.body.quote_currency) {
-        res.status(200).json(foundBase[item]);
+        res.status(200).json({
+          sell: (
+            Math.random() *
+              (foundBase[item].sell + 0.1 - (foundBase[item].sell - 0.1)) +
+            (foundBase[item].sell - 0.1)
+          ).toFixed(2),
+          buy: (
+            Math.random() *
+              (foundBase[item].buy + 0.1 - (foundBase[item].buy - 0.1)) +
+            (foundBase[item].buy - 0.1)
+          ).toFixed(2),
+        });
       }
     }
   } else {
     res.status(400).json({ message: "Bad request" });
   }
 });
+
 module.exports = router;

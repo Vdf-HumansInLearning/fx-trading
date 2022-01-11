@@ -1,6 +1,12 @@
-.table-fixed {
-    display: block;
-    height: 600px;
-    overflow-y: auto;
-  }
-  
+.table-responsive {
+ 
+  display: block;
+  height: 600px;
+  overflow-y: scroll;
+}
+
+thead tr:first-child>th {
+  position: sticky;
+  background: var(--color-blue);
+  top: 0;
+}

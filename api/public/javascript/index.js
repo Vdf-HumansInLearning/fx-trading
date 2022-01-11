@@ -1281,7 +1281,7 @@ function createMainLoginForm() {
     "mb-3 d-flex align-content-center justify-content-evenly";
   form.appendChild(firstDiv);
   let emailIcon = document.createElement("i");
-  emailIcon.className = "fas fa-user-alt";
+  emailIcon.className = "fas fa-user-alt icon-auth";
   firstDiv.appendChild(emailIcon);
 
   let emailInput = document.createElement("input");
@@ -1298,7 +1298,7 @@ function createMainLoginForm() {
   form.appendChild(secondDiv);
 
   let passwordIcon = document.createElement("i");
-  passwordIcon.className = "fas fa-unlock";
+  passwordIcon.className = "fas fa-unlock icon-auth";
   secondDiv.appendChild(passwordIcon);
 
   let divIconAndPassword = document.createElement("div");
@@ -1790,12 +1790,15 @@ class MyHashRouter {
     switch (contentUri) {
       case "":
         //get data from server
-        if (getCookie('username')) {
+        if (getCookie("username")) {
           getIndexData();
-        }
-        else {
+        } else {
           createLoginPage();
-          showToast("Please log in", "You have to be logged to see this page!", false);
+          showToast(
+            "Please log in",
+            "You have to be logged to see this page!",
+            false
+          );
         }
         //create the page
         console.log("dashboard page");
@@ -1804,8 +1807,12 @@ class MyHashRouter {
         break;
 
       case "login":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            false
+          );
           showLoading();
           getIndexData();
         } else {
@@ -1816,8 +1823,12 @@ class MyHashRouter {
         break;
 
       case "register":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            false
+          );
           showLoading();
           getIndexData();
         } else {

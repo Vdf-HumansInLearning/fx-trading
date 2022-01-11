@@ -95,6 +95,12 @@
       "username": "oana",
       "email": "oana@oana2.com",
       "password": "Test123!"
+    },
+    {
+      "id": 17,
+      "username": "adela",
+      "email": "adela@adela.com",
+      "password": "Test123!"
     }
   ]
 }

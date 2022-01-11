@@ -1052,6 +1052,7 @@ function getCookie(cname) {
 function clearCookiesOnLogout() {
   console.log("dsdsd log out an delete cookie");
   clearCookie("username");
+  showToast("Succes!", "You have been logged out succesfully!", "succes");
   changeHash("login");
 }
 
@@ -1768,6 +1769,7 @@ class MyHashRouter {
         if (getCookie('username')) {
           showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
+          changeHash("");
           getIndexData();
         } else {
           console.log("login route");
@@ -1780,6 +1782,7 @@ class MyHashRouter {
         if (getCookie('username')) {
           showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
+          changeHash("");
           getIndexData();
         } else {
           console.log("register route");

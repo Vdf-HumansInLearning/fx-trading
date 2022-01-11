@@ -1055,6 +1055,7 @@ function clearCookiesOnLogout() {
   clearCookie("username");
   changeHash("#login");
   showToast("Logged out", "You have been logged out.", true);
+  stop();
 }
 
 //display succes/error toast
@@ -1294,6 +1295,7 @@ function createMainLoginForm() {
   emailInput.classList.add("form-control");
   emailInput.setAttribute("aria-describedby", "emailHelp");
   emailInput.setAttribute("placeholder", "Email");
+  emailInput.setAttribute("value", "adela@adela.com");
 
   let secondDiv = document.createElement("div");
   secondDiv.className = "mb-3 d-flex align-content-center ";
@@ -1314,6 +1316,7 @@ function createMainLoginForm() {
   passwordInput.className = "form-control";
   passwordInput.setAttribute("id", "inputPassword");
   passwordInput.setAttribute("placeholder", "Password");
+  passwordInput.setAttribute("value", "Test123!");
 
   let loginBtn = document.createElement("button");
   form.appendChild(loginBtn);
@@ -1771,6 +1774,46 @@ function changeHash(hash) {
   window.location.hash = hash;
 }
 
+let eventSource;
+
+function start() {
+  // when "Start" button pressed
+  if (!window.EventSource) {
+    // IE or an old browser
+    alert("The browser doesn't support EventSource.");
+    return;
+  }
+
+  eventSource = new EventSource(
+    baseUrl + "currencies/quote?base_currency=EUR&quote_currency=USD"
+  );
+
+  eventSource.onopen = function (e) {
+    console.log("Event: open");
+  };
+
+  eventSource.onerror = function (e) {
+    console.log("Event: error");
+    if (this.readyState == EventSource.CONNECTING) {
+      console.log(`Reconnecting (readyState=${this.readyState})...`);
+    } else {
+      console.log("Error has occured.");
+    }
+  };
+
+  eventSource.onmessage = function (e) {
+    console.log("event on message");
+    console.log("Event: message, data: " + e.data);
+  };
+}
+
+function stop() {
+  // when "Stop" button pressed
+  eventSource.close();
+  eventSource = null;
+  console.log("eventSource.close()");
+}
+
 //hash router
 class MyHashRouter {
   constructor() {
@@ -1794,6 +1837,7 @@ class MyHashRouter {
         //get data from server
         if (getCookie("username")) {
           getIndexData();
+          start();
         } else {
           //create the page
           createLoginPage();

@@ -74,7 +74,10 @@ router.post("/currencies/quote", (req, res) => {
 
     for (item in foundBase) {
       if (item === req.body.quote_currency) {
-        res.status(200).json(foundBase[item]);
+        res.status(200).json({
+          sell: (Math.random() * (foundBase[item].sell + 0.1 - (foundBase[item].sell - 0.1)) + (foundBase[item].sell - 0.1)).toFixed(2),
+          buy: (Math.random() * (foundBase[item].buy + 0.1 - (foundBase[item].buy - 0.1)) + (foundBase[item].buy - 0.1)).toFixed(2)
+        });
       }
     }
   } else {

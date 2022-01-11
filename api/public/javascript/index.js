@@ -333,7 +333,7 @@ function sendDataTransactions(
 
   let userName = getCookie("username");
 
-  if (notional && tenor !== "Choose...") {
+  if (tenor !== "Choose..." && notional >= 1) {
     let actionSellOrBuy = action;
     const monthNames = [
       "01",
@@ -429,6 +429,8 @@ function sendDataTransactions(
     showToast("Empty field", "Please choose a National value", false);
   } else if (!notional && tenor === "Choose...") {
     showToast("Empty field", "Please choose national and tenor values", false);
+  } else if (notional <= 1) {
+    showToast("Error", "Notional value must be at least 1.", false);
   }
 }
 

@@ -230,6 +230,28 @@
       "tenor": "Spot",
       "trans_date": "11/01/2022",
       "trans_hour": "15:11"
+    },
+    {
+      "id": "627bf8a9-7223-41dd-85da-fe8614eea4ec",
+      "username": "adela",
+      "ccy_pair": "EUR/CHF",
+      "rate": "0.96",
+      "action": "buy",
+      "notional": "0000",
+      "tenor": "Spot",
+      "trans_date": "11/01/2022",
+      "trans_hour": "15:18"
+    },
+    {
+      "id": "7b58ee2c-0f82-4f96-8a7c-c1ab76079883",
+      "username": "adela",
+      "ccy_pair": "EUR/CHF",
+      "rate": "0.96",
+      "action": "buy",
+      "notional": "0",
+      "tenor": "1M",
+      "trans_date": "11/01/2022",
+      "trans_hour": "15:18"
     }
   ]
 }

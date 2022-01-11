@@ -80,7 +80,7 @@ p a {
   justify-content: right;
 }
 
-.fas {
+.icon-auth {
   color: var(--color-grey-border);
   padding-right: 10px;
   font-size: 27px;

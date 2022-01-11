@@ -145,12 +145,13 @@ function createMainWidget(item) {
   let iconExchange = document.createElement("i");
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
-  //---creeaza id separat pt icon
-  //--- foarEachh si adauga fiecarui icon addEventListener
-
-  // iconExchange.addEventListener("click", () => {
-  //   swappCurrency(`mainCurrency${inputId}`, `${item.secondCurrency}`, 0, 0);
-  // }); //===========
+  iconExchange.setAttribute("id", `swapp${inputId}`);
+  iconExchange.addEventListener("click", () => {
+    console.log(`swapp${inputId}`);
+  });
+  // `swapp${inputId}`.addEventListener("click", () => {
+  //   console.log("sss");
+  // });
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -431,6 +432,10 @@ function sendDataTransactions(
   }
 }
 
+function swappCurrency(id) {
+  console.log(id);
+}
+
 function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
@@ -626,7 +631,7 @@ function selectCurrency(cardId) {
 
 function confirmSelectionCurrency(cardId) {
   let card = document.getElementById(cardId);
-
+  let swappId = document.getElementById;
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
   console.log(inputMainCurrency);

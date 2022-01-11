@@ -1825,8 +1825,6 @@ class MyHashRouter {
         if (getCookie('username')) {
           showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
-          changeHash("");
-          getIndexData();
         } else {
           console.log("login route");
           createLoginPage();
@@ -1838,8 +1836,6 @@ class MyHashRouter {
         if (getCookie('username')) {
           showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
-          changeHash("");
-          getIndexData();
         } else {
           console.log("register route");
           createRegisterPage();

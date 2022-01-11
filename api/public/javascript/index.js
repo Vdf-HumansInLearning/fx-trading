@@ -607,6 +607,7 @@ function closeWidget(cardId) {
     pickWidgetsNr--;
   } else {
     mainWidgetsNr--;
+    stop();
   }
 }
 
@@ -667,9 +668,13 @@ function confirmSelectionCurrency(cardId) {
             item.secondCurrency = currencyObj.quote_currency;
             item.sellRate = response.body.sell;
             item.buyRate = response.body.buy;
-
             //create the page
             addNewWidget(cardId);
+            start(
+              currencyObj.base_currency,
+              currencyObj.quote_currency,
+              cardId
+            );
           } else {
             showToast("Error", response.body, false);
           }
@@ -1055,7 +1060,7 @@ function clearCookiesOnLogout() {
   clearCookie("username");
   changeHash("#login");
   showToast("Logged out", "You have been logged out.", true);
-  stop();
+  if (eventSource) stop();
 }
 
 //display succes/error toast
@@ -1776,7 +1781,7 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start() {
+function start(base_currency, quote_currency, cardId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1785,7 +1790,8 @@ function start() {
   }
 
   eventSource = new EventSource(
-    baseUrl + "currencies/quote?base_currency=EUR&quote_currency=USD"
+    baseUrl +
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1802,8 +1808,14 @@ function start() {
   };
 
   eventSource.onmessage = function (e) {
-    console.log("event on message");
     console.log("Event: message, data: " + e.data);
+    currencyObj = JSON.parse(e.data);
+    //populate the item
+    item.mainCurrency = base_currency;
+    item.secondCurrency = quote_currency;
+    item.sellRate = currencyObj.sell;
+    item.buyRate = currencyObj.buy;
+    //call update rates method
   };
 }
 
@@ -1837,7 +1849,6 @@ class MyHashRouter {
         //get data from server
         if (getCookie("username")) {
           getIndexData();
-          start();
         } else {
           //create the page
           createLoginPage();

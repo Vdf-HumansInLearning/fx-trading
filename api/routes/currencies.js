@@ -34,7 +34,7 @@ router.get("/currencies/pairs", (req, res) => {
   res.status(200).json(currenciesPairings);
 });
 
-/* GET one currency pairing */
+/* GET one currency pairing from request query */
 // {
 //   base_currency: "EUR",
 //   quote_currency: "RON"
@@ -104,7 +104,7 @@ router.post("/currencies", (req, res) => {
   }
 });
 
-/* POST one currency pairing */
+/* POST one currency pairing from request body*/
 // {
 //   base_currency: "EUR",
 //   quote_currency: "RON"
@@ -122,18 +122,18 @@ router.post("/currencies/quote", (req, res) => {
 
     for (item in foundBase) {
       if (item === req.body.quote_currency) {
-        res.writeHead(200, {
-          "Content-Type": "text/event-stream; charset=utf-8",
-          "Cache-Control": "no-cache",
+        res.status(200).json({
+          sell: (
+            Math.random() *
+              (foundBase[item].sell + 0.1 - (foundBase[item].sell - 0.1)) +
+            (foundBase[item].sell - 0.1)
+          ).toFixed(2),
+          buy: (
+            Math.random() *
+              (foundBase[item].buy + 0.1 - (foundBase[item].buy - 0.1)) +
+            (foundBase[item].buy - 0.1)
+          ).toFixed(2),
         });
-
-        let timer = setInterval(getNewCurrencyData(res, foundBase[item]), 3000);
-        getNewCurrencyData(res, foundBase[item]);
-
-        // res.status(200).json({
-        //   sell: (Math.random() * (foundBase[item].sell + 0.1 - (foundBase[item].sell - 0.1)) + (foundBase[item].sell - 0.1)).toFixed(2),
-        //   buy: (Math.random() * (foundBase[item].buy + 0.1 - (foundBase[item].buy - 0.1)) + (foundBase[item].buy - 0.1)).toFixed(2)
-        // });
       }
     }
   } else {

@@ -252,6 +252,17 @@
       "tenor": "1M",
       "trans_date": "11/01/2022",
       "trans_hour": "15:18"
+    },
+    {
+      "id": "2e79707d-15c2-4a58-8fa5-64a4d5f65f5e",
+      "username": "adela",
+      "ccy_pair": "USD/CHF",
+      "rate": "1.1",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "1M",
+      "trans_date": "11/01/2022",
+      "trans_hour": "15:22"
     }
   ]
 }

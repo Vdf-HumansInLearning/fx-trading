@@ -915,7 +915,7 @@ function createBlotterView() {
 
   const blotterTable = document.createElement("table");
   blotterTable.setAttribute("id", "blotter-table");
-  blotterTable.className = "table table-striped";
+  blotterTable.className = "table table-striped col-xs-7 table-condensed table-fixed";
 
   //creat table head
   const headTable = document.createElement("thead");

@@ -1050,9 +1050,9 @@ function getCookie(cname) {
 //clear username from cookies
 //on logout
 function clearCookiesOnLogout() {
-  console.log("dsdsd log out an delete cookie");
   clearCookie("username");
-  changeHash("login");
+  changeHash("#login");
+  showToast("Logged out", "You have been logged out.", true);
 }
 
 //display succes/error toast
@@ -1793,6 +1793,7 @@ class MyHashRouter {
         if (getCookie("username")) {
           getIndexData();
         } else {
+          //create the page
           createLoginPage();
           showToast(
             "Please log in",
@@ -1800,7 +1801,7 @@ class MyHashRouter {
             false
           );
         }
-        //create the page
+
         console.log("dashboard page");
         hideLoading();
         window.scrollTo(0, 0);

@@ -1052,13 +1052,15 @@ function getCookie(cname) {
 function clearCookiesOnLogout() {
   console.log("dsdsd log out an delete cookie");
   clearCookie("username");
-  changeHash("#login");
+  changeHash("login");
 }
 
 //display succes/error toast
 function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
   console.log(liveToast);
+  console.log(toastType);
+
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
   if (toastType) {
@@ -1363,7 +1365,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", true);
-            changeHash("#dashboard");
+            changeHash("");
           } else {
             showToast("Login failed", response.body.message, false);
           }
@@ -1626,7 +1628,7 @@ function submitRegisterData() {
                 "You have been registered successfully!",
                 true
               );
-              changeHash("dashboard");
+              changeHash("");
             } else {
               showToast("Error", "Registration failed!", false);
             }
@@ -1788,7 +1790,13 @@ class MyHashRouter {
     switch (contentUri) {
       case "":
         //get data from server
-        getIndexData();
+        if (getCookie('username')) {
+          getIndexData();
+        }
+        else {
+          createLoginPage();
+          showToast("Please log in", "You have to be logged to see this page!", false);
+        }
         //create the page
         console.log("dashboard page");
         hideLoading();
@@ -1796,15 +1804,27 @@ class MyHashRouter {
         break;
 
       case "login":
-        console.log("login route");
-        createLoginPage();
-        window.scrollTo(0, 0);
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+          showLoading();
+          getIndexData();
+        } else {
+          console.log("login route");
+          createLoginPage();
+          window.scrollTo(0, 0);
+        }
         break;
 
       case "register":
-        console.log("register route");
-        createRegisterPage();
-        window.scrollTo(0, 0);
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), false);
+          showLoading();
+          getIndexData();
+        } else {
+          console.log("register route");
+          createRegisterPage();
+          window.scrollTo(0, 0);
+        }
         break;
 
       default:

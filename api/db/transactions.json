@@ -96,8 +96,33 @@
       "action": "sell",
       "notional": "4444444",
       "tenor": "Spot",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:22"
+    },
+    {
+      "id": "3529f1dd-5cb5-4525-a0ed-56fa8443f506",
+      "username": "oanagigel",
+      "ccy_pair": "EUR/RON",
+      "rate": "0.2",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "1M",
+      "trans_date": "07/01/2022",
+      "trans_hour": "15:23"
+    },
+    {
+      "id": "40ac6889-f36f-4f82-84f7-6b1b69e90429",
+      "username": "oana",
+      "ccy_pair": "RON/EUR",
+      "rate": "4.95",
+      "action": "buy",
+      "notional": "2",
+      "tenor": "Spot",
+      "trans_date": "10/01/2022",
+      "trans_hour": "18:42"
       "trans_date": "10/01/2022",
       "trans_hour": "17:24"
+
     }
   ]
 }

@@ -384,6 +384,17 @@
       "tenor": "Spot",
       "trans_date": "10/01/2022",
       "trans_hour": "18:42"
+    },
+    {
+      "id": "8720d9ab-58fb-424e-98e6-11a357c17964",
+      "username": "oana",
+      "ccy_pair": "USD/EUR",
+      "rate": "1.14",
+      "action": "buy",
+      "notional": "22",
+      "tenor": "1M",
+      "trans_date": "11/01/2022",
+      "trans_hour": "18:55"
     }
   ]
 }

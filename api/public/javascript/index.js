@@ -147,12 +147,6 @@ function createMainWidget(item) {
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
   iconExchange.setAttribute("id", `swapp${inputId}`);
-  iconExchange.addEventListener("click", () => {
-    console.log(`swapp${inputId}`);
-  });
-  // `swapp${inputId}`.addEventListener("click", () => {
-  //   console.log("sss");
-  // });
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -185,6 +179,7 @@ function createMainWidget(item) {
   let sellIcon = document.createElement("i");
   spanSellIcon.appendChild(sellIcon);
   sellIcon.className = "fas fa-caret-down";
+  sellIcon.setAttribute("id", `iconDown${inputId}`);
 
   let pRatesBuy = document.createElement("p");
   cardRatesDiv.appendChild(pRatesBuy);
@@ -206,6 +201,7 @@ function createMainWidget(item) {
   let iconBuy = document.createElement("i");
   spanIconBuy.appendChild(iconBuy);
   iconBuy.className = "fas fa-caret-up";
+  iconBuy.setAttribute("id", `iconUp${inputId}`);
 
   let cardMainArea = document.createElement("div");
   cardDiv.appendChild(cardMainArea);
@@ -594,6 +590,65 @@ function addNewWidget(cardId) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
+
+    let currentInputId = `swapp${inputId}`;
+    let swappId = document.getElementById(currentInputId);
+    swappId.addEventListener("click", () => {
+      let numberIdToSwap = currentInputId.substring(5);
+      let mainCurrencyToSwap = document
+        .querySelector(`#mainCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let secondCurrencyToSwap = document
+        .querySelector(`#secondCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let sellValueToSwap = document
+        .querySelector(`#sellRate${numberIdToSwap}`)
+        .getAttribute("value");
+      let buyValueToSwap = document
+        .querySelector(`#buyRate${numberIdToSwap}`)
+        .getAttribute("value");
+
+      console.log(mainCurrencyToSwap);
+      console.log(secondCurrencyToSwap);
+      console.log(sellValueToSwap);
+      console.log(buyValueToSwap);
+
+      let tempMainCurrency = secondCurrencyToSwap;
+      let tempSecondCurrency = mainCurrencyToSwap;
+      let tempSellValue = buyValueToSwap;
+      let tempBuyValue = sellValueToSwap;
+
+      console.log(tempMainCurrency);
+      console.log(tempSecondCurrency);
+      console.log(tempSellValue);
+      console.log(tempBuyValue);
+      document.getElementById(`mainCurrency${numberIdToSwap}`).textContent =
+        tempMainCurrency;
+      document
+        .getElementById(`mainCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempMainCurrency);
+
+      document.getElementById(`secondCurrency${numberIdToSwap}`).textContent =
+        tempSecondCurrency;
+      document
+        .getElementById(`secondCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempSecondCurrency);
+
+      document.getElementById(`sellRate${numberIdToSwap}`).textContent =
+        tempSellValue;
+      document
+        .getElementById(`sellRate${numberIdToSwap}`)
+        .setAttribute("value", tempSellValue);
+
+      document.getElementById(`buyRate${numberIdToSwap}`).textContent =
+        tempBuyValue;
+      document
+        .getElementById(`buyRate${numberIdToSwap}`)
+        .setAttribute("value", tempBuyValue);
+
+      //let tempIconDown = document.getElementsByClassName('fas fa-caret-down')[0]
+      // let tempIconUp = d
+    });
     closeWidget(cardId);
     mainWidgetsNr++;
   } else {

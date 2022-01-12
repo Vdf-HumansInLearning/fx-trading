@@ -1,19 +1,29 @@
-a brief description of what your code does;
-instructions for installing your code;
-what other code needs to be installed for it to work;
-one or two examples of how to invoke your code;
-optionally: who wrote the code, how to cite it, and who to contact for help
-
 # Fx trading app
+
+A currency trading app
 
 [Requirements](https://github.com/WebToLearn/3-days-of-React-glamour/blob/master/Design/Fx-trading/README.md#requirements)
 
 #### Steps:
 
-- run 
+- clone the project
+
+- install dependencies
+
+  ```
+  npm install
+  ```
+
+- go to api folder
+
+  ```
+  cd api
+  ```
+
+- start the server
 
 ```
-json-server --watch db.json
+npm start
 ```
 
-- open with Live Server 
+- navigate to [localhost:8080](http://localhost:8080) in your browser 

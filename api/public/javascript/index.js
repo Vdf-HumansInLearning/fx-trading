@@ -646,8 +646,52 @@ function addNewWidget(cardId) {
         .getElementById(`buyRate${numberIdToSwap}`)
         .setAttribute("value", tempBuyValue);
 
-      //let tempIconDown = document.getElementsByClassName('fas fa-caret-down')[0]
-      // let tempIconUp = d
+      if (
+        document.getElementById(`iconDown${numberIdToSwap}`).className ==
+        "fas fa-caret-down"
+      ) {
+        document.getElementById(`iconDown${numberIdToSwap}`).className =
+          "fas fa-caret-up";
+        let parent = document.getElementById(
+          `iconDown${numberIdToSwap}`
+        ).parentNode;
+        parent.className = "icon-up";
+
+        document.getElementById(`iconDown${numberIdToSwap}`).className ==
+          "fas fa-caret-down";
+        //   let parent2 = document.getElementById(
+        //     `iconDown${numberIdToSwap}`
+        //  ).parentNode;
+        //   parent2.className='icon-down'
+      } else {
+        document.getElementById(`iconDown${numberIdToSwap}`).className =
+          "fas fa-caret-down";
+        let parent2 = document.getElementById(
+          `iconDown${numberIdToSwap}`
+        ).parentNode;
+        parent2.className = "icon-down";
+      }
+
+      if (
+        document.getElementById(`iconUp${numberIdToSwap}`).className ==
+        "fas fa-caret-up"
+      ) {
+        document.getElementById(`iconUp${numberIdToSwap}`).className =
+          "fas fa-caret-down";
+        let parent = document.getElementById(
+          `iconUp${numberIdToSwap}`
+        ).parentNode;
+        parent.className = "icon-down";
+      } else {
+        document.getElementById(`iconUp${numberIdToSwap}`).className =
+          "fas fa-caret-up";
+        let parent2 = document.getElementById(
+          `iconUp${numberIdToSwap}`
+        ).parentNode;
+        parent2.className = "icon-up";
+      }
+
+      // let tempUp = document.getElementById(`iconUp${inputId}`);
     });
     closeWidget(cardId);
     mainWidgetsNr++;
@@ -1022,7 +1066,8 @@ function createBlotterView() {
 
   const blotterTable = document.createElement("table");
   blotterTable.setAttribute("id", "blotter-table");
-  blotterTable.className = "table table-striped col-xs-7 table-condensed table-fixed";
+  blotterTable.className =
+    "table table-striped col-xs-7 table-condensed table-fixed";
 
   //creat table head
   const headTable = document.createElement("thead");
@@ -1349,12 +1394,12 @@ function create404() {
   let loginBtn = document.createElement("button");
   a.appendChild(loginBtn);
   loginBtn.className = "btn btn-primary main__button404";
-  if (getCookie('username')) {
+  if (getCookie("username")) {
     loginBtn.textContent = "Go to transactions";
     loginBtn.addEventListener("click", () => {
       changeHash("#");
     });
-  }else{
+  } else {
     loginBtn.textContent = "Go to Login";
     addEventListener("click", () => {
       changeHash("#login");
@@ -1872,7 +1917,7 @@ function start(base_currency, quote_currency, cardId) {
 
   eventSource = new EventSource(
     baseUrl +
-    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1933,7 +1978,11 @@ class MyHashRouter {
         } else {
           //create the page
           createLoginPage();
-          showToast("Please log in", "You have to be logged to see this page!", "warning");
+          showToast(
+            "Please log in",
+            "You have to be logged to see this page!",
+            "warning"
+          );
         }
 
         console.log("dashboard page");
@@ -1942,8 +1991,12 @@ class MyHashRouter {
         break;
 
       case "login":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            "warning"
+          );
           showLoading();
         } else {
           console.log("login route");
@@ -1954,8 +2007,12 @@ class MyHashRouter {
         break;
 
       case "register":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            "warning"
+          );
           showLoading();
         } else {
           console.log("register route");

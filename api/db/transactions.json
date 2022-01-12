@@ -265,48 +265,26 @@
       "trans_hour": "15:22"
     },
     {
-      "id": "41a2446a-8ad3-4855-bd12-a5c2985307c4",
+      "id": "8a345b78-5a4d-4cdf-94ef-4879a20a97b3",
       "username": "adela",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.10",
-      "action": "buy",
-      "notional": "123",
-      "tenor": "Spot",
-      "trans_date": "11/01/2022",
-      "trans_hour": "18:01"
-    },
-    {
-      "id": "4e769bff-ba13-4a90-b126-1d0f4496fc19",
-      "username": "adela",
-      "ccy_pair": "EUR/RON",
-      "rate": "0.17",
-      "action": "buy",
-      "notional": "444",
-      "tenor": "1M",
-      "trans_date": "11/01/2022",
-      "trans_hour": "18:02"
-    },
-    {
-      "id": "bc1e24e8-2f42-4b9d-86ef-cc77f0d9a40c",
-      "username": "adela",
-      "ccy_pair": "GBP/RON",
-      "rate": "0.68",
-      "action": "buy",
-      "notional": "2",
-      "tenor": "Spot",
-      "trans_date": "12/01/2022",
-      "trans_hour": "13:52"
-    },
-    {
-      "id": "2d1b4090-463c-4768-8738-bca1150288a5",
-      "username": "adela",
-      "ccy_pair": "RON/GBP",
-      "rate": "5.91",
-      "action": "buy",
-      "notional": "333",
+      "ccy_pair": "EUR/GBP",
+      "rate": "0.88",
+      "action": "sell",
+      "notional": "100",
       "tenor": "3M",
       "trans_date": "12/01/2022",
-      "trans_hour": "13:52"
+      "trans_hour": "08:34"
+    },
+    {
+      "id": "534849c8-7e6c-47be-be14-98370fa7ccc7",
+      "username": "adela",
+      "ccy_pair": "RON/GBP",
+      "rate": "0.13",
+      "action": "sell",
+      "notional": "200",
+      "tenor": "1M",
+      "trans_date": "12/01/2022",
+      "trans_hour": "08:35"
     }
   ]
 }

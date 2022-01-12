@@ -386,12 +386,12 @@ function sendDataTransactions(
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          showToast("Succes", "Transaction completed", true);
+          showToast("Succes", "Transaction completed", "succes");
           document.getElementById(`${inputToSendN}`).value = null;
           document.getElementById(`inputCcy${inputId}`).value =
             document.getElementById(`inputCcy${inputId}`).options[0].value;
         } else {
-          showToast("Failure", "Transaction failed", false);
+          showToast("Failure", "Transaction failed", "fail");
         }
       })
       .then(
@@ -421,13 +421,13 @@ function sendDataTransactions(
         console.log(error);
       });
   } else if (notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose a tenor value", false);
+    showToast("Empty field", "Please choose a tenor value", "fail");
   } else if (!notional && tenor !== "Choose...") {
-    showToast("Empty field", "Please choose a National value", false);
+    showToast("Empty field", "Please choose a National value", "fail");
   } else if (!notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose national and tenor values", false);
+    showToast("Empty field", "Please choose national and tenor values", "fail");
   } else if (notional <= 1) {
-    showToast("Error", "Notional value must be at least 1.", false);
+    showToast("Error", "Notional value must be at least 1.", "fail");
   }
 }
 
@@ -579,7 +579,7 @@ function addPickWidget() {
     showToast(
       "Error",
       "You cannot have more than 5 widgets on the page",
-      false
+      "fail"
     );
   }
 }
@@ -655,7 +655,7 @@ function addNewWidget(cardId) {
     showToast(
       "Error",
       "You cannot have more than 5 widgets on the page",
-      false
+      "fail"
     );
   }
 }
@@ -683,7 +683,7 @@ function selectCurrency(cardId) {
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
-        showToast("Error", "You must choose two different currencies", false);
+        showToast("Error", "You must choose two different currencies", "fail");
       }
     }
 }
@@ -702,7 +702,7 @@ function confirmSelectionCurrency(cardId) {
     inputSecondCurrency.value !== "opt_none"
   ) {
     if (inputMainCurrency.value == inputSecondCurrency.value) {
-      showToast("Error", "You must choose two different currencies", false);
+      showToast("Error", "You must choose two different currencies", "fail");
     } else {
       let currencyObj = {
         base_currency: inputMainCurrency.value,
@@ -736,7 +736,7 @@ function confirmSelectionCurrency(cardId) {
               cardId
             );
           } else {
-            showToast("Error", response.body, false);
+            showToast("Error", response.body, "fail");
           }
         })
         .catch((error) => {
@@ -744,7 +744,7 @@ function confirmSelectionCurrency(cardId) {
         });
     }
   } else {
-    showToast("Error", "Currency fields cannot be empty", false);
+    showToast("Error", "Currency fields cannot be empty", "fail");
   }
 }
 
@@ -1022,7 +1022,7 @@ function createBlotterView() {
 
   const blotterTable = document.createElement("table");
   blotterTable.setAttribute("id", "blotter-table");
-  blotterTable.className = "table table-striped";
+  blotterTable.className = "table table-striped col-xs-7 table-condensed table-fixed";
 
   //creat table head
   const headTable = document.createElement("thead");
@@ -1119,7 +1119,7 @@ function getCookie(cname) {
 function clearCookiesOnLogout() {
   clearCookie("username");
   changeHash("#login");
-  showToast("Logged out", "You have been logged out.", true);
+  showToast("Logged out", "You have been logged out.", "succes");
   if (eventSource) stop();
 }
 
@@ -1131,17 +1131,33 @@ function showToast(titleMessage, bodyMessage, toastType) {
 
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
-  if (toastType) {
-    toastHeaderContainer.classList.remove("bg-danger");
-    toastHeaderContainer.classList.add("bg-success");
-    liveToast.classList.remove("border-danger");
-    liveToast.classList.add("border-success");
-  } else {
-    toastHeaderContainer.classList.remove("bg-success");
-    toastHeaderContainer.classList.add("bg-danger");
-    liveToast.classList.remove("border-success");
-    liveToast.classList.add("border-danger");
+  switch (toastType) {
+    case "succes":
+      toastHeaderContainer.classList.remove("bg-danger");
+      toastHeaderContainer.classList.remove("bg-warning");
+      toastHeaderContainer.classList.add("bg-success");
+      liveToast.classList.remove("border-danger");
+      liveToast.classList.remove("border-warning");
+      liveToast.classList.add("border-success");
+      break;
+    case "fail":
+      toastHeaderContainer.classList.remove("bg-success");
+      toastHeaderContainer.classList.remove("bg-warning");
+      toastHeaderContainer.classList.add("bg-danger");
+      liveToast.classList.remove("border-success");
+      liveToast.classList.remove("border-warning");
+      liveToast.classList.add("border-danger");
+      break;
+    case "warning":
+      toastHeaderContainer.classList.remove("bg-success");
+      toastHeaderContainer.classList.remove("bg-danger");
+      toastHeaderContainer.classList.add("bg-warning");
+      liveToast.classList.remove("border-danger");
+      liveToast.classList.remove("border-success");
+      liveToast.classList.add("border-warning");
+      break;
   }
+
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -1153,6 +1169,7 @@ function showToast(titleMessage, bodyMessage, toastType) {
   let toast = new bootstrap.Toast(liveToast);
   toast.show();
 }
+
 function cleanup(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -1185,7 +1202,7 @@ function filterBlotterTable() {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
-        false
+        "fail"
       );
     }
     //display filterd table registration
@@ -1205,7 +1222,7 @@ function filterBlotterTable() {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
-        false
+        "fail"
       );
     }
     //display filterd table registration
@@ -1224,7 +1241,7 @@ function filterBlotterTable() {
       showToast(
         "Not found",
         "There are any registrations for selected filters. Please select another options.",
-        false
+        "fail"
       );
     }
     //display filterd table registration
@@ -1293,6 +1310,66 @@ function showLoading() {
 function hideLoading() {
   let container = document.getElementById("loadingContainer");
   if (container) container.remove();
+}
+
+function create404() {
+  let main = document.createElement("main");
+  appContainer.appendChild(main);
+  main.className = "body-container-404";
+
+  let divContainer = document.createElement("div");
+  main.appendChild(divContainer);
+  divContainer.className = "main__container404";
+
+  let img = document.createElement("img");
+  divContainer.appendChild(img);
+  img.className = "background_img";
+  img.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/error_404.png"
+  );
+  img.setAttribute("alt", "logo404");
+
+  let divMessage = document.createElement("div");
+  divContainer.appendChild(divMessage);
+  divMessage.className = "message_container";
+
+  let p404 = document.createElement("p");
+  divMessage.appendChild(p404);
+  p404.className = "help-block-404";
+  p404.textContent = "Sorry, the page your are looking for does not exist";
+
+  let divLoginBtn = document.createElement("div");
+  divContainer.appendChild(divLoginBtn);
+  divLoginBtn.className = "button__container404";
+
+  let a = document.createElement("a");
+  divLoginBtn.appendChild(a);
+
+  let loginBtn = document.createElement("button");
+  a.appendChild(loginBtn);
+  loginBtn.className = "btn btn-primary main__button404";
+  if (getCookie('username')) {
+    loginBtn.textContent = "Go to transactions";
+    loginBtn.addEventListener("click", () => {
+      changeHash("#");
+    });
+  }else{
+    loginBtn.textContent = "Go to Login";
+    addEventListener("click", () => {
+      changeHash("#login");
+    });
+  }
+
+  return main;
+}
+
+function createPage404() {
+  cleanup(appContainer);
+  errorPageContainer = document.createElement("div");
+  errorPageContainer.className = "d-flex";
+  appContainer.appendChild(errorPageContainer);
+  create404();
 }
 
 let loginContainer = null;
@@ -1434,10 +1511,10 @@ function login() {
           if (response.status === 200) {
             //save cookie
             createCookie("username", `${username}`, 2);
-            showToast("Login succesfull", "You have been logged in!", true);
+            showToast("Login succesfull", "You have been logged in!", "succes");
             changeHash("");
           } else {
-            showToast("Login failed", response.body.message, false);
+            showToast("Login failed", response.body.message, "fail");
           }
         })
 
@@ -1456,34 +1533,6 @@ function removePreviousError(parent) {
       parent.removeChild(errChild);
     }
   }
-}
-
-function showToast(titleMessage, bodyMessage, toastType) {
-  let liveToast = document.getElementById("liveToast");
-  console.log(liveToast);
-  let toastHeaderContainer = liveToast.querySelector(".toast-header");
-  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
-  if (toastType) {
-    toastHeaderContainer.classList.remove("bg-danger");
-    toastHeaderContainer.classList.add("bg-success");
-    liveToast.classList.remove("border-danger");
-    liveToast.classList.add("border-success");
-  } else {
-    toastHeaderContainer.classList.remove("bg-success");
-    toastHeaderContainer.classList.add("bg-danger");
-    liveToast.classList.remove("border-success");
-    liveToast.classList.add("border-danger");
-  }
-  cleanup(toastHeader);
-  toastHeaderText = document.createTextNode(titleMessage);
-  toastHeader.appendChild(toastHeaderText);
-  let toastBody = liveToast.querySelector(".toast-body");
-  cleanup(toastBody);
-
-  let toastBodyText = document.createTextNode(bodyMessage);
-  toastBody.appendChild(toastBodyText);
-  let toast = new bootstrap.Toast(liveToast);
-  toast.show();
 }
 
 function createCookie(name, value, days) {
@@ -1696,11 +1745,11 @@ function submitRegisterData() {
               showToast(
                 "Register succesfull",
                 "You have been registered successfully!",
-                true
+                "succes"
               );
               changeHash("");
             } else {
-              showToast("Error", "Registration failed!", false);
+              showToast("Error", "Registration failed!", "fail");
             }
           })
           .catch((error) => {
@@ -1784,34 +1833,6 @@ function removePreviousError(parent) {
   }
 }
 
-function showToast(titleMessage, bodyMessage, toastType) {
-  let liveToast = document.getElementById("liveToast");
-  console.log(liveToast);
-  let toastHeaderContainer = liveToast.querySelector(".toast-header");
-  let toastHeader = liveToast.querySelector(".toast-header .me-auto");
-  if (toastType) {
-    toastHeaderContainer.classList.remove("bg-danger");
-    toastHeaderContainer.classList.add("bg-success");
-    liveToast.classList.remove("border-danger");
-    liveToast.classList.add("border-success");
-  } else {
-    toastHeaderContainer.classList.remove("bg-success");
-    toastHeaderContainer.classList.add("bg-danger");
-    liveToast.classList.remove("border-success");
-    liveToast.classList.add("border-danger");
-  }
-  cleanup(toastHeader);
-  toastHeaderText = document.createTextNode(titleMessage);
-  toastHeader.appendChild(toastHeaderText);
-  let toastBody = liveToast.querySelector(".toast-body");
-  cleanup(toastBody);
-
-  let toastBodyText = document.createTextNode(bodyMessage);
-  toastBody.appendChild(toastBodyText);
-  let toast = new bootstrap.Toast(liveToast);
-  toast.show();
-}
-
 function createRegisterPage() {
   //cleanup
   cleanup(appContainer);
@@ -1851,7 +1872,7 @@ function start(base_currency, quote_currency, cardId) {
 
   eventSource = new EventSource(
     baseUrl +
-      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1912,11 +1933,7 @@ class MyHashRouter {
         } else {
           //create the page
           createLoginPage();
-          showToast(
-            "Please log in",
-            "You have to be logged to see this page!",
-            false
-          );
+          showToast("Please log in", "You have to be logged to see this page!", "warning");
         }
 
         console.log("dashboard page");
@@ -1925,42 +1942,32 @@ class MyHashRouter {
         break;
 
       case "login":
-        if (getCookie("username")) {
-          showToast(
-            "Warning",
-            "You are already logged in as " + getCookie("username"),
-            false
-          );
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
-          getIndexData();
         } else {
           console.log("login route");
           createLoginPage();
+          hideLoading();
           window.scrollTo(0, 0);
         }
         break;
 
       case "register":
-        if (getCookie("username")) {
-          showToast(
-            "Warning",
-            "You are already logged in as " + getCookie("username"),
-            false
-          );
+        if (getCookie('username')) {
+          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
           showLoading();
-          getIndexData();
         } else {
           console.log("register route");
           createRegisterPage();
+          hideLoading();
           window.scrollTo(0, 0);
         }
         break;
 
       default:
-        let message = document.createElement("p");
-        let messageText = document.createTextNode("Not Found");
-        message.appendChild(messageText);
-        app.appendChild(message);
+        createPage404();
+        window.scrollTo(0, 0);
         break;
     }
   }

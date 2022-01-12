@@ -1,5 +1,6 @@
 @import url("./toast-style.css");
 @import url("./spinner-style.css");
+@import url("./table-style.css");
 
 :root {
   --color-grey-background: #f2f2f2;
@@ -63,4 +64,8 @@ hr {
   background-color: var(--color-grey-titles);
   margin: 20px 0;
   width: 100%;
+}
+
+.link-primary:hover {
+  cursor: pointer;
 }

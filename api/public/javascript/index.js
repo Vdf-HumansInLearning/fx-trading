@@ -1888,6 +1888,7 @@ class MyHashRouter {
         } else {
           console.log("login route");
           createLoginPage();
+          hideLoading();
           window.scrollTo(0, 0);
         }
         break;
@@ -1899,6 +1900,7 @@ class MyHashRouter {
         } else {
           console.log("register route");
           createRegisterPage();
+          hideLoading();
           window.scrollTo(0, 0);
         }
         break;

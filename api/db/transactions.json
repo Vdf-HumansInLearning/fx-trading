@@ -263,6 +263,28 @@
       "tenor": "1M",
       "trans_date": "11/01/2022",
       "trans_hour": "15:22"
+    },
+    {
+      "id": "8a345b78-5a4d-4cdf-94ef-4879a20a97b3",
+      "username": "adela",
+      "ccy_pair": "EUR/GBP",
+      "rate": "0.88",
+      "action": "sell",
+      "notional": "100",
+      "tenor": "3M",
+      "trans_date": "12/01/2022",
+      "trans_hour": "08:34"
+    },
+    {
+      "id": "534849c8-7e6c-47be-be14-98370fa7ccc7",
+      "username": "adela",
+      "ccy_pair": "RON/GBP",
+      "rate": "0.13",
+      "action": "sell",
+      "notional": "200",
+      "tenor": "1M",
+      "trans_date": "12/01/2022",
+      "trans_hour": "08:35"
     }
   ]
 }

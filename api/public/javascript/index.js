@@ -1097,7 +1097,7 @@ function showToast(titleMessage, bodyMessage, toastType) {
       liveToast.classList.add("border-warning");
       break;
   }
-  
+
   cleanup(toastHeader);
   toastHeaderText = document.createTextNode(titleMessage);
   toastHeader.appendChild(toastHeaderText);
@@ -1250,6 +1250,66 @@ function showLoading() {
 function hideLoading() {
   let container = document.getElementById("loadingContainer");
   if (container) container.remove();
+}
+
+function create404() {
+  let main = document.createElement("main");
+  appContainer.appendChild(main);
+  main.className = "body-container-404";
+
+  let divContainer = document.createElement("div");
+  main.appendChild(divContainer);
+  divContainer.className = "main__container404";
+
+  let img = document.createElement("img");
+  divContainer.appendChild(img);
+  img.className = "background_img";
+  img.setAttribute(
+    "src",
+    "https://raw.githubusercontent.com/WebToLearn/fx-trading-app/master/App/ui/src/assets/img/error_404.png"
+  );
+  img.setAttribute("alt", "logo404");
+
+  let divMessage = document.createElement("div");
+  divContainer.appendChild(divMessage);
+  divMessage.className = "message_container";
+
+  let p404 = document.createElement("p");
+  divMessage.appendChild(p404);
+  p404.className = "help-block-404";
+  p404.textContent = "Sorry, the page your are looking for does not exist";
+
+  let divLoginBtn = document.createElement("div");
+  divContainer.appendChild(divLoginBtn);
+  divLoginBtn.className = "button__container404";
+
+  let a = document.createElement("a");
+  divLoginBtn.appendChild(a);
+
+  let loginBtn = document.createElement("button");
+  a.appendChild(loginBtn);
+  loginBtn.className = "btn btn-primary main__button404";
+  if (getCookie('username')) {
+    loginBtn.textContent = "Go to transactions";
+    loginBtn.addEventListener("click", () => {
+      changeHash("#");
+    });
+  }else{
+    loginBtn.textContent = "Go to Login";
+    addEventListener("click", () => {
+      changeHash("#login");
+    });
+  }
+
+  return main;
+}
+
+function createPage404() {
+  cleanup(appContainer);
+  errorPageContainer = document.createElement("div");
+  errorPageContainer.className = "d-flex";
+  appContainer.appendChild(errorPageContainer);
+  create404();
 }
 
 let loginContainer = null;
@@ -1752,7 +1812,7 @@ function start(base_currency, quote_currency, cardId) {
 
   eventSource = new EventSource(
     baseUrl +
-      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1844,10 +1904,8 @@ class MyHashRouter {
         break;
 
       default:
-        let message = document.createElement("p");
-        let messageText = document.createTextNode("Not Found");
-        message.appendChild(messageText);
-        app.appendChild(message);
+        createPage404();
+        window.scrollTo(0, 0);
         break;
     }
   }

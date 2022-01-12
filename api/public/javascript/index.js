@@ -129,14 +129,17 @@ function createMainWidget(item) {
   spanMainCurrency.textContent = `${item.mainCurrency}`;
   let sendMainCurrency = `mainCurrency${inputId}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
-
+  let spanSlash = document.createElement("span");
+  spanSlash.textContent = "/";
+  pSubtitle.appendChild(spanSlash);
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
 
   spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
   let sendSecCurrency = `secondCurrency${inputId}`;
-  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
+
+  spanSecondCurrency.textContent = `${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
   let divIcon = document.createElement("div");
@@ -608,20 +611,11 @@ function addNewWidget(cardId) {
         .querySelector(`#buyRate${numberIdToSwap}`)
         .getAttribute("value");
 
-      console.log(mainCurrencyToSwap);
-      console.log(secondCurrencyToSwap);
-      console.log(sellValueToSwap);
-      console.log(buyValueToSwap);
-
       let tempMainCurrency = secondCurrencyToSwap;
       let tempSecondCurrency = mainCurrencyToSwap;
       let tempSellValue = buyValueToSwap;
       let tempBuyValue = sellValueToSwap;
 
-      console.log(tempMainCurrency);
-      console.log(tempSecondCurrency);
-      console.log(tempSellValue);
-      console.log(tempBuyValue);
       document.getElementById(`mainCurrency${numberIdToSwap}`).textContent =
         tempMainCurrency;
       document
@@ -659,10 +653,6 @@ function addNewWidget(cardId) {
 
         document.getElementById(`iconDown${numberIdToSwap}`).className ==
           "fas fa-caret-down";
-        //   let parent2 = document.getElementById(
-        //     `iconDown${numberIdToSwap}`
-        //  ).parentNode;
-        //   parent2.className='icon-down'
       } else {
         document.getElementById(`iconDown${numberIdToSwap}`).className =
           "fas fa-caret-down";
@@ -690,8 +680,6 @@ function addNewWidget(cardId) {
         ).parentNode;
         parent2.className = "icon-up";
       }
-
-      // let tempUp = document.getElementById(`iconUp${inputId}`);
     });
     closeWidget(cardId);
     mainWidgetsNr++;

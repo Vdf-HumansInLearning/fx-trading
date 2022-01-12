@@ -587,6 +587,49 @@ function addPickWidget() {
   }
 }
 
+function swapIcons(numberIdToSwap) {
+  if (
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+    "fas fa-caret-down"
+  ) {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent.className = "icon-up";
+
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+      "fas fa-caret-down";
+  } else {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent2 = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent2.className = "icon-down";
+  }
+
+  if (
+    document.getElementById(`iconUp${numberIdToSwap}`).className ==
+    "fas fa-caret-up"
+  ) {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent = document.getElementById(
+      `iconUp${numberIdToSwap}`
+    ).parentNode;
+    parent.className = "icon-down";
+  } else {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent2 = document.getElementById(
+      `iconUp${numberIdToSwap}`
+    ).parentNode;
+    parent2.className = "icon-up";
+  }
+}
+
 function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
@@ -639,47 +682,7 @@ function addNewWidget(cardId) {
       document
         .getElementById(`buyRate${numberIdToSwap}`)
         .setAttribute("value", tempBuyValue);
-
-      if (
-        document.getElementById(`iconDown${numberIdToSwap}`).className ==
-        "fas fa-caret-down"
-      ) {
-        document.getElementById(`iconDown${numberIdToSwap}`).className =
-          "fas fa-caret-up";
-        let parent = document.getElementById(
-          `iconDown${numberIdToSwap}`
-        ).parentNode;
-        parent.className = "icon-up";
-
-        document.getElementById(`iconDown${numberIdToSwap}`).className ==
-          "fas fa-caret-down";
-      } else {
-        document.getElementById(`iconDown${numberIdToSwap}`).className =
-          "fas fa-caret-down";
-        let parent2 = document.getElementById(
-          `iconDown${numberIdToSwap}`
-        ).parentNode;
-        parent2.className = "icon-down";
-      }
-
-      if (
-        document.getElementById(`iconUp${numberIdToSwap}`).className ==
-        "fas fa-caret-up"
-      ) {
-        document.getElementById(`iconUp${numberIdToSwap}`).className =
-          "fas fa-caret-down";
-        let parent = document.getElementById(
-          `iconUp${numberIdToSwap}`
-        ).parentNode;
-        parent.className = "icon-down";
-      } else {
-        document.getElementById(`iconUp${numberIdToSwap}`).className =
-          "fas fa-caret-up";
-        let parent2 = document.getElementById(
-          `iconUp${numberIdToSwap}`
-        ).parentNode;
-        parent2.className = "icon-up";
-      }
+      swapIcons(numberIdToSwap);
     });
     closeWidget(cardId);
     mainWidgetsNr++;
@@ -722,7 +725,6 @@ function selectCurrency(cardId) {
 
 function confirmSelectionCurrency(cardId) {
   let card = document.getElementById(cardId);
-  let swappId = document.getElementById;
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
   console.log(inputMainCurrency);
@@ -1905,7 +1907,7 @@ function start(base_currency, quote_currency, cardId) {
 
   eventSource = new EventSource(
     baseUrl +
-      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1924,12 +1926,40 @@ function start(base_currency, quote_currency, cardId) {
   eventSource.onmessage = function (e) {
     console.log("Event: message, data: " + e.data);
     currencyObj = JSON.parse(e.data);
-    //populate the item
+    //populate the itemstop
     item.mainCurrency = base_currency;
     item.secondCurrency = quote_currency;
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
-    //call update rates method
+    let cardNumber = cardId.substring(8);
+
+    const card = document.getElementById(`card${Number(cardNumber) + 1}`);
+    const sellRate = card.querySelector(`#sellRate${Number(cardNumber) + 1}`);
+    const buyRate = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
+
+    let initialSellRate = sellRate.value;
+    let initialBuyRate = buyRate.value;
+    // if (initialBuyRate <= currencyObj.buy) {
+    //   let child = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
+    //   child.className =
+    //     "fas fa-caret-down";
+    //   let parent = card.querySelector(`#buyRate${Number(cardNumber) + 1}`)
+    //     .parentNode;
+    //   parent.className = "icon-down";
+      
+    // } else {
+    //   let child = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
+    //   child.className =
+    //     "fas fa-caret-up";
+    //   let parent = card.querySelector(`#buyRate${Number(cardNumber) + 1}`)
+    //     .parentNode;
+    //   parent.className = "icon-up";
+    // }
+    
+    sellRate.setAttribute("value", currencyObj.sell);
+    sellRate.textContent = currencyObj.sell;
+    buyRate.setAttribute("value", currencyObj.buy);
+    buyRate.textContent = currencyObj.buy;
   };
 }
 

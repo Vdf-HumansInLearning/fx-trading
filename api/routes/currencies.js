@@ -59,7 +59,7 @@ router.get("/currencies/quote", (req, res) => {
 
         let timer = setInterval(
           () => getNewCurrencyData(res, foundBase[item]),
-          3000
+          2000
         );
       }
     }

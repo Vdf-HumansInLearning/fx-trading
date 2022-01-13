@@ -129,17 +129,14 @@ function createMainWidget(item) {
   spanMainCurrency.textContent = `${item.mainCurrency}`;
   let sendMainCurrency = `mainCurrency${inputId}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
-  let spanSlash = document.createElement("span");
-  spanSlash.textContent = "/";
-  pSubtitle.appendChild(spanSlash);
+
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
 
   spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
   let sendSecCurrency = `secondCurrency${inputId}`;
-
-  spanSecondCurrency.textContent = `${item.secondCurrency}`;
+  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
   let divIcon = document.createElement("div");
@@ -149,7 +146,12 @@ function createMainWidget(item) {
   let iconExchange = document.createElement("i");
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
-  iconExchange.setAttribute("id", `swapp${inputId}`);
+  //---creeaza id separat pt icon
+  //--- foarEachh si adauga fiecarui icon addEventListener
+
+  // iconExchange.addEventListener("click", () => {
+  //   swappCurrency(`mainCurrency${inputId}`, `${item.secondCurrency}`, 0, 0);
+  // }); //===========
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -182,7 +184,6 @@ function createMainWidget(item) {
   let sellIcon = document.createElement("i");
   spanSellIcon.appendChild(sellIcon);
   sellIcon.className = "fas fa-caret-down";
-  sellIcon.setAttribute("id", `iconDown${inputId}`);
 
   let pRatesBuy = document.createElement("p");
   cardRatesDiv.appendChild(pRatesBuy);
@@ -204,7 +205,6 @@ function createMainWidget(item) {
   let iconBuy = document.createElement("i");
   spanIconBuy.appendChild(iconBuy);
   iconBuy.className = "fas fa-caret-up";
-  iconBuy.setAttribute("id", `iconUp${inputId}`);
 
   let cardMainArea = document.createElement("div");
   cardDiv.appendChild(cardMainArea);
@@ -434,10 +434,6 @@ function sendDataTransactions(
   }
 }
 
-function swappCurrency(id) {
-  console.log(id);
-}
-
 function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
@@ -587,100 +583,12 @@ function addPickWidget() {
   }
 }
 
-function swapIcons(numberIdToSwap) {
-  if (
-    document.getElementById(`iconDown${numberIdToSwap}`).className ==
-    "fas fa-caret-down"
-  ) {
-    document.getElementById(`iconDown${numberIdToSwap}`).className =
-      "fas fa-caret-up";
-    let parent = document.getElementById(
-      `iconDown${numberIdToSwap}`
-    ).parentNode;
-    parent.className = "icon-up";
-
-    document.getElementById(`iconDown${numberIdToSwap}`).className ==
-      "fas fa-caret-down";
-  } else {
-    document.getElementById(`iconDown${numberIdToSwap}`).className =
-      "fas fa-caret-down";
-    let parent2 = document.getElementById(
-      `iconDown${numberIdToSwap}`
-    ).parentNode;
-    parent2.className = "icon-down";
-  }
-
-  if (
-    document.getElementById(`iconUp${numberIdToSwap}`).className ==
-    "fas fa-caret-up"
-  ) {
-    document.getElementById(`iconUp${numberIdToSwap}`).className =
-      "fas fa-caret-down";
-    let parent = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
-    parent.className = "icon-down";
-  } else {
-    document.getElementById(`iconUp${numberIdToSwap}`).className =
-      "fas fa-caret-up";
-    let parent2 = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
-    parent2.className = "icon-up";
-  }
-}
-
 function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
     //fetch item from api
-    cardIdCounter++;
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
-
-    let currentInputId = `swapp${inputId}`;
-    let swappId = document.getElementById(currentInputId);
-    swappId.addEventListener("click", () => {
-      let numberIdToSwap = currentInputId.substring(5);
-      let mainCurrencyToSwap = document
-        .querySelector(`#mainCurrency${numberIdToSwap}`)
-        .getAttribute("value");
-      let secondCurrencyToSwap = document
-        .querySelector(`#secondCurrency${numberIdToSwap}`)
-        .getAttribute("value");
-      let sellValueToSwap = document
-        .querySelector(`#sellRate${numberIdToSwap}`)
-        .getAttribute("value");
-      let buyValueToSwap = document
-        .querySelector(`#buyRate${numberIdToSwap}`)
-        .getAttribute("value");
-
-      let tempMainCurrency = secondCurrencyToSwap;
-      let tempSecondCurrency = mainCurrencyToSwap;
-      let tempSellValue = buyValueToSwap;
-      let tempBuyValue = sellValueToSwap;
-
-      document.getElementById(`mainCurrency${numberIdToSwap}`).textContent =
-        tempMainCurrency;
-      document
-        .getElementById(`mainCurrency${numberIdToSwap}`)
-        .setAttribute("value", tempMainCurrency);
-
-      document.getElementById(`secondCurrency${numberIdToSwap}`).textContent =
-        tempSecondCurrency;
-      document
-        .getElementById(`secondCurrency${numberIdToSwap}`)
-        .setAttribute("value", tempSecondCurrency);
-
-      document.getElementById(`sellRate${numberIdToSwap}`).textContent =
-        tempSellValue;
-      document
-        .getElementById(`sellRate${numberIdToSwap}`)
-        .setAttribute("value", tempSellValue);
-
-      document.getElementById(`buyRate${numberIdToSwap}`).textContent =
-        tempBuyValue;
-      document
-        .getElementById(`buyRate${numberIdToSwap}`)
-        .setAttribute("value", tempBuyValue);
-      swapIcons(numberIdToSwap);
-    });
     closeWidget(cardId);
     mainWidgetsNr++;
   } else {
@@ -722,6 +630,7 @@ function selectCurrency(cardId) {
 
 function confirmSelectionCurrency(cardId) {
   let card = document.getElementById(cardId);
+
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
   console.log(inputMainCurrency);
@@ -751,6 +660,7 @@ function confirmSelectionCurrency(cardId) {
         )
         .then((response) => {
           if (response.status === 200) {
+            inputId++;
             console.log("inputId  " + inputId);
             console.log(response.body);
             //populate the item
@@ -763,10 +673,8 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              cardIdCounter,
-              inputId
+              cardId
             );
-            inputId++;
           } else {
             showToast("Error", response.body, "fail");
           }
@@ -1299,9 +1207,10 @@ window.onload = () => {
   //when document loads, initialize router
   let myRouter = new MyHashRouter();
   //change hash so it triggers the event on first start
-  const initialHash = window.location.hash;
-  window.location.hash = "#aa";
-  window.location.hash = initialHash;
+  // const initialHash = window.location.hash;
+  // window.location.hash = "#aa";
+
+  changeHash("#login");
 };
 
 function getIndexData() {
@@ -1385,7 +1294,7 @@ function create404() {
   if (getCookie("username")) {
     loginBtn.textContent = "Go to transactions";
     loginBtn.addEventListener("click", () => {
-      changeHash("#");
+      changeHash("#dashboard");
     });
   } else {
     loginBtn.textContent = "Go to Login";
@@ -1545,7 +1454,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", "succes");
-            changeHash("");
+            changeHash("#dashboard");
           } else {
             showToast("Login failed", response.body.message, "fail");
           }
@@ -1771,6 +1680,12 @@ function submitRegisterData() {
             repassword: repassword,
           }),
         })
+          .then((res) =>
+            res.json().then((data) => ({
+              status: res.status,
+              body: data,
+            }))
+          )
           .then((data) => {
             console.log(data);
             if (data.status == 200) {
@@ -1780,7 +1695,26 @@ function submitRegisterData() {
                 "You have been registered successfully!",
                 "succes"
               );
-              changeHash("");
+
+              changeHash("#dashboard");
+              //window.location.hash = "#dashboard";
+            } else if (data.status == 409) {
+              console.log(data.body.message);
+              if (data.body.existing === "email") {
+                const email = document.getElementById("inputEmail");
+                removePreviousError(email.parentElement);
+                email.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              } else if (data.body.existing === "username") {
+                const username = document.getElementById("inputUsername");
+                removePreviousError(username.parentElement);
+                username.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              }
             } else {
               showToast("Error", "Registration failed!", "fail");
             }
@@ -1895,7 +1829,7 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start(base_currency, quote_currency, cardId, inputId) {
+function start(base_currency, quote_currency, cardId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1924,48 +1858,12 @@ function start(base_currency, quote_currency, cardId, inputId) {
   eventSource.onmessage = function (e) {
     console.log("Event: message, data: " + e.data);
     currencyObj = JSON.parse(e.data);
-    //populate the itemstop
+    //populate the item
     item.mainCurrency = base_currency;
     item.secondCurrency = quote_currency;
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
-    let cardNumber = cardId;
-
-    const card = document.getElementById(`card${cardNumber}`);
-    const sellRate = card.querySelector(`#sellRate${inputId}`);
-    const buyRate = card.querySelector(`#buyRate${inputId}`);
-
-    let initialSellRate = Number(sellRate.textContent);
-    let initialBuyRate = Number(buyRate.textContent);
-    let childSell = card.querySelector(`#iconDown${inputId}`);
-    let childBuy = card.querySelector(`#iconUp${inputId}`);
-
-    //BUY CASE
-    if (initialBuyRate >= currencyObj.buy) {
-      childBuy.className = "fas fa-caret-down";
-      let parent = childBuy.parentNode;
-      parent.setAttribute("class", "icon-down");
-    } else {
-      childBuy.className = "fas fa-caret-up";
-      let parent = childBuy.parentNode;
-      parent.setAttribute("class", "icon-up");
-    }
-
-    //SELL CASE
-    if (initialSellRate >= currencyObj.sell) {
-      childSell.className = "fas fa-caret-down";
-      let parent = childSell.parentNode;
-      parent.setAttribute("class", "icon-down");
-    } else {
-      childSell.className = "fas fa-caret-up";
-      let parent = childSell.parentNode;
-      parent.setAttribute("class", "icon-up");
-    }
-
-    sellRate.setAttribute("value", currencyObj.sell);
-    sellRate.textContent = currencyObj.sell;
-    buyRate.setAttribute("value", currencyObj.buy);
-    buyRate.textContent = currencyObj.buy;
+    //call update rates method
   };
 }
 
@@ -1995,13 +1893,13 @@ class MyHashRouter {
 
     //generate pages by uri
     switch (contentUri) {
-      case "":
+      case "dashboard":
         //get data from server
         if (getCookie("username")) {
           getIndexData();
         } else {
           //create the page
-          createLoginPage();
+          changeHash("#login");
           showToast(
             "Please log in",
             "You have to be logged to see this page!",

@@ -11,6 +11,8 @@ const filePath = "../db/transactions.json";
 router.get("/transactions", (req, res) => {
   let jsonData = readFromFile(filePath);
   let transactions = jsonData.transactions;
+  //make entries appear newest first
+  transactions = transactions.reverse();
   res.status(200).send(transactions);
 });
 

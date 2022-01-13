@@ -53,6 +53,7 @@ router.post("/transactions", (req, res) => {
 });
 
 function validateTransaction(transaction) {
+  console.log(transaction);
   const regexUsername = /^[a-zA-Z ,.'-]{3,20}$/;
   const regexCcyPair = /[A-Z]{3}\/[A-Z]{3}/;
   const tenorOptions = ["Spot", "1M", "3M"];

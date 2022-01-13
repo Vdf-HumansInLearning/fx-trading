@@ -46,12 +46,16 @@ router.get("/currencies/quote", (req, res) => {
   let fileContents = JSON.parse(rawdata);
   const currenciesRates = fileContents.currency_rates;
   if (req.query.base_currency && req.query.quote_currency) {
+    console.log(req.query.base_currency);
+    console.log(req.query.quote_currency);
+
     let foundBase = currenciesRates.find(
       (pair) => pair.base_currency === req.query.base_currency
     ).quotes;
 
     for (item in foundBase) {
       if (item === req.query.quote_currency) {
+        console.log(foundBase[item]);
         res.writeHead(200, {
           "Content-Type": "text/event-stream; charset=utf-8",
           "Cache-Control": "no-cache",

@@ -120,6 +120,61 @@
       "tenor": "Spot",
       "trans_date": "10/01/2022",
       "trans_hour": "18:42"
+    },
+    {
+      "id": "f93c1e7e-ce7f-4e70-a221-ef0ce8bc61bf",
+      "username": "adela",
+      "ccy_pair": "EUR/GBP",
+      "rate": "0.89",
+      "action": "buy",
+      "notional": "11111",
+      "tenor": "Spot",
+      "trans_date": "13/01/2022",
+      "trans_hour": "12:25"
+    },
+    {
+      "id": "33272715-e9a1-4d02-91a7-c62c059f4555",
+      "username": "adela",
+      "ccy_pair": "USD/GBP",
+      "rate": "1.05",
+      "action": "buy",
+      "notional": "1111",
+      "tenor": "1M",
+      "trans_date": "13/01/2022",
+      "trans_hour": "12:32"
+    },
+    {
+      "id": "9fd8bcb6-2714-4cdc-b0c4-85313ac09307",
+      "username": "adela",
+      "ccy_pair": "USD/CHF",
+      "rate": "1.05",
+      "action": "buy",
+      "notional": "2",
+      "tenor": "1M",
+      "trans_date": "13/01/2022",
+      "trans_hour": "12:33"
+    },
+    {
+      "id": "4a42e458-db4c-4a03-97ed-492e386c4d1a",
+      "username": "adela",
+      "ccy_pair": "GBP/CHF",
+      "rate": "0.76",
+      "action": "buy",
+      "notional": "5",
+      "tenor": "1M",
+      "trans_date": "13/01/2022",
+      "trans_hour": "12:35"
+    },
+    {
+      "id": "042a53cf-17c1-4b03-a05a-20874d9ed7ef",
+      "username": "adela",
+      "ccy_pair": "EUR/GBP",
+      "rate": "0.93",
+      "action": "buy",
+      "notional": "3",
+      "tenor": "1M",
+      "trans_date": "13/01/2022",
+      "trans_hour": "12:39"
     }
   ]
 }

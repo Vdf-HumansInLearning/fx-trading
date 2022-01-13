@@ -616,16 +616,12 @@ function swapIcons(numberIdToSwap) {
   ) {
     document.getElementById(`iconUp${numberIdToSwap}`).className =
       "fas fa-caret-down";
-    let parent = document.getElementById(
-      `iconUp${numberIdToSwap}`
-    ).parentNode;
+    let parent = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
     parent.className = "icon-down";
   } else {
     document.getElementById(`iconUp${numberIdToSwap}`).className =
       "fas fa-caret-up";
-    let parent2 = document.getElementById(
-      `iconUp${numberIdToSwap}`
-    ).parentNode;
+    let parent2 = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
     parent2.className = "icon-up";
   }
 }
@@ -1909,7 +1905,7 @@ function start(base_currency, quote_currency, cardId, inputId) {
 
   eventSource = new EventSource(
     baseUrl +
-    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1946,26 +1942,22 @@ function start(base_currency, quote_currency, cardId, inputId) {
 
     //BUY CASE
     if (initialBuyRate >= currencyObj.buy) {
-      childBuy.className =
-        "fas fa-caret-down";
+      childBuy.className = "fas fa-caret-down";
       let parent = childBuy.parentNode;
       parent.setAttribute("class", "icon-down");
     } else {
-      childBuy.className =
-        "fas fa-caret-up";
+      childBuy.className = "fas fa-caret-up";
       let parent = childBuy.parentNode;
       parent.setAttribute("class", "icon-up");
     }
 
     //SELL CASE
     if (initialSellRate >= currencyObj.sell) {
-      childSell.className =
-        "fas fa-caret-down";
+      childSell.className = "fas fa-caret-down";
       let parent = childSell.parentNode;
       parent.setAttribute("class", "icon-down");
     } else {
-      childSell.className =
-        "fas fa-caret-up";
+      childSell.className = "fas fa-caret-up";
       let parent = childSell.parentNode;
       parent.setAttribute("class", "icon-up");
     }

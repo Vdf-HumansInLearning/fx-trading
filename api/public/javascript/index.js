@@ -962,7 +962,8 @@ function createBlotterView() {
 
   const blotterTable = document.createElement("table");
   blotterTable.setAttribute("id", "blotter-table");
-  blotterTable.className = "table table-striped col-xs-7 table-condensed table-fixed";
+  blotterTable.className =
+    "table table-striped col-xs-7 table-condensed table-fixed";
 
   //creat table head
   const headTable = document.createElement("thead");
@@ -1206,9 +1207,10 @@ window.onload = () => {
   //when document loads, initialize router
   let myRouter = new MyHashRouter();
   //change hash so it triggers the event on first start
-  const initialHash = window.location.hash;
-  window.location.hash = "#aa";
-  window.location.hash = initialHash;
+  // const initialHash = window.location.hash;
+  // window.location.hash = "#aa";
+
+  changeHash("#login");
 };
 
 function getIndexData() {
@@ -1289,12 +1291,12 @@ function create404() {
   let loginBtn = document.createElement("button");
   a.appendChild(loginBtn);
   loginBtn.className = "btn btn-primary main__button404";
-  if (getCookie('username')) {
+  if (getCookie("username")) {
     loginBtn.textContent = "Go to transactions";
     loginBtn.addEventListener("click", () => {
-      changeHash("#");
+      changeHash("#dashboard");
     });
-  }else{
+  } else {
     loginBtn.textContent = "Go to Login";
     addEventListener("click", () => {
       changeHash("#login");
@@ -1452,7 +1454,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", "succes");
-            changeHash("");
+            changeHash("#dashboard");
           } else {
             showToast("Login failed", response.body.message, "fail");
           }
@@ -1693,11 +1695,8 @@ function submitRegisterData() {
                 "You have been registered successfully!",
                 "succes"
               );
-              setTimeout(function () {
-                e.preventDefault();
-                window.location.href = "/";
-              }, 2000);
 
+              changeHash("#dashboard");
               //window.location.hash = "#dashboard";
             } else if (data.status == 409) {
               console.log(data.body.message);
@@ -1708,8 +1707,7 @@ function submitRegisterData() {
                   "beforeend",
                   `<p class="error">${data.body.message}</p>`
                 );
-              } 
-              else if (data.body.existing === "username") {
+              } else if (data.body.existing === "username") {
                 const username = document.getElementById("inputUsername");
                 removePreviousError(username.parentElement);
                 username.parentElement.insertAdjacentHTML(
@@ -1717,8 +1715,7 @@ function submitRegisterData() {
                   `<p class="error">${data.body.message}</p>`
                 );
               }
-            }
-            else {
+            } else {
               showToast("Error", "Registration failed!", "fail");
             }
           })
@@ -1842,7 +1839,7 @@ function start(base_currency, quote_currency, cardId) {
 
   eventSource = new EventSource(
     baseUrl +
-    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -1896,14 +1893,18 @@ class MyHashRouter {
 
     //generate pages by uri
     switch (contentUri) {
-      case "":
+      case "dashboard":
         //get data from server
         if (getCookie("username")) {
           getIndexData();
         } else {
           //create the page
-          createLoginPage();
-          showToast("Please log in", "You have to be logged to see this page!", "warning");
+          changeHash("#login");
+          showToast(
+            "Please log in",
+            "You have to be logged to see this page!",
+            "warning"
+          );
         }
 
         console.log("dashboard page");
@@ -1912,8 +1913,12 @@ class MyHashRouter {
         break;
 
       case "login":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            "warning"
+          );
           showLoading();
         } else {
           console.log("login route");
@@ -1924,8 +1929,12 @@ class MyHashRouter {
         break;
 
       case "register":
-        if (getCookie('username')) {
-          showToast("Warning", "You are already logged in as " + getCookie('username'), "warning");
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username"),
+            "warning"
+          );
           showLoading();
         } else {
           console.log("register route");

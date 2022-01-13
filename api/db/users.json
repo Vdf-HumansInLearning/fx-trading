@@ -83,6 +83,12 @@
       "username": "adela",
       "email": "adela@adela.com",
       "password": "Test123!"
+    },
+    {
+      "id": 15,
+      "username": "oanaa",
+      "email": "oana@oanaa.com",
+      "password": "Test123!"
     }
   ]
 }

@@ -97,7 +97,7 @@ router.post("/register", function (req, res) {
   if (searchUsername != undefined) {
     res.status(409);
     res.send({
-      message: "This username already exist. Try another one.",
+      message: "This username already exists. Try another one.",
       existing: "username",
     });
     return;
@@ -105,7 +105,7 @@ router.post("/register", function (req, res) {
   if (searchEmail != undefined) {
     res.status(409);
     res.send({
-      message: "This email already registered!",
+      message: "This email is already registered!",
       existing: "email",
     });
     return;

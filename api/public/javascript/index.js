@@ -634,6 +634,7 @@ function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
     //fetch item from api
+    cardIdCounter++;
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
 
@@ -754,7 +755,6 @@ function confirmSelectionCurrency(cardId) {
         )
         .then((response) => {
           if (response.status === 200) {
-            inputId++;
             console.log("inputId  " + inputId);
             console.log(response.body);
             //populate the item
@@ -767,8 +767,10 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              cardId
+              cardIdCounter,
+              inputId
             );
+            inputId++;
           } else {
             showToast("Error", response.body, "fail");
           }
@@ -1897,7 +1899,7 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start(base_currency, quote_currency, cardId) {
+function start(base_currency, quote_currency, cardId, inputId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1931,16 +1933,16 @@ function start(base_currency, quote_currency, cardId) {
     item.secondCurrency = quote_currency;
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
-    let cardNumber = cardId.substring(8);
+    let cardNumber = cardId;
 
-    const card = document.getElementById(`card${Number(cardNumber) + 1}`);
-    const sellRate = card.querySelector(`#sellRate${Number(cardNumber) + 1}`);
-    const buyRate = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
+    const card = document.getElementById(`card${cardNumber}`);
+    const sellRate = card.querySelector(`#sellRate${inputId}`);
+    const buyRate = card.querySelector(`#buyRate${inputId}`);
 
     let initialSellRate = Number(sellRate.textContent);
     let initialBuyRate = Number(buyRate.textContent);
-    let childSell = card.querySelector(`#iconDown${Number(cardNumber) + 1}`);
-    let childBuy = card.querySelector(`#iconUp${Number(cardNumber) + 1}`);
+    let childSell = card.querySelector(`#iconDown${inputId}`);
+    let childBuy = card.querySelector(`#iconUp${inputId}`);
 
     //BUY CASE
     if (initialBuyRate >= currencyObj.buy) {

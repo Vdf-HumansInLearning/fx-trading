@@ -1937,25 +1937,37 @@ function start(base_currency, quote_currency, cardId) {
     const sellRate = card.querySelector(`#sellRate${Number(cardNumber) + 1}`);
     const buyRate = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
 
-    let initialSellRate = sellRate.value;
-    let initialBuyRate = buyRate.value;
-    // if (initialBuyRate <= currencyObj.buy) {
-    //   let child = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
-    //   child.className =
-    //     "fas fa-caret-down";
-    //   let parent = card.querySelector(`#buyRate${Number(cardNumber) + 1}`)
-    //     .parentNode;
-    //   parent.className = "icon-down";
-      
-    // } else {
-    //   let child = card.querySelector(`#buyRate${Number(cardNumber) + 1}`);
-    //   child.className =
-    //     "fas fa-caret-up";
-    //   let parent = card.querySelector(`#buyRate${Number(cardNumber) + 1}`)
-    //     .parentNode;
-    //   parent.className = "icon-up";
-    // }
-    
+    let initialSellRate = Number(sellRate.textContent);
+    let initialBuyRate = Number(buyRate.textContent);
+    let childSell = card.querySelector(`#iconDown${Number(cardNumber) + 1}`);
+    let childBuy = card.querySelector(`#iconUp${Number(cardNumber) + 1}`);
+
+    //BUY CASE
+    if (initialBuyRate >= currencyObj.buy) {
+      childBuy.className =
+        "fas fa-caret-down";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childBuy.className =
+        "fas fa-caret-up";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
+    //SELL CASE
+    if (initialSellRate >= currencyObj.sell) {
+      childSell.className =
+        "fas fa-caret-down";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childSell.className =
+        "fas fa-caret-up";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
     sellRate.setAttribute("value", currencyObj.sell);
     sellRate.textContent = currencyObj.sell;
     buyRate.setAttribute("value", currencyObj.buy);

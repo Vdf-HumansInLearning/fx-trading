@@ -130,13 +130,17 @@ function createMainWidget(item) {
   let sendMainCurrency = `mainCurrency${inputId}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
 
+  let spanSlash = document.createElement("span");
+  spanSlash.textContent = "/";
+  pSubtitle.appendChild(spanSlash);
+
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
 
   spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
   let sendSecCurrency = `secondCurrency${inputId}`;
-  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
+  spanSecondCurrency.textContent = `${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
   let divIcon = document.createElement("div");
@@ -146,6 +150,7 @@ function createMainWidget(item) {
   let iconExchange = document.createElement("i");
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
+  iconExchange.setAttribute("id", `swapp${inputId}`);
   //---creeaza id separat pt icon
   //--- foarEachh si adauga fiecarui icon addEventListener
 
@@ -184,6 +189,7 @@ function createMainWidget(item) {
   let sellIcon = document.createElement("i");
   spanSellIcon.appendChild(sellIcon);
   sellIcon.className = "fas fa-caret-down";
+  sellIcon.setAttribute("id", `iconDown${inputId}`);
 
   let pRatesBuy = document.createElement("p");
   cardRatesDiv.appendChild(pRatesBuy);
@@ -205,6 +211,7 @@ function createMainWidget(item) {
   let iconBuy = document.createElement("i");
   spanIconBuy.appendChild(iconBuy);
   iconBuy.className = "fas fa-caret-up";
+  iconBuy.setAttribute("id", `iconUp${inputId}`);
 
   let cardMainArea = document.createElement("div");
   cardDiv.appendChild(cardMainArea);
@@ -583,12 +590,91 @@ function addPickWidget() {
   }
 }
 
+function swapIcons(numberIdToSwap) {
+  if (
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+    "fas fa-caret-down"
+  ) {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent.className = "icon-up";
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+      "fas fa-caret-down";
+  } else {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent2 = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent2.className = "icon-down";
+  }
+  if (
+    document.getElementById(`iconUp${numberIdToSwap}`).className ==
+    "fas fa-caret-up"
+  ) {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
+    parent.className = "icon-down";
+  } else {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent2 = document.getElementById(`iconUp${numberIdToSwap}`).parentNode;
+    parent2.className = "icon-up";
+  }
+}
+
 function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
+    let currentInputId = `swapp${inputId}`;
+    let swappId = document.getElementById(currentInputId);
+    swappId.addEventListener("click", () => {
+      let numberIdToSwap = currentInputId.substring(5);
+      let mainCurrencyToSwap = document
+        .querySelector(`#mainCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let secondCurrencyToSwap = document
+        .querySelector(`#secondCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let sellValueToSwap = document
+        .querySelector(`#sellRate${numberIdToSwap}`)
+        .getAttribute("value");
+      let buyValueToSwap = document
+        .querySelector(`#buyRate${numberIdToSwap}`)
+        .getAttribute("value");
+      let tempMainCurrency = secondCurrencyToSwap;
+      let tempSecondCurrency = mainCurrencyToSwap;
+      let tempSellValue = buyValueToSwap;
+      let tempBuyValue = sellValueToSwap;
+      document.getElementById(`mainCurrency${numberIdToSwap}`).textContent =
+        tempMainCurrency;
+      document
+        .getElementById(`mainCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempMainCurrency);
+      document.getElementById(`secondCurrency${numberIdToSwap}`).textContent =
+        tempSecondCurrency;
+      document
+        .getElementById(`secondCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempSecondCurrency);
+      document.getElementById(`sellRate${numberIdToSwap}`).textContent =
+        tempSellValue;
+      document
+        .getElementById(`sellRate${numberIdToSwap}`)
+        .setAttribute("value", tempSellValue);
+      document.getElementById(`buyRate${numberIdToSwap}`).textContent =
+        tempBuyValue;
+      document
+        .getElementById(`buyRate${numberIdToSwap}`)
+        .setAttribute("value", tempBuyValue);
+      swapIcons(numberIdToSwap);
+    });
     closeWidget(cardId);
     mainWidgetsNr++;
   } else {
@@ -660,7 +746,7 @@ function confirmSelectionCurrency(cardId) {
         )
         .then((response) => {
           if (response.status === 200) {
-            // inputId++;
+            inputId++;
             console.log("inputId  " + inputId);
             console.log(response.body);
             //populate the item
@@ -675,7 +761,6 @@ function confirmSelectionCurrency(cardId) {
               currencyObj.quote_currency,
               inputId
             );
-            inputId++;
           } else {
             showToast("Error", response.body, "fail");
           }

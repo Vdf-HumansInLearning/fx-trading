@@ -66,7 +66,7 @@ function validateTransaction(transaction) {
   else if (tenorOptions.indexOf(transaction.tenor) === -1) return false;
   else if (isNaN(rate)) return false;
   else if (isNaN(notional)) return false;
-  else if (notional <= 1) return false;
+  else if (notional < 1) return false;
   else {
     let ccyPair = transaction.ccy_pair.split("/");
     //get the list of available currencies

@@ -89,6 +89,18 @@
       "username": "oanaaa",
       "email": "oana@oanaaa.com",
       "password": "Test123!"
+    },
+    {
+      "id": 16,
+      "username": "oanad",
+      "email": "oana@oanea2.com",
+      "password": "Test123!"
+    },
+    {
+      "id": 17,
+      "username": "oana3",
+      "email": "oana@oana233.com",
+      "password": "Test123!"
     }
   ]
 }

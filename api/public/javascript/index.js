@@ -129,14 +129,17 @@ function createMainWidget(item) {
   spanMainCurrency.textContent = `${item.mainCurrency}`;
   let sendMainCurrency = `mainCurrency${inputId}`;
   spanMainCurrency.setAttribute("value", `${item.mainCurrency}`);
-
+  let spanSlash = document.createElement("span");
+  spanSlash.textContent = "/";
+  pSubtitle.appendChild(spanSlash);
   let spanSecondCurrency = document.createElement("span");
   pSubtitle.appendChild(spanSecondCurrency);
   spanSecondCurrency.className = "secondCurrency";
 
   spanSecondCurrency.setAttribute("id", `secondCurrency${inputId}`);
   let sendSecCurrency = `secondCurrency${inputId}`;
-  spanSecondCurrency.textContent = `/${item.secondCurrency}`;
+
+  spanSecondCurrency.textContent = `${item.secondCurrency}`;
   spanSecondCurrency.setAttribute("value", `${item.secondCurrency}`);
 
   let divIcon = document.createElement("div");
@@ -146,12 +149,7 @@ function createMainWidget(item) {
   let iconExchange = document.createElement("i");
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
-  //---creeaza id separat pt icon
-  //--- foarEachh si adauga fiecarui icon addEventListener
-
-  // iconExchange.addEventListener("click", () => {
-  //   swappCurrency(`mainCurrency${inputId}`, `${item.secondCurrency}`, 0, 0);
-  // }); //===========
+  iconExchange.setAttribute("id", `swapp${inputId}`);
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -184,6 +182,7 @@ function createMainWidget(item) {
   let sellIcon = document.createElement("i");
   spanSellIcon.appendChild(sellIcon);
   sellIcon.className = "fas fa-caret-down";
+  sellIcon.setAttribute("id", `iconDown${inputId}`);
 
   let pRatesBuy = document.createElement("p");
   cardRatesDiv.appendChild(pRatesBuy);
@@ -205,6 +204,7 @@ function createMainWidget(item) {
   let iconBuy = document.createElement("i");
   spanIconBuy.appendChild(iconBuy);
   iconBuy.className = "fas fa-caret-up";
+  iconBuy.setAttribute("id", `iconUp${inputId}`);
 
   let cardMainArea = document.createElement("div");
   cardDiv.appendChild(cardMainArea);
@@ -434,6 +434,10 @@ function sendDataTransactions(
   }
 }
 
+function swappCurrency(id) {
+  console.log(id);
+}
+
 function createPickWidget() {
   //create column
   let cardContainer = document.createElement("div");
@@ -583,12 +587,103 @@ function addPickWidget() {
   }
 }
 
+function swapIcons(numberIdToSwap) {
+  if (
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+    "fas fa-caret-down"
+  ) {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent.className = "icon-up";
+
+    document.getElementById(`iconDown${numberIdToSwap}`).className ==
+      "fas fa-caret-down";
+  } else {
+    document.getElementById(`iconDown${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent2 = document.getElementById(
+      `iconDown${numberIdToSwap}`
+    ).parentNode;
+    parent2.className = "icon-down";
+  }
+
+  if (
+    document.getElementById(`iconUp${numberIdToSwap}`).className ==
+    "fas fa-caret-up"
+  ) {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-down";
+    let parent = document.getElementById(
+      `iconUp${numberIdToSwap}`
+    ).parentNode;
+    parent.className = "icon-down";
+  } else {
+    document.getElementById(`iconUp${numberIdToSwap}`).className =
+      "fas fa-caret-up";
+    let parent2 = document.getElementById(
+      `iconUp${numberIdToSwap}`
+    ).parentNode;
+    parent2.className = "icon-up";
+  }
+}
+
 function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
+
+    let currentInputId = `swapp${inputId}`;
+    let swappId = document.getElementById(currentInputId);
+    swappId.addEventListener("click", () => {
+      let numberIdToSwap = currentInputId.substring(5);
+      let mainCurrencyToSwap = document
+        .querySelector(`#mainCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let secondCurrencyToSwap = document
+        .querySelector(`#secondCurrency${numberIdToSwap}`)
+        .getAttribute("value");
+      let sellValueToSwap = document
+        .querySelector(`#sellRate${numberIdToSwap}`)
+        .getAttribute("value");
+      let buyValueToSwap = document
+        .querySelector(`#buyRate${numberIdToSwap}`)
+        .getAttribute("value");
+
+      let tempMainCurrency = secondCurrencyToSwap;
+      let tempSecondCurrency = mainCurrencyToSwap;
+      let tempSellValue = buyValueToSwap;
+      let tempBuyValue = sellValueToSwap;
+
+      document.getElementById(`mainCurrency${numberIdToSwap}`).textContent =
+        tempMainCurrency;
+      document
+        .getElementById(`mainCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempMainCurrency);
+
+      document.getElementById(`secondCurrency${numberIdToSwap}`).textContent =
+        tempSecondCurrency;
+      document
+        .getElementById(`secondCurrency${numberIdToSwap}`)
+        .setAttribute("value", tempSecondCurrency);
+
+      document.getElementById(`sellRate${numberIdToSwap}`).textContent =
+        tempSellValue;
+      document
+        .getElementById(`sellRate${numberIdToSwap}`)
+        .setAttribute("value", tempSellValue);
+
+      document.getElementById(`buyRate${numberIdToSwap}`).textContent =
+        tempBuyValue;
+      document
+        .getElementById(`buyRate${numberIdToSwap}`)
+        .setAttribute("value", tempBuyValue);
+      swapIcons(numberIdToSwap);
+    });
     closeWidget(cardId);
     mainWidgetsNr++;
   } else {
@@ -630,7 +725,6 @@ function selectCurrency(cardId) {
 
 function confirmSelectionCurrency(cardId) {
   let card = document.getElementById(cardId);
-
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
   console.log(inputMainCurrency);
@@ -673,7 +767,7 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              cardId
+              cardId, inputId
             );
           } else {
             showToast("Error", response.body, "fail");
@@ -1207,10 +1301,9 @@ window.onload = () => {
   //when document loads, initialize router
   let myRouter = new MyHashRouter();
   //change hash so it triggers the event on first start
-  // const initialHash = window.location.hash;
-  // window.location.hash = "#aa";
-
-  changeHash("#login");
+  const initialHash = window.location.hash;
+  window.location.hash = "#aa";
+  window.location.hash = initialHash;
 };
 
 function getIndexData() {
@@ -1294,7 +1387,7 @@ function create404() {
   if (getCookie("username")) {
     loginBtn.textContent = "Go to transactions";
     loginBtn.addEventListener("click", () => {
-      changeHash("#dashboard");
+      changeHash("#");
     });
   } else {
     loginBtn.textContent = "Go to Login";
@@ -1454,7 +1547,7 @@ function login() {
             //save cookie
             createCookie("username", `${username}`, 2);
             showToast("Login succesfull", "You have been logged in!", "succes");
-            changeHash("#dashboard");
+            changeHash("");
           } else {
             showToast("Login failed", response.body.message, "fail");
           }
@@ -1650,82 +1743,6 @@ function createMain() {
   aRegister.className = "link-primary";
 }
 
-function submitRegisterData() {
-  const form = document.getElementById("form");
-
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const isValid = validateRegisterForm(); // front-end validation
-
-      if (isValid) {
-        // submit form
-
-        let username = document.getElementById("inputUsername").value;
-        let email = document.getElementById("inputEmail").value;
-        let password = document.getElementById("inputPassword").value;
-        let repassword = document.getElementById("inputPasswordConfirm").value;
-        const url = "http://localhost:8080/api/auth/register";
-
-        fetch(url, {
-          method: "POST",
-          headers: {
-            //Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password,
-            repassword: repassword,
-          }),
-        })
-          .then((res) =>
-            res.json().then((data) => ({
-              status: res.status,
-              body: data,
-            }))
-          )
-          .then((data) => {
-            console.log(data);
-            if (data.status == 200) {
-              createCookie("username", `${username}`, 2);
-              showToast(
-                "Register succesfull",
-                "You have been registered successfully!",
-                "succes"
-              );
-
-              changeHash("#dashboard");
-              //window.location.hash = "#dashboard";
-            } else if (data.status == 409) {
-              console.log(data.body.message);
-              if (data.body.existing === "email") {
-                const email = document.getElementById("inputEmail");
-                removePreviousError(email.parentElement);
-                email.parentElement.insertAdjacentHTML(
-                  "beforeend",
-                  `<p class="error">${data.body.message}</p>`
-                );
-              } else if (data.body.existing === "username") {
-                const username = document.getElementById("inputUsername");
-                removePreviousError(username.parentElement);
-                username.parentElement.insertAdjacentHTML(
-                  "beforeend",
-                  `<p class="error">${data.body.message}</p>`
-                );
-              }
-            } else {
-              showToast("Error", "Registration failed!", "fail");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    });
-  }
-}
 
 function validateRegisterForm() {
   let isValid = true;
@@ -1829,44 +1846,6 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start(base_currency, quote_currency, cardId) {
-  // when "Start" button pressed
-  if (!window.EventSource) {
-    // IE or an old browser
-    alert("The browser doesn't support EventSource.");
-    return;
-  }
-
-  eventSource = new EventSource(
-    baseUrl +
-      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
-  );
-
-  eventSource.onopen = function (e) {
-    console.log("Event: open");
-  };
-
-  eventSource.onerror = function (e) {
-    console.log("Event: error");
-    if (this.readyState == EventSource.CONNECTING) {
-      console.log(`Reconnecting (readyState=${this.readyState})...`);
-    } else {
-      console.log("Error has occured.");
-    }
-  };
-
-  eventSource.onmessage = function (e) {
-    console.log("Event: message, data: " + e.data);
-    currencyObj = JSON.parse(e.data);
-    //populate the item
-    item.mainCurrency = base_currency;
-    item.secondCurrency = quote_currency;
-    item.sellRate = currencyObj.sell;
-    item.buyRate = currencyObj.buy;
-    //call update rates method
-  };
-}
-
 function stop() {
   // when "Stop" button pressed
   eventSource.close();
@@ -1893,13 +1872,13 @@ class MyHashRouter {
 
     //generate pages by uri
     switch (contentUri) {
-      case "dashboard":
+      case "":
         //get data from server
         if (getCookie("username")) {
           getIndexData();
         } else {
           //create the page
-          changeHash("#login");
+          createLoginPage();
           showToast(
             "Please log in",
             "You have to be logged to see this page!",
@@ -1949,5 +1928,155 @@ class MyHashRouter {
         window.scrollTo(0, 0);
         break;
     }
+  }
+}
+function start(base_currency, quote_currency, cardId, inputId) {
+  // when "Start" button pressed
+  if (!window.EventSource) {
+    // IE or an old browser
+    alert("The browser doesn't support EventSource.");
+    return;
+  }
+
+  eventSource = new EventSource(
+    baseUrl +
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+  );
+
+  eventSource.onopen = function (e) {
+    console.log("Event: open");
+  };
+
+  eventSource.onerror = function (e) {
+    console.log("Event: error");
+    if (this.readyState == EventSource.CONNECTING) {
+      console.log(`Reconnecting (readyState=${this.readyState})...`);
+    } else {
+      console.log("Error has occured.");
+    }
+  };
+
+  eventSource.onmessage = function (e) {
+    console.log("Event: message, data: " + e.data);
+    currencyObj = JSON.parse(e.data);
+    //populate the itemstop
+    item.mainCurrency = base_currency;
+    item.secondCurrency = quote_currency;
+    item.sellRate = currencyObj.sell;
+    item.buyRate = currencyObj.buy;
+    
+   
+    const card = document.getElementById(`card${inputId}`);
+    const sellRate = card.querySelector(`#sellRate${inputId}`);
+    const buyRate = card.querySelector(`#buyRate${inputId}`);
+
+    let initialSellRate = Number(sellRate.textContent);
+    let initialBuyRate = Number(buyRate.textContent);
+    let childSell = card.querySelector(`#iconDown${inputId}`);
+    let childBuy = card.querySelector(`#iconUp${inputId}`);
+
+    //BUY CASE
+    if (initialBuyRate >= currencyObj.buy) {
+      childBuy.className = "fas fa-caret-down";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childBuy.className = "fas fa-caret-up";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
+    //SELL CASE
+    if (initialSellRate >= currencyObj.sell) {
+      childSell.className = "fas fa-caret-down";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childSell.className = "fas fa-caret-up";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
+    sellRate.setAttribute("value", currencyObj.sell);
+    sellRate.textContent = currencyObj.sell;
+    buyRate.setAttribute("value", currencyObj.buy);
+    buyRate.textContent = currencyObj.buy;
+  };
+}
+
+function submitRegisterData() {
+  const form = document.getElementById("form");
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const isValid = validateRegisterForm(); // front-end validation
+
+      if (isValid) {
+        // submit form
+
+        let username = document.getElementById("inputUsername").value;
+        let email = document.getElementById("inputEmail").value;
+        let password = document.getElementById("inputPassword").value;
+        let repassword = document.getElementById("inputPasswordConfirm").value;
+        const url = "http://localhost:8080/api/auth/register";
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            //Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            repassword: repassword,
+          }),
+        })
+          .then((res) =>
+            res.json().then((data) => ({
+              status: res.status,
+              body: data,
+            }))
+          )
+          .then((data) => {
+            console.log(data);
+            if (data.status == 200) {
+              createCookie("username", `${username}`, 2);
+              showToast(
+                "Register succesfull",
+                "You have been registered successfully!",
+                "succes"
+              );
+
+              changeHash("#dashboard");
+              //window.location.hash = "#dashboard";
+            } else if (data.status == 409) {
+              console.log(data.body.message);
+              if (data.body.existing === "email") {
+                const email = document.getElementById("inputEmail");
+                removePreviousError(email.parentElement);
+                email.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              } else if (data.body.existing === "username") {
+                const username = document.getElementById("inputUsername");
+                removePreviousError(username.parentElement);
+                username.parentElement.insertAdjacentHTML(
+                  "beforeend",
+                  `<p class="error">${data.body.message}</p>`
+                );
+              }
+            } else {
+              showToast("Error", "Registration failed!", "fail");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
   }
 }

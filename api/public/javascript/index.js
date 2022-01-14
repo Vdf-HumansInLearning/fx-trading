@@ -398,8 +398,8 @@ function sendDataTransactions(
         if (response.status === 200) {
           showToast("Success", "Transaction completed!", "succes");
           document.getElementById(`${inputToSendN}`).value = null;
-          document.getElementById(`inputCcy${inputId}`).value =
-            document.getElementById(`inputCcy${inputId}`).options[0].value;
+          document.getElementById(`${inputToSendT}`).value =
+            document.getElementById(`${inputToSendT}`).options[0].value;
         } else {
           showToast("Failure", "Transaction failed.", "fail");
         }
@@ -1306,17 +1306,6 @@ function filterBlotterTable() {
   }
 }
 
-window.onload = () => {
-  showLoading();
-  //when document loads, initialize router
-  let myRouter = new MyHashRouter();
-  //change hash so it triggers the event on first start
-  const initialHash = window.location.hash;
-  window.location.hash = "#aa";
-
-  changeHash(initialHash);
-};
-
 function getIndexData() {
   const urlPairs = "http://localhost:8080/api/currencies/pairs";
   const urlTransactions = "http://localhost:8080/api/transactions";
@@ -2013,6 +2002,16 @@ function stop() {
   console.log("eventSource.close()");
 }
 
+window.onload = () => {
+  showLoading();
+  //when document loads, initialize router
+  let myRouter = new MyHashRouter();
+  //change hash so it triggers the event on first start
+  const initialHash = window.location.hash;
+  window.location.hash = "#aa";
+  changeHash(initialHash);
+};
+
 //hash router
 class MyHashRouter {
   constructor() {
@@ -2022,17 +2021,21 @@ class MyHashRouter {
   }
   //home
   onRouteChange(event) {
+    let previousUrl = event.oldURL;
     const hashLocation = window.location.hash.substring(1);
-    this.loadContent(hashLocation);
+    this.loadContent(hashLocation, previousUrl);
   }
 
-  loadContent(uri) {
+  loadContent(uri, previousUrl) {
     const contentUri = `${uri}`;
     console.log(contentUri);
 
     //generate pages by uri
     switch (contentUri) {
       case "dashboard":
+        console.log("previous url");
+        console.log(previousUrl);
+
         //get data from server
         if (getCookie("username")) {
           getIndexData();
@@ -2052,13 +2055,18 @@ class MyHashRouter {
         break;
 
       case "login":
-        if (getCookie("username")) {
-          showToast(
-            "Warning",
-            "You are already logged in as " + getCookie("username") + ".",
-            "warning"
-          );
-          showLoading();
+        console.log("previous url");
+
+        console.log(previousUrl);
+
+        if (previousUrl.includes("dashboard")) {
+          if (getCookie("username")) {
+            showToast(
+              "Warning",
+              "You are already logged in as " + getCookie("username") + ".",
+              "warning"
+            );
+          }
         } else {
           console.log("login route");
           createLoginPage();
@@ -2068,13 +2076,17 @@ class MyHashRouter {
         break;
 
       case "register":
-        if (getCookie("username")) {
-          showToast(
-            "Warning",
-            "You are already logged in as " + getCookie("username") + ".",
-            "warning"
-          );
-          showLoading();
+        console.log("previous url");
+
+        console.log(previousUrl);
+        if (previousUrl.includes("dashboard")) {
+          if (getCookie("username")) {
+            showToast(
+              "Warning",
+              "You are already logged in as " + getCookie("username") + ".",
+              "warning"
+            );
+          }
         } else {
           console.log("register route");
           createRegisterPage();

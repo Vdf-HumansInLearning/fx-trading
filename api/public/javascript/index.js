@@ -660,7 +660,7 @@ function confirmSelectionCurrency(cardId) {
         )
         .then((response) => {
           if (response.status === 200) {
-            inputId++;
+            // inputId++;
             console.log("inputId  " + inputId);
             console.log(response.body);
             //populate the item
@@ -673,9 +673,9 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              cardId,
               inputId
             );
+            inputId++;
           } else {
             showToast("Error", response.body, "fail");
           }
@@ -1844,7 +1844,7 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start(base_currency, quote_currency, cardId, inputId) {
+function start(base_currency, quote_currency, inputId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1878,16 +1878,15 @@ function start(base_currency, quote_currency, cardId, inputId) {
     item.secondCurrency = quote_currency;
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
-    let cardNumber = cardId;
 
-    const card = document.getElementById(`card${cardNumber}`);
-    const sellRate = card.querySelector(`#sellRate${inputId}`);
-    const buyRate = card.querySelector(`#buyRate${inputId}`);
+    const card = document.getElementById(`card${inputId}`);
+    const sellRate = document.querySelector(`#sellRate${inputId}`);
+    const buyRate = document.querySelector(`#buyRate${inputId}`);
 
     let initialSellRate = Number(sellRate.textContent);
     let initialBuyRate = Number(buyRate.textContent);
-    let childSell = card.querySelector(`#iconDown${inputId}`);
-    let childBuy = card.querySelector(`#iconUp${inputId}`);
+    let childSell = document.querySelector(`#iconDown${inputId}`);
+    let childBuy = document.querySelector(`#iconUp${inputId}`);
 
     //BUY CASE
     if (initialBuyRate >= currencyObj.buy) {

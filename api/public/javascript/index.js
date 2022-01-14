@@ -396,12 +396,12 @@ function sendDataTransactions(
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          showToast("Succes", "Transaction completed", "succes");
+          showToast("Success", "Transaction completed!", "succes");
           document.getElementById(`${inputToSendN}`).value = null;
           document.getElementById(`inputCcy${inputId}`).value =
             document.getElementById(`inputCcy${inputId}`).options[0].value;
         } else {
-          showToast("Failure", "Transaction failed", "fail");
+          showToast("Failure", "Transaction failed.", "fail");
         }
       })
       .then(
@@ -431,11 +431,15 @@ function sendDataTransactions(
         console.log(error);
       });
   } else if (notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose a tenor value", "fail");
+    showToast("Empty field", "Please choose a tenor value.", "fail");
   } else if (!notional && tenor !== "Choose...") {
-    showToast("Empty field", "Please choose a National value", "fail");
+    showToast("Empty field", "Please choose a National value.", "fail");
   } else if (!notional && tenor === "Choose...") {
-    showToast("Empty field", "Please choose national and tenor values", "fail");
+    showToast(
+      "Empty field",
+      "Please choose national and tenor values.",
+      "fail"
+    );
   } else if (notional <= 1) {
     showToast("Error", "Notional value must be at least 1.", "fail");
   }
@@ -584,7 +588,7 @@ function addPickWidget() {
   } else {
     showToast(
       "Error",
-      "You cannot have more than 5 widgets on the page",
+      "You cannot have more than 5 widgets on the page.",
       "fail"
     );
   }
@@ -680,7 +684,7 @@ function addNewWidget(cardId) {
   } else {
     showToast(
       "Error",
-      "You cannot have more than 5 widgets on the page",
+      "You cannot have more than 5 widgets on the page.",
       "fail"
     );
   }
@@ -709,7 +713,7 @@ function selectCurrency(cardId) {
     ) {
       //user must choose two different currencies
       if (inputMainCurrency.value == inputSecondCurrency.value) {
-        showToast("Error", "You must choose two different currencies", "fail");
+        showToast("Error", "You must choose two different currencies.", "fail");
       }
     }
 }
@@ -728,7 +732,7 @@ function confirmSelectionCurrency(cardId) {
     inputSecondCurrency.value !== "opt_none"
   ) {
     if (inputMainCurrency.value == inputSecondCurrency.value) {
-      showToast("Error", "You must choose two different currencies", "fail");
+      showToast("Error", "You must choose two different currencies.", "fail");
     } else {
       let currencyObj = {
         base_currency: inputMainCurrency.value,
@@ -770,7 +774,7 @@ function confirmSelectionCurrency(cardId) {
         });
     }
   } else {
-    showToast("Error", "Currency fields cannot be empty", "fail");
+    showToast("Error", "Currency fields cannot be empty.", "fail");
   }
 }
 
@@ -1242,7 +1246,7 @@ function filterBlotterTable() {
     if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
-        "There are any registrations for selected filters. Please select another options.",
+        "There are no registrations available for selected filters. Please select another options.",
         "fail"
       );
     }
@@ -1262,7 +1266,7 @@ function filterBlotterTable() {
     if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
-        "There are any registrations for selected filters. Please select another options.",
+        "There are no registrations available for selected filters. Please select another options.",
         "fail"
       );
     }
@@ -1281,7 +1285,7 @@ function filterBlotterTable() {
     if (currentSelectionTable.length === 0) {
       showToast(
         "Not found",
-        "There are any registrations for selected filters. Please select another options.",
+        "There are no registrations available for selected filters. Please select another options.",
         "fail"
       );
     }
@@ -1553,7 +1557,7 @@ function login() {
           if (response.status === 200) {
             //save cookie
             createCookie("username", `${username}`, 2);
-            showToast("Login succesfull", "You have been logged in!", "succes");
+            showToast("Login succesful", "You have been logged in!", "succes");
             changeHash("#dashboard");
           } else {
             showToast("Login failed", response.body.message, "fail");
@@ -1816,7 +1820,7 @@ function submitRegisterData() {
                 );
               }
             } else {
-              showToast("Error", "Registration failed!", "fail");
+              showToast("Error", "Registration failed.", "fail");
             }
           })
           .catch((error) => {
@@ -2037,7 +2041,7 @@ class MyHashRouter {
           changeHash("#login");
           showToast(
             "Please log in",
-            "You have to be logged to see this page!",
+            "You have to be logged to see this page.",
             "warning"
           );
         }
@@ -2051,7 +2055,7 @@ class MyHashRouter {
         if (getCookie("username")) {
           showToast(
             "Warning",
-            "You are already logged in as " + getCookie("username"),
+            "You are already logged in as " + getCookie("username") + ".",
             "warning"
           );
           showLoading();
@@ -2067,7 +2071,7 @@ class MyHashRouter {
         if (getCookie("username")) {
           showToast(
             "Warning",
-            "You are already logged in as " + getCookie("username"),
+            "You are already logged in as " + getCookie("username") + ".",
             "warning"
           );
           showLoading();

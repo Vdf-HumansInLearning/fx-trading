@@ -673,7 +673,8 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              cardId
+              cardId,
+              inputId
             );
           } else {
             showToast("Error", response.body, "fail");
@@ -765,12 +766,22 @@ function sortEntries(property, sortType) {
     case "date":
       if (sortObj.property) {
         filteredRegistrations = currentSelectionTable.sort((a, b) => {
-          let { firstDate, secondDate } = parseDates(a, b, property);
+          let { firstDate, secondDate } = parseDates(
+            a,
+            b,
+            property,
+            "trans_hour"
+          );
           return firstDate - secondDate;
         });
       } else {
         filteredRegistrations = currentSelectionTable.sort((a, b) => {
-          let { firstDate, secondDate } = parseDates(a, b, property);
+          let { firstDate, secondDate } = parseDates(
+            a,
+            b,
+            property,
+            "trans_hour"
+          );
           return secondDate - firstDate;
         });
       }
@@ -785,7 +796,7 @@ function sortEntries(property, sortType) {
   }
 }
 
-function parseDates(a, b, property) {
+function parseDates(a, b, property, propertyHour) {
   let incomingDateA = a[property].substring(0, 10);
   let newIncomingDateA = incomingDateA.split("/");
   [newIncomingDateA[0], newIncomingDateA[1]] = [
@@ -794,7 +805,9 @@ function parseDates(a, b, property) {
   ];
 
   incomingDateA = newIncomingDateA.join("/");
-  let firstDate = new Date(incomingDateA);
+  incomingHourA = a[propertyHour];
+  dateA = `${incomingDateA} ${incomingHourA}`;
+  let firstDate = new Date(dateA);
 
   let incomingDateB = b[property].substring(0, 10);
   let newIncomingDateB = incomingDateB.split("/");
@@ -804,7 +817,9 @@ function parseDates(a, b, property) {
   ];
 
   incomingDateB = newIncomingDateB.join("/");
-  let secondDate = new Date(incomingDateB);
+  incomingHourB = b[propertyHour];
+  dateB = `${incomingDateB} ${incomingHourB}`;
+  let secondDate = new Date(dateB);
 
   return {
     firstDate: firstDate,
@@ -1207,10 +1222,10 @@ window.onload = () => {
   //when document loads, initialize router
   let myRouter = new MyHashRouter();
   //change hash so it triggers the event on first start
-  // const initialHash = window.location.hash;
-  // window.location.hash = "#aa";
+  const initialHash = window.location.hash;
+  window.location.hash = "#aa";
 
-  changeHash("#login");
+  changeHash(initialHash);
 };
 
 function getIndexData() {
@@ -1829,7 +1844,7 @@ function changeHash(hash) {
 
 let eventSource;
 
-function start(base_currency, quote_currency, cardId) {
+function start(base_currency, quote_currency, cardId, inputId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1858,12 +1873,48 @@ function start(base_currency, quote_currency, cardId) {
   eventSource.onmessage = function (e) {
     console.log("Event: message, data: " + e.data);
     currencyObj = JSON.parse(e.data);
-    //populate the item
+    //populate the itemstop
     item.mainCurrency = base_currency;
     item.secondCurrency = quote_currency;
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
-    //call update rates method
+    let cardNumber = cardId;
+
+    const card = document.getElementById(`card${cardNumber}`);
+    const sellRate = card.querySelector(`#sellRate${inputId}`);
+    const buyRate = card.querySelector(`#buyRate${inputId}`);
+
+    let initialSellRate = Number(sellRate.textContent);
+    let initialBuyRate = Number(buyRate.textContent);
+    let childSell = card.querySelector(`#iconDown${inputId}`);
+    let childBuy = card.querySelector(`#iconUp${inputId}`);
+
+    //BUY CASE
+    if (initialBuyRate >= currencyObj.buy) {
+      childBuy.className = "fas fa-caret-down";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childBuy.className = "fas fa-caret-up";
+      let parent = childBuy.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
+    //SELL CASE
+    if (initialSellRate >= currencyObj.sell) {
+      childSell.className = "fas fa-caret-down";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-down");
+    } else {
+      childSell.className = "fas fa-caret-up";
+      let parent = childSell.parentNode;
+      parent.setAttribute("class", "icon-up");
+    }
+
+    sellRate.setAttribute("value", currencyObj.sell);
+    sellRate.textContent = currencyObj.sell;
+    buyRate.setAttribute("value", currencyObj.buy);
+    buyRate.textContent = currencyObj.buy;
   };
 }
 

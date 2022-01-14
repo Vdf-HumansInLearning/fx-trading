@@ -6,7 +6,7 @@ const path = require("path");
 var router = express.Router();
 
 //user: id, username, email, password
-
+let usernameRegExp = /^[a-zA-Z ,.'-]{3,20}$/;
 let emailRegExp =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 let passRegExp =
@@ -20,8 +20,10 @@ function checkRegExp(regExp, myStr) {
 function validateUser(user) {
   let errArray = [];
 
-  if (user.username < 3) {
-    errArray.push("Firstname should have between 3 and 20 characters.");
+  if (checkRegExp(usernameRegExp, user.username) === false) {
+    errArray.push(
+      "Username should have between 3 and 20 characters. It cannot contain numbers"
+    );
   }
   if (!user.email) {
     errArray.push("Email is required!");

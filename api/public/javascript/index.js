@@ -1932,7 +1932,7 @@ function start(base_currency, quote_currency, inputId) {
 
   eventSource = new EventSource(
     baseUrl +
-      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
 
   eventSource.onopen = function (e) {
@@ -2055,38 +2055,27 @@ class MyHashRouter {
         break;
 
       case "login":
-        console.log("previous url");
-
-        console.log(previousUrl);
-
-        if (previousUrl.includes("dashboard")) {
-          if (getCookie("username")) {
-            showToast(
-              "Warning",
-              "You are already logged in as " + getCookie("username") + ".",
-              "warning"
-            );
-          }
-        } else {
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username") + ".",
+            "warning"
+          );
+        }
+        else {
           console.log("login route");
           createLoginPage();
           hideLoading();
           window.scrollTo(0, 0);
         }
         break;
-
       case "register":
-        console.log("previous url");
-
-        console.log(previousUrl);
-        if (previousUrl.includes("dashboard")) {
-          if (getCookie("username")) {
-            showToast(
-              "Warning",
-              "You are already logged in as " + getCookie("username") + ".",
-              "warning"
-            );
-          }
+        if (getCookie("username")) {
+          showToast(
+            "Warning",
+            "You are already logged in as " + getCookie("username") + ".",
+            "warning"
+          );
         } else {
           console.log("register route");
           createRegisterPage();

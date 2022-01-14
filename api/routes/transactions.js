@@ -13,7 +13,7 @@ router.get("/transactions", (req, res) => {
   let transactions = jsonData.transactions;
   //make entries appear newest first
   transactions = transactions.reverse();
-  res.status(200).send(transactions);
+  res.status(200).json(transactions);
 });
 
 /* POST transactions */

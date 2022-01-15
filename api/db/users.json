@@ -2,7 +2,7 @@
   "users": [
     {
       "id": 1,
-      "username": "danamun",
+      "username": "Yasmine Dennis",
       "email": "danamun@email.com",
       "password": "danamun"
     },
@@ -14,80 +14,38 @@
     },
     {
       "id": 3,
-      "username": "test",
-      "password": "test1234",
-      "email": "test@dasd.com"
-    },
-    {
-      "id": 4,
-      "username": "test",
-      "password": "test1234",
-      "email": "test@dasd.com"
-    },
-    {
-      "id": 5,
-      "username": "oana",
-      "email": "oana@email",
-      "password": "Oana123*"
-    },
-    {
-      "id": 6,
-      "username": "aaa",
-      "email": "aaa@aa.com",
+      "username": "Jamie Thomas",
+      "email": "jamie_thomas@gmail.com",
       "password": "aaa"
     },
     {
-      "id": 7,
+      "id": 4,
       "username": "alex",
       "email": "alex@alex.com",
       "password": "Test123!"
     },
     {
-      "id": 8,
-      "username": "aaa",
-      "email": "aaa@aaa.com",
+      "id": 5,
+      "username": "Ronnie Holder",
+      "email": "ronniehld2@yahoo.com",
       "password": "Test123!"
     },
     {
-      "id": 9,
+      "id": 6,
       "username": "oana",
       "email": "oana@oana2.com",
       "password": "Test123!"
     },
     {
-      "id": 10,
-      "username": "oana",
-      "email": "oana@oana2.com",
-      "password": "Test123!"
-    },
-    {
-      "id": 11,
-      "username": "oana",
-      "email": "oana@oana2.com",
-      "password": "Test123!"
-    },
-    {
-      "id": 12,
-      "username": "oana",
-      "email": "oana@oana2.com",
-      "password": "Test123!"
-    },
-    {
-      "id": 16,
-      "username": "oana",
-      "email": "oana@oana2.com",
-      "password": "Test123!"
-    },
-    {
-      "id": 17,
+      "id": 7,
       "username": "adela",
       "email": "adela@adela.com",
       "password": "Test123!"
     },
     {
-      "id": 15,
-      "username": "oanaa",
-      "email": "oana@oanaa.com",
+      "id": 8,
+      "username": "Eric Crosby",
+      "email": "crosbyEric@gmail.com",
       "password": "Test123!"
     }
   ]

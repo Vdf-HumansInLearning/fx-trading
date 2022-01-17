@@ -39,6 +39,8 @@ router.get("/currencies/pairs", (req, res) => {
 //   base_currency: "EUR",
 //   quote_currency: "RON"
 // }
+let clients = [];
+let responses = [];
 router.get("/currencies/quote", (req, res) => {
   let rawdata = fs.readFileSync(
     path.resolve(__dirname, "../db/currencies.json")
@@ -49,26 +51,48 @@ router.get("/currencies/quote", (req, res) => {
     let foundBase = currenciesRates.find(
       (pair) => pair.base_currency === req.query.base_currency
     ).quotes;
-
+    let foundPair = null;
     for (item in foundBase) {
       if (item === req.query.quote_currency) {
-        res.writeHead(200, {
-          "Content-Type": "text/event-stream; charset=utf-8",
-          "Cache-Control": "no-cache",
-        });
-
-        let timer = setInterval(
-          () => getNewCurrencyData(res, foundBase[item]),
-          3000
-        );
+        foundPair = foundBase[item];
+        break;
       }
     }
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream; charset=utf-8",
+      "Cache-Control": "no-cache",
+    });
+    console.log("found base item");
+    console.log(foundBase[item]);
+
+    let timer = setInterval(() => getNewCurrencyData(res, foundPair), 3000);
+
+    const clientId = Date.now();
+
+    const newClient = {
+      id: clientId,
+      response: getNewCurrencyData(res, foundPair),
+    };
+
+    clients.push(newClient);
+
+    res.socket.on("end", (e) => {
+      responses = responses.filter((x) => x != res);
+      clearInterval(timer);
+      console.log(res.end);
+      res.emit("close");
+      // res.end();
+    });
+
+    responses.push(res);
   } else {
     res.status(400).json({ message: "Bad request" });
   }
 });
 
 function getNewCurrencyData(res, currencyObj) {
+  console.log("currency obj");
+  console.log(currencyObj);
   let sendObj = {
     sell: (
       Math.random() * (currencyObj.sell + 0.1 - (currencyObj.sell - 0.1)) +
@@ -79,7 +103,7 @@ function getNewCurrencyData(res, currencyObj) {
       (currencyObj.buy - 0.1)
     ).toFixed(2),
   };
-  res.status(200).write(`data: ${JSON.stringify(sendObj)}\n\n`);
+  return res.status(200).write(`data: ${JSON.stringify(sendObj)}\n\n`);
 }
 
 /* POST one base currency */

@@ -99,11 +99,13 @@ function createNavigationBar() {
 
   return navElem;
 }
-
+let currentCardId = "";
 function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
   cardDivCol.id = `card${cardIdCounter}`;
+  currentCardId = cardDivCol.id;
+  console.log(currentCardId);
 
   let cardDiv = document.createElement("div");
   cardDivCol.appendChild(cardDiv);
@@ -634,6 +636,7 @@ function swapIcons(numberIdToSwap) {
 function addNewWidget(cardId) {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 5) {
+    cardIdCounter++;
     //fetch item from api
     const newWidget = createMainWidget(item);
     cardsRow.prepend(newWidget);
@@ -697,7 +700,7 @@ function closeWidget(cardId) {
     pickWidgetsNr--;
   } else {
     mainWidgetsNr--;
-    stop();
+    stop(cardId);
   }
 }
 
@@ -763,7 +766,8 @@ function confirmSelectionCurrency(cardId) {
             start(
               currencyObj.base_currency,
               currencyObj.quote_currency,
-              inputId
+              inputId,
+              currentCardId
             );
           } else {
             showToast("Error", response.body, "fail");
@@ -1920,9 +1924,11 @@ function changeHash(hash) {
   window.location.hash = hash;
 }
 
-let eventSource;
+//let eventSource = null;
+let eventSourceList = [];
+let eventSourceCounter = 0;
 
-function start(base_currency, quote_currency, inputId) {
+function start(base_currency, quote_currency, inputId, currentCardId) {
   // when "Start" button pressed
   if (!window.EventSource) {
     // IE or an old browser
@@ -1932,8 +1938,17 @@ function start(base_currency, quote_currency, inputId) {
 
   eventSource = new EventSource(
     baseUrl +
-    `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
+      `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
+  console.log("new Eventsource object");
+  console.log(eventSource);
+  eventSourceCounter++;
+  eventSourceList.push({
+    id: currentCardId,
+    eventSourceObj: eventSource,
+  });
+
+  console.log(eventSourceList);
 
   eventSource.onopen = function (e) {
     console.log("Event: open");
@@ -1957,10 +1972,10 @@ function start(base_currency, quote_currency, inputId) {
     item.sellRate = currencyObj.sell;
     item.buyRate = currencyObj.buy;
 
-    const card = document.getElementById(`card${inputId}`);
     const sellRate = document.querySelector(`#sellRate${inputId}`);
     const buyRate = document.querySelector(`#buyRate${inputId}`);
 
+    // if (sellRate && buyRate) {
     let initialSellRate = Number(sellRate.textContent);
     let initialBuyRate = Number(buyRate.textContent);
     let childSell = document.querySelector(`#iconDown${inputId}`);
@@ -1995,10 +2010,24 @@ function start(base_currency, quote_currency, inputId) {
   };
 }
 
-function stop() {
+function stop(eventSourceId) {
   // when "Stop" button pressed
-  eventSource.close();
-  eventSource = null;
+  if (eventSource) {
+    let myeventsource = eventSource;
+    //eventSource = null;
+    myeventsource.close();
+    const connectionState = myeventsource.readyState;
+    console.log("CONNECTION STATE");
+    console.log(connectionState);
+    let eventSourceIndex = eventSourceList.findIndex(
+      (item) => item.id == eventSourceId
+    );
+    let foundEventSource = eventSourceList.splice(eventSourceIndex, 1);
+    foundEventSource[0].eventSourceObj.close();
+  }
+
+  // eventSource.close();
+  // eventSource = null;
   console.log("eventSource.close()");
 }
 
@@ -2061,8 +2090,7 @@ class MyHashRouter {
             "You are already logged in as " + getCookie("username") + ".",
             "warning"
           );
-        }
-        else {
+        } else {
           console.log("login route");
           createLoginPage();
           hideLoading();

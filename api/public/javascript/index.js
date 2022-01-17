@@ -700,7 +700,11 @@ function closeWidget(cardId) {
     pickWidgetsNr--;
   } else {
     mainWidgetsNr--;
-    stop(cardId);
+    console.log(mainWidgetsNr + "  frfrhi");
+    if (mainWidgetsNr == 0) {
+      eventSource.close();
+      eventSource = null;
+    }
   }
 }
 
@@ -1411,6 +1415,55 @@ function createPage404() {
   create404();
 }
 
+function createThankYou() {
+  let main = document.createElement("main");
+  appContainer.appendChild(main);
+  main.className = "body-container-404";
+
+  let divContainer = document.createElement("div");
+  main.appendChild(divContainer);
+  divContainer.className = "main__container404";
+
+  let divMessage = document.createElement("div");
+  divContainer.appendChild(divMessage);
+  divMessage.className = "message_container";
+
+  let thanks = document.createElement("p");
+  divMessage.appendChild(thanks);
+  thanks.className = "thanks";
+  thanks.textContent = "Thank you for your attention!";
+
+  let divLoginBtn = document.createElement("div");
+  divContainer.appendChild(divLoginBtn);
+  divLoginBtn.className = "button__container404";
+
+  let a = document.createElement("a");
+  divLoginBtn.appendChild(a);
+
+  let loginBtn = document.createElement("button");
+  a.appendChild(loginBtn);
+  loginBtn.className = "btn btn-primary";
+  loginBtn.textContent = "Back";
+  if (getCookie("username")) {
+    loginBtn.addEventListener("click", () => {
+      changeHash("#dashboard");
+    });
+  } else {
+    loginBtn.addEventListener("click", () => {
+      changeHash("#login");
+    });
+  }
+
+  return main;
+}
+
+function createThankYouPage() {
+  cleanup(appContainer);
+  ThankYouPageContainer = document.createElement("div");
+  ThankYouPageContainer.className = "d-flex";
+  appContainer.appendChild(ThankYouPageContainer);
+  createThankYou();
+}
 let loginContainer = null;
 
 function createAsideImage() {
@@ -1975,38 +2028,39 @@ function start(base_currency, quote_currency, inputId, currentCardId) {
     const sellRate = document.querySelector(`#sellRate${inputId}`);
     const buyRate = document.querySelector(`#buyRate${inputId}`);
 
-    // if (sellRate && buyRate) {
-    let initialSellRate = Number(sellRate.textContent);
-    let initialBuyRate = Number(buyRate.textContent);
-    let childSell = document.querySelector(`#iconDown${inputId}`);
-    let childBuy = document.querySelector(`#iconUp${inputId}`);
+    if (sellRate && buyRate) {
+      let initialSellRate = Number(sellRate.textContent);
+      let initialBuyRate = Number(buyRate.textContent);
+      let childSell = document.querySelector(`#iconDown${inputId}`);
+      let childBuy = document.querySelector(`#iconUp${inputId}`);
 
-    //BUY CASE
-    if (initialBuyRate >= currencyObj.buy) {
-      childBuy.className = "fas fa-caret-down";
-      let parent = childBuy.parentNode;
-      parent.setAttribute("class", "icon-down");
-    } else {
-      childBuy.className = "fas fa-caret-up";
-      let parent = childBuy.parentNode;
-      parent.setAttribute("class", "icon-up");
+      //BUY CASE
+      if (initialBuyRate >= currencyObj.buy) {
+        childBuy.className = "fas fa-caret-down";
+        let parent = childBuy.parentNode;
+        parent.setAttribute("class", "icon-down");
+      } else {
+        childBuy.className = "fas fa-caret-up";
+        let parent = childBuy.parentNode;
+        parent.setAttribute("class", "icon-up");
+      }
+
+      //SELL CASE
+      if (initialSellRate >= currencyObj.sell) {
+        childSell.className = "fas fa-caret-down";
+        let parent = childSell.parentNode;
+        parent.setAttribute("class", "icon-down");
+      } else {
+        childSell.className = "fas fa-caret-up";
+        let parent = childSell.parentNode;
+        parent.setAttribute("class", "icon-up");
+      }
+
+      sellRate.setAttribute("value", currencyObj.sell);
+      sellRate.textContent = currencyObj.sell;
+      buyRate.setAttribute("value", currencyObj.buy);
+      buyRate.textContent = currencyObj.buy;
     }
-
-    //SELL CASE
-    if (initialSellRate >= currencyObj.sell) {
-      childSell.className = "fas fa-caret-down";
-      let parent = childSell.parentNode;
-      parent.setAttribute("class", "icon-down");
-    } else {
-      childSell.className = "fas fa-caret-up";
-      let parent = childSell.parentNode;
-      parent.setAttribute("class", "icon-up");
-    }
-
-    sellRate.setAttribute("value", currencyObj.sell);
-    sellRate.textContent = currencyObj.sell;
-    buyRate.setAttribute("value", currencyObj.buy);
-    buyRate.textContent = currencyObj.buy;
   };
 }
 
@@ -2111,7 +2165,9 @@ class MyHashRouter {
           window.scrollTo(0, 0);
         }
         break;
-
+      case "thankyou":
+        createThankYouPage();
+        break;
       default:
         createPage404();
         window.scrollTo(0, 0);

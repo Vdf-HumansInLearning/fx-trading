@@ -69,3 +69,11 @@ hr {
 .link-primary:hover {
   cursor: pointer;
 }
+
+
+.thanks {
+  font-size: 50px;
+  font-weight: bolder;
+  margin-bottom: 30px;
+  color: var(--color-white)
+}

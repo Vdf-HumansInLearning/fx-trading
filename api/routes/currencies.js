@@ -4,6 +4,8 @@ var router = express.Router();
 const fs = require("fs");
 const path = require("path");
 
+//let responses = [];
+
 /* GET all currencies available in the app */
 router.get("/currencies", (req, res) => {
   let rawdata = fs.readFileSync(
@@ -39,8 +41,6 @@ router.get("/currencies/pairs", (req, res) => {
 //   base_currency: "EUR",
 //   quote_currency: "RON"
 // }
-let clients = [];
-let responses = [];
 router.get("/currencies/quote", (req, res) => {
   let rawdata = fs.readFileSync(
     path.resolve(__dirname, "../db/currencies.json")
@@ -65,23 +65,12 @@ router.get("/currencies/quote", (req, res) => {
 
     let timer = setInterval(() => getNewCurrencyData(res, foundPair), 3000);
 
-    const clientId = Date.now();
-
-    const newClient = {
-      id: clientId,
-      response: getNewCurrencyData(res, foundPair),
-    };
-
-    clients.push(newClient);
-
-    res.socket.on("end", (e) => {
-      responses = responses.filter((x) => x != res);
+    res.socket.on("end", () => {
+      //responses = responses.filter((x) => x != res);
       clearInterval(timer);
       res.emit("close");
-      // res.end();
     });
-
-    responses.push(res);
+    //responses.push(res);
   } else {
     res.status(400).json({ message: "Bad request" });
   }
@@ -98,6 +87,7 @@ function getNewCurrencyData(res, currencyObj) {
       (currencyObj.buy - 0.1)
     ).toFixed(2),
   };
+
   return res.status(200).write(`data: ${JSON.stringify(sendObj)}\n\n`);
 }
 
@@ -108,6 +98,7 @@ router.post("/currencies", (req, res) => {
   );
   let fileContents = JSON.parse(rawdata);
   const currenciesRates = fileContents.currency_rates;
+  
   //verify if it is in the list of currencies
   if (req.body.base_currency) {
     let foundCurrency = currenciesRates.find(

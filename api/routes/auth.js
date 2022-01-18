@@ -1,9 +1,8 @@
-var express = require("express");
+const express = require("express");
 const fs = require("fs");
-const { url } = require("inspector");
 const path = require("path");
 
-var router = express.Router();
+const router = express.Router();
 
 //user: id, username, email, password
 let usernameRegExp = /^[a-zA-Z ,.'-]{3,20}$/;
@@ -86,9 +85,7 @@ router.post("/login", function (req, res) {
 // POST NEW REGISTERED USER
 router.post("/register", function (req, res) {
   let usersList = readFromFile("../db/users.json");
-
   let searchEmail = usersList.users.find((i) => i.email == req.body.email);
-
   let searchUsername = usersList.users.find(
     (i) => i.username == req.body.username
   );

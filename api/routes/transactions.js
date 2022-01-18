@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
 const fs = require("fs");
 const path = require("path");
@@ -102,4 +102,5 @@ function readFromFile(relPath) {
   let data = JSON.parse(rawdata);
   return data;
 }
+
 module.exports = router;

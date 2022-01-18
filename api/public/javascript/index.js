@@ -38,6 +38,7 @@ let ccyPairs = [];
 //card ids
 let cardIdCounter = 0;
 let inputId = 0;
+let currentCardId = "";
 
 //input group list
 let cardInputsList = [
@@ -66,6 +67,11 @@ let sortObj = {
 //select for PickWidget
 let inputMainCurrency = null;
 let inputSecondaryCurrency = null;
+
+let loginContainer = null;
+let registerContainer = null; 
+
+let eventSourceList = [];
 
 function createNavigationBar() {
   const navElem = document.createElement("nav");
@@ -99,7 +105,7 @@ function createNavigationBar() {
 
   return navElem;
 }
-let currentCardId = "";
+
 function createMainWidget(item) {
   let cardDivCol = document.createElement("div");
   cardDivCol.className = "col";
@@ -355,7 +361,6 @@ function sendDataTransactions(
     const month = monthNames[dateObj.getMonth()];
     const day = String(dateObj.getDate()).padStart(2, "0");
     const year = dateObj.getFullYear();
-    const d = new Date();
     function addZero(i) {
       if (i < 10) {
         i = "0" + i;
@@ -364,7 +369,6 @@ function sendDataTransactions(
     }
     let h = addZero(dateObj.getHours());
     let m = addZero(dateObj.getMinutes());
-    let s = addZero(dateObj.getSeconds());
     let time = h + ":" + m;
     const outputDate = day + "/" + month + "/" + year;
 
@@ -690,7 +694,6 @@ function closeWidget(cardId) {
     pickWidgetsNr--;
   } else {
     mainWidgetsNr--;
-
     stop(cardId);
   }
 }
@@ -714,7 +717,6 @@ function selectCurrency(cardId) {
 
 function confirmSelectionCurrency(cardId) {
   let card = document.getElementById(cardId);
-
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
 
@@ -1135,6 +1137,7 @@ function createIndexPage() {
 function clearCookie(name) {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }
+
 function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -1168,9 +1171,9 @@ function clearCookiesOnLogout() {
 //display succes/error toast
 function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
-
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
+
   switch (toastType) {
     case "succes":
       toastHeaderContainer.classList.remove("bg-danger");
@@ -1220,7 +1223,6 @@ function cleanup(parent) {
 function filterBlotterTable() {
   const body = document.getElementById("table-body");
   const inputCcy = document.getElementById("inputCcy").value;
-  const inputDate = document.getElementById("inputDateFilter").value;
 
   //clear blotter table
   if (body) {
@@ -1321,7 +1323,6 @@ function getIndexData() {
 
       createIndexPage();
     })
-
     .catch((error) => {
       console.error("Error:", error);
     });
@@ -1450,7 +1451,6 @@ function createThankYouPage() {
   appContainer.appendChild(ThankYouPageContainer);
   createThankYou();
 }
-let loginContainer = null;
 
 function createAsideImage() {
   let aside = document.createElement("aside");
@@ -1639,8 +1639,6 @@ function createLoginPage() {
   createMainLoginForm();
 }
 
-let registerContainer = null;
-
 function createRegisterAside() {
   let aside = document.createElement("aside");
   registerContainer.appendChild(aside);
@@ -1796,7 +1794,6 @@ function submitRegisterData() {
 
       if (isValid) {
         // submit form
-
         let username = document.getElementById("inputUsername").value;
         let email = document.getElementById("inputEmail").value;
         let password = document.getElementById("inputPassword").value;
@@ -1861,12 +1858,19 @@ function submitRegisterData() {
   }
 }
 
+function checkRegExp(regExp, myStr) {
+  return regExp.test(myStr);
+}
+
 function validateRegisterForm() {
   let isValid = true;
   const passRegExp =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
   const username = document.getElementById("inputUsername");
+  const email = document.getElementById("inputEmail");
+  const password = document.getElementById("inputPassword");
+  const confirmPassword = document.getElementById("inputPasswordConfirm");
+
   removePreviousError(username.parentElement);
   if (!username.value) {
     isValid = false;
@@ -1882,7 +1886,6 @@ function validateRegisterForm() {
     );
   }
 
-  const email = document.getElementById("inputEmail");
   removePreviousError(email.parentElement);
   const pattern = /^\S+@\S+\.\S+$/;
   if (!pattern.test(email.value)) {
@@ -1892,7 +1895,6 @@ function validateRegisterForm() {
     );
   }
 
-  const password = document.getElementById("inputPassword");
   removePreviousError(password.parentElement);
   if (password.value.length < 7 || password.value.length >= 20) {
     isValid = false;
@@ -1907,11 +1909,7 @@ function validateRegisterForm() {
       '<p class="error">Password must be 8 characters long and must contain at least: one uppercase, one lowercase, a number and a special character!</p>'
     );
   }
-  function checkRegExp(regExp, myStr) {
-    return regExp.test(myStr);
-  }
 
-  const confirmPassword = document.getElementById("inputPasswordConfirm");
   removePreviousError(confirmPassword.parentElement);
   if (confirmPassword.value !== password.value) {
     isValid = false;
@@ -1920,7 +1918,6 @@ function validateRegisterForm() {
       '<p class="error">Passwords do not match</p>'
     );
   }
-
   return isValid;
 }
 
@@ -1961,10 +1958,6 @@ function changeHash(hash) {
   window.location.hash = hash;
 }
 
-//let eventSource = null;
-let eventSourceList = [];
-let eventSourceCounter = 0;
-
 function start(base_currency, quote_currency, inputId, currentCardId) {
   // when "Start" button pressed
   if (!window.EventSource) {
@@ -1977,7 +1970,7 @@ function start(base_currency, quote_currency, inputId, currentCardId) {
     baseUrl +
       `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
-  eventSourceCounter++;
+
   eventSourceList.push({
     id: currentCardId,
     eventSourceObj: eventSource,
@@ -2095,11 +2088,9 @@ class MyHashRouter {
             "warning"
           );
         }
-
         hideLoading();
         window.scrollTo(0, 0);
         break;
-
       case "login":
         if (getCookie("username")) {
           showToast(

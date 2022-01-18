@@ -701,10 +701,8 @@ function closeWidget(cardId) {
   } else {
     mainWidgetsNr--;
     console.log(mainWidgetsNr + "  frfrhi");
-    if (mainWidgetsNr == 0) {
-      eventSource.close();
-      eventSource = null;
-    }
+
+    stop(cardId);
   }
 }
 
@@ -2067,22 +2065,12 @@ function start(base_currency, quote_currency, inputId, currentCardId) {
 function stop(eventSourceId) {
   // when "Stop" button pressed
   if (eventSource) {
-    let myeventsource = eventSource;
-    //eventSource = null;
-    myeventsource.close();
-    const connectionState = myeventsource.readyState;
-    console.log("CONNECTION STATE");
-    console.log(connectionState);
     let eventSourceIndex = eventSourceList.findIndex(
       (item) => item.id == eventSourceId
     );
     let foundEventSource = eventSourceList.splice(eventSourceIndex, 1);
     foundEventSource[0].eventSourceObj.close();
   }
-
-  // eventSource.close();
-  // eventSource = null;
-  console.log("eventSource.close()");
 }
 
 window.onload = () => {

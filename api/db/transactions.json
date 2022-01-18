@@ -186,6 +186,17 @@
       "tenor": "Spot",
       "trans_date": "15/01/2022",
       "trans_hour": "16:20"
+    },
+    {
+      "id": "fadc7c65-8f5d-484e-829d-8d1cb4869ab5",
+      "username": "adela",
+      "ccy_pair": "EUR/GBP",
+      "rate": "1.23",
+      "action": "buy",
+      "notional": "5",
+      "tenor": "1M",
+      "trans_date": "18/01/2022",
+      "trans_hour": "10:18"
     }
   ]
 }

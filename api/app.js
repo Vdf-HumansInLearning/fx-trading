@@ -7,7 +7,6 @@ const cors = require("cors");
 const uuid = require("uuid");
 const public = path.join(__dirname, "public");
 
-var usersRouter = require("./routes/users");
 var transactionsRouter = require("./routes/transactions");
 var authRouter = require("./routes/auth");
 var currenciesRouter = require("./routes/currencies");
@@ -31,18 +30,8 @@ app.use(
 app.get("/", function (req, res) {
   res.sendFile(path.join(public, "index.html"));
 });
-app.get("/login", function (req, res) {
-  res.sendFile(path.join(public, "login.html"));
-});
-app.get("/register", function (req, res) {
-  res.sendFile(path.join(public, "register.html"));
-});
-app.get("/404", function (req, res) {
-  res.sendFile(path.join(public, "404.html"));
-});
 
 app.use(express.static("public"));
-app.use("/api", usersRouter);
 app.use("/api", transactionsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api", currenciesRouter);

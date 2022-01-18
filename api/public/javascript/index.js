@@ -2072,7 +2072,7 @@ class MyHashRouter {
     this.loadContent(hashLocation, previousUrl);
   }
 
-  loadContent(uri, previousUrl) {
+  loadContent(uri) {
     const contentUri = `${uri}`;
 
     //generate pages by uri

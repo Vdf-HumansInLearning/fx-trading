@@ -62,8 +62,6 @@ router.get("/currencies/quote", (req, res) => {
       "Content-Type": "text/event-stream; charset=utf-8",
       "Cache-Control": "no-cache",
     });
-    console.log("found base item");
-    console.log(foundBase[item]);
 
     let timer = setInterval(() => getNewCurrencyData(res, foundPair), 3000);
 
@@ -79,7 +77,6 @@ router.get("/currencies/quote", (req, res) => {
     res.socket.on("end", (e) => {
       responses = responses.filter((x) => x != res);
       clearInterval(timer);
-      console.log(res.end);
       res.emit("close");
       // res.end();
     });
@@ -91,8 +88,6 @@ router.get("/currencies/quote", (req, res) => {
 });
 
 function getNewCurrencyData(res, currencyObj) {
-  console.log("currency obj");
-  console.log(currencyObj);
   let sendObj = {
     sell: (
       Math.random() * (currencyObj.sell + 0.1 - (currencyObj.sell - 0.1)) +

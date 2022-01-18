@@ -67,18 +67,15 @@ function writeToFile(res, content, relPath) {
 // Get method for login
 router.get("/login", function (req, res) {
   let users = readFromFile("../db/users.json");
-  // console.log(users);
   res.json(users);
 });
 
 // Post method for login
 router.post("/login", function (req, res) {
   let usersList = readFromFile("../db/users.json");
-  // console.log(users);
   let user = usersList.users.find(
     (i) => i.email == req.body.email && i.password == req.body.password
   );
-  console.log(user);
   if (!user) {
     res.status(404).send({ message: "Invalid username or password." });
   } else {
@@ -121,10 +118,8 @@ router.post("/register", function (req, res) {
     repassword: req.body.repassword,
   };
 
-  console.log(user);
   let errors = validateUser(user);
   if (errors.length > 0) {
-    // console.log("eroare server");
     res.status(400).send(errors);
     return;
   }

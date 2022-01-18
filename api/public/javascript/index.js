@@ -105,7 +105,6 @@ function createMainWidget(item) {
   cardDivCol.className = "col";
   cardDivCol.id = `card${cardIdCounter}`;
   currentCardId = cardDivCol.id;
-  console.log(currentCardId);
 
   let cardDiv = document.createElement("div");
   cardDivCol.appendChild(cardDiv);
@@ -153,12 +152,6 @@ function createMainWidget(item) {
   divIcon.appendChild(iconExchange);
   iconExchange.className = "fas fa-exchange-alt";
   iconExchange.setAttribute("id", `swapp${inputId}`);
-  //---creeaza id separat pt icon
-  //--- foarEachh si adauga fiecarui icon addEventListener
-
-  // iconExchange.addEventListener("click", () => {
-  //   swappCurrency(`mainCurrency${inputId}`, `${item.secondCurrency}`, 0, 0);
-  // }); //===========
 
   let closeBtn = document.createElement("button");
   cardDivCurrency.appendChild(closeBtn);
@@ -396,7 +389,6 @@ function sendDataTransactions(
         res.json().then((data) => ({ status: res.status, body: data.message }))
       )
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           showToast("Success", "Transaction completed!", "succes");
           document.getElementById(`${inputToSendN}`).value = null;
@@ -581,7 +573,6 @@ function createAddWidget() {
 function addPickWidget() {
   //no more that 5 cards
   if (pickWidgetsNr + mainWidgetsNr <= 4) {
-    console.log("create pick widget");
     pickWidget = createPickWidget();
     cardsRow.prepend(pickWidget);
 
@@ -694,13 +685,11 @@ function addNewWidget(cardId) {
 }
 
 function closeWidget(cardId) {
-  console.log(cardId);
   document.getElementById(cardId).remove();
   if (cardId.startsWith("cardPick")) {
     pickWidgetsNr--;
   } else {
     mainWidgetsNr--;
-    console.log(mainWidgetsNr + "  frfrhi");
 
     stop(cardId);
   }
@@ -728,7 +717,6 @@ function confirmSelectionCurrency(cardId) {
 
   inputMainCurrency = card.querySelector("#inputMainCurrency");
   inputSecondCurrency = card.querySelector("#inputSecondCurrency");
-  console.log(inputMainCurrency);
 
   if (
     inputMainCurrency.value &&
@@ -756,8 +744,6 @@ function confirmSelectionCurrency(cardId) {
         .then((response) => {
           if (response.status === 200) {
             inputId++;
-            console.log("inputId  " + inputId);
-            console.log(response.body);
             //populate the item
             item.mainCurrency = currencyObj.base_currency;
             item.secondCurrency = currencyObj.quote_currency;
@@ -1177,8 +1163,6 @@ function clearCookiesOnLogout() {
 //display succes/error toast
 function showToast(titleMessage, bodyMessage, toastType) {
   let liveToast = document.getElementById("liveToast");
-  console.log(liveToast);
-  console.log(toastType);
 
   let toastHeaderContainer = liveToast.querySelector(".toast-header");
   let toastHeader = liveToast.querySelector(".toast-header .me-auto");
@@ -1324,7 +1308,6 @@ function getIndexData() {
   Promise.all([fetchPairs, fetchTransactions, fetchCurrencies])
     .then((responses) => Promise.all(responses.map((r) => r.json())))
     .then((data) => {
-      console.log(data);
       ccyPairs = data[0];
       cardInputsList[0].select_options = data[2];
       cardInputsList[1].select_options = data[2];
@@ -1835,7 +1818,6 @@ function submitRegisterData() {
             }))
           )
           .then((data) => {
-            console.log(data);
             if (data.status == 200) {
               createCookie("username", `${username}`, 2);
               showToast(
@@ -1847,7 +1829,6 @@ function submitRegisterData() {
               changeHash("#dashboard");
               //window.location.hash = "#dashboard";
             } else if (data.status == 409) {
-              console.log(data.body.message);
               if (data.body.existing === "email") {
                 const email = document.getElementById("inputEmail");
                 removePreviousError(email.parentElement);
@@ -1991,15 +1972,11 @@ function start(base_currency, quote_currency, inputId, currentCardId) {
     baseUrl +
       `currencies/quote?base_currency=${base_currency}&quote_currency=${quote_currency}`
   );
-  console.log("new Eventsource object");
-  console.log(eventSource);
   eventSourceCounter++;
   eventSourceList.push({
     id: currentCardId,
     eventSourceObj: eventSource,
   });
-
-  console.log(eventSourceList);
 
   eventSource.onopen = function (e) {
     console.log("Event: open");
@@ -2015,7 +1992,6 @@ function start(base_currency, quote_currency, inputId, currentCardId) {
   };
 
   eventSource.onmessage = function (e) {
-    console.log("Event: message, data: " + e.data);
     currencyObj = JSON.parse(e.data);
     //populate the itemstop
     item.mainCurrency = base_currency;
@@ -2088,7 +2064,6 @@ class MyHashRouter {
   constructor() {
     window.addEventListener("hashchange", (event) => this.onRouteChange(event));
     this.app = document.getElementById("app");
-    console.log("hash router init");
   }
   //home
   onRouteChange(event) {
@@ -2099,14 +2074,10 @@ class MyHashRouter {
 
   loadContent(uri, previousUrl) {
     const contentUri = `${uri}`;
-    console.log(contentUri);
 
     //generate pages by uri
     switch (contentUri) {
       case "dashboard":
-        console.log("previous url");
-        console.log(previousUrl);
-
         //get data from server
         if (getCookie("username")) {
           getIndexData();
@@ -2120,7 +2091,6 @@ class MyHashRouter {
           );
         }
 
-        console.log("dashboard page");
         hideLoading();
         window.scrollTo(0, 0);
         break;
@@ -2133,7 +2103,6 @@ class MyHashRouter {
             "warning"
           );
         } else {
-          console.log("login route");
           createLoginPage();
           hideLoading();
           window.scrollTo(0, 0);
@@ -2147,7 +2116,6 @@ class MyHashRouter {
             "warning"
           );
         } else {
-          console.log("register route");
           createRegisterPage();
           hideLoading();
           window.scrollTo(0, 0);

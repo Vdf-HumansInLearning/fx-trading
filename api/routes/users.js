@@ -7,8 +7,6 @@ const path = require("path");
 //user: id, username,email, password
 
 /* GET users */
-router.get("/users", (req, res) => {
-  console.log("user");
-});
+router.get("/users", (req, res) => {});
 
 module.exports = router;

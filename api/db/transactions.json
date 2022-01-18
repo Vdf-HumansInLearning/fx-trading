@@ -35,7 +35,7 @@
     },
     {
       "id": "cd827e3a-6dc5-4c30-bc84-3dc4301e906e",
-      "username": "Alex",
+      "username": "Alex Alexandrescu",
       "ccy_pair": "EUR/GBP",
       "rate": "0.84",
       "action": "sell",
@@ -167,7 +167,7 @@
     },
     {
       "id": "62c89657-057f-4d0a-be98-91d62e57697d",
-      "username": "Ion Popescu",
+      "username": "oana",
       "ccy_pair": "CHF/USD",
       "rate": "0.99",
       "action": "buy",
@@ -178,7 +178,7 @@
     },
     {
       "id": "9baa460a-48de-4dc3-b807-75d247381a63",
-      "username": "Ion Popescu",
+      "username": "Al Malinescu",
       "ccy_pair": "USD/RON",
       "rate": "1.10",
       "action": "buy",

@@ -1157,7 +1157,12 @@ function clearCookiesOnLogout() {
   clearCookie("username");
   changeHash("#login");
   showToast("Logged out", "You have been logged out.", "succes");
-  if (eventSource) stop();
+
+  if (eventSourceList.length > 0) {
+    eventSourceList.forEach((item) => {
+      item.eventSourceObj.close();
+    });
+  }
 }
 
 //display succes/error toast

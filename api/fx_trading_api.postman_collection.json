@@ -74,7 +74,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"base_currency\":\"EUR\", \r\n    \"quote_currency\": \"USD\"\r\n}",
+					"raw": "{\r\n    \"base_currency\":\"EUR\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -82,7 +82,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/currencies/quote",
+					"raw": "http://localhost:8080/api/currencies",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -90,8 +90,7 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"currencies",
-						"quote"
+						"currencies"
 					]
 				}
 			},
@@ -112,7 +111,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/quote",
+					"raw": "http://localhost:8080/api/currencies/quote",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -120,6 +119,7 @@
 					"port": "8080",
 					"path": [
 						"api",
+						"currencies",
 						"quote"
 					]
 				}
@@ -153,7 +153,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"username\": \"Mark Bismark\",\r\n        \"ccy_pair\": \"USD/EUR\",\r\n        \"rate\": \"0.86\",\r\n        \"action\": \"sell\",\r\n        \"notional\": \"100\",\r\n        \"tenor\": \"1M\",\r\n        \"trans_date\": \"12/02/2018 12:22\"\r\n    }",
+					"raw": "{\r\n    \"username\": \"Mark Bismark\",\r\n    \"ccy_pair\": \"EUR/USD\",\r\n    \"rate\": \"0.86\",\r\n    \"action\": \"sell\",\r\n    \"notional\": \"100\",\r\n    \"tenor\": \"1M\",\r\n    \"trans_date\": \"12/02/2018\",\r\n    \"trans_hour\": \" 12:22\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
